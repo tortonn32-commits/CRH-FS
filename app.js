@@ -53,6 +53,7 @@
 
   function init() {
     cacheElements();
+    initTheme();
     loadScheduleData();
     bindEvents();
     setupAndroidBackNavigation();
@@ -62,10 +63,12 @@
   }
 
   function cacheElements() {
-    // Header
+    // Header & Theme
     el.headerFullName = document.getElementById('headerFullName');
     el.headerNickname = document.getElementById('headerNickname');
     el.openUserModalBtn = document.getElementById('openUserModalBtn');
+    el.themeToggleBtn = document.getElementById('themeToggleBtn');
+    el.themeToggleIcon = document.getElementById('themeToggleIcon');
 
     // Hero Today Card
     el.todayCard = document.getElementById('todayCard');
@@ -207,9 +210,54 @@
   }
 
   // ==========================================
+  // THEME SYSTEM (DARK & LIGHT MODE)
+  // ==========================================
+  function initTheme() {
+    const savedTheme = localStorage.getItem('crh_theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = (savedTheme === 'dark') || (!savedTheme && prefersDark);
+    applyTheme(isDark ? 'dark' : 'light', false);
+  }
+
+  function applyTheme(theme, save = true) {
+    const isDark = (theme === 'dark');
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+      if (el.themeToggleIcon) {
+        el.themeToggleIcon.textContent = '☀️';
+        el.themeToggleIcon.title = 'เปลี่ยนเป็นโหมดสว่าง (Light Mode)';
+      }
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+      if (metaThemeColor) metaThemeColor.setAttribute('content', '#090d16');
+    } else {
+      document.documentElement.classList.remove('dark');
+      if (el.themeToggleIcon) {
+        el.themeToggleIcon.textContent = '🌙';
+        el.themeToggleIcon.title = 'เปลี่ยนเป็นโหมดมืด (Dark Mode)';
+      }
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+      if (metaThemeColor) metaThemeColor.setAttribute('content', '#f6f7f9');
+    }
+
+    if (save) {
+      localStorage.setItem('crh_theme', theme);
+    }
+  }
+
+  function toggleTheme() {
+    const isDark = document.documentElement.classList.contains('dark');
+    applyTheme(isDark ? 'light' : 'dark', true);
+  }
+
+  // ==========================================
   // EVENT BINDINGS
   // ==========================================
   function bindEvents() {
+    // Dark / Light Mode Switcher
+    if (el.themeToggleBtn) {
+      el.themeToggleBtn.addEventListener('click', toggleTheme);
+    }
+
     // Open Today Note
     if (el.openTodayNoteBtn) {
       el.openTodayNoteBtn.addEventListener('click', () => openNoteModal(state.selectedDate));
@@ -562,13 +610,9 @@
 
     const nightDuty = (day.otDuties || []).find(ot => ot.name.includes("ดึก") || (ot.shift && ot.shift.includes("ดึก")));
 
-    // Card border / highlight state
+    // Card border / highlight state for night shift
     if (el.todayCard) {
-      if (nightDuty) {
-        el.todayCard.className = 'ui-card-today p-5 bg-white border-2 border-purple-400 shadow-lg shadow-purple-500/10 ring-2 ring-purple-400/20';
-      } else {
-        el.todayCard.className = 'ui-card-today p-5 bg-white';
-      }
+      el.todayCard.classList.toggle('card-night-shift', !!nightDuty);
     }
 
     // Regular Daytime Duty (เวลาปกติ)
@@ -700,11 +744,7 @@
 
     // Highlight whole card if tomorrow has night shift
     if (el.tomorrowCard) {
-      if (tomorrowNightDuty) {
-        el.tomorrowCard.className = 'ui-card-tomorrow p-4 bg-white border-2 border-purple-400 shadow-md shadow-purple-500/15 ring-2 ring-purple-400/20';
-      } else {
-        el.tomorrowCard.className = 'ui-card-tomorrow p-4 bg-white';
-      }
+      el.tomorrowCard.classList.toggle('card-night-shift', !!tomorrowNightDuty);
     }
 
     if (el.tomorrowRegularStation) {

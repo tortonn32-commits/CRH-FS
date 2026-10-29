@@ -1,6 +1,6 @@
 /* ==========================================================================
    CRH FS - Senior UI/UX Designer System
-   Reference Language: Premium Clean White UI / Modern Minimal / Soft & Colorful
+   Reference Language: Premium Clean White UI & Luxury Dark Neon Mode
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
@@ -14,7 +14,7 @@
   --bg-card: #ffffff;
   --bg-subtle: #f8f9fa;
   
-  /* Primary & Accent Palette (Reference 3) */
+  /* Primary & Accent Palette */
   --color-coral: #ff5757;
   --color-coral-hover: #f43f5e;
   --color-coral-light: #fff0f1;
@@ -40,6 +40,30 @@
   --border-card: #eef0f3;
 }
 
+/* ==========================================================================
+   PREMIUM DARK MODE THEME SYSTEM (IMAGE 1 & 2 REFERENCE)
+   ========================================================================== */
+html.dark {
+  --bg-app: #090d16;
+  --bg-card: #131b2e;
+  --bg-subtle: #0f172a;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-card: rgba(255, 255, 255, 0.1);
+  --color-text-main: #f8fafc;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #64748b;
+}
+
+html.dark body {
+  background-color: #090d16;
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(0, 210, 255, 0.12), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 85% 15%, rgba(255, 75, 114, 0.1), transparent 60%),
+    radial-gradient(ellipse 70% 60% at 50% 100%, rgba(168, 85, 247, 0.08), transparent 70%);
+  background-attachment: fixed;
+  color: #f8fafc;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: var(--bg-app);
@@ -49,6 +73,7 @@ body {
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 /* PWA Install Banner Style (Matching User Reference Image) */
@@ -91,6 +116,12 @@ body {
   border-radius: 28px;
   box-shadow: 0 6px 24px -3px rgba(2, 132, 199, 0.1);
   transition: all 0.2s ease;
+}
+
+.ui-card-today.card-night-shift,
+.ui-card-tomorrow.card-night-shift {
+  border: 2px solid #a855f7 !important;
+  box-shadow: 0 8px 30px -4px rgba(168, 85, 247, 0.25) !important;
 }
 
 /* 7 Days Forward Block (Matching Image 1 Reference) */
@@ -299,4 +330,183 @@ body {
 thead th.sticky-col-1 {
   z-index: 25;
   background-color: #0f172a;
+}
+
+/* ==========================================================================
+   DARK THEME COMPONENTS & NEON GLOW STYLES (MATCHING USER REFERENCE)
+   ========================================================================== */
+
+/* Glassmorphic UI Card in Dark Mode */
+html.dark .ui-card {
+  background: rgba(19, 27, 46, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+}
+
+/* Today Card Dark Mode: Neon Coral/Pink Glow */
+html.dark .ui-card-today {
+  background: rgba(22, 28, 45, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 2px solid #ff4b72;
+  box-shadow: 0 0 22px rgba(255, 75, 114, 0.32), 0 10px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* Tomorrow Card Dark Mode: Neon Cyan Glow */
+html.dark .ui-card-tomorrow {
+  background: rgba(22, 28, 45, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 2px solid #00d2ff;
+  box-shadow: 0 0 22px rgba(0, 210, 255, 0.32), 0 10px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* 7-Day Cards in Dark Mode */
+html.dark .seven-day-card {
+  background: rgba(19, 27, 46, 0.85);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+  color: #f1f5f9;
+}
+
+html.dark .seven-day-card.card-duty {
+  border-color: #f59e0b !important;
+  background: linear-gradient(180deg, rgba(32, 35, 52, 0.95) 0%, rgba(19, 27, 46, 0.95) 100%) !important;
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.28), 0 4px 18px rgba(0, 0, 0, 0.35) !important;
+}
+
+html.dark .seven-day-card.card-off {
+  border-color: #f43f5e !important;
+  background: linear-gradient(180deg, rgba(38, 25, 35, 0.95) 0%, rgba(19, 27, 46, 0.95) 100%) !important;
+  box-shadow: 0 0 16px rgba(244, 63, 94, 0.28), 0 4px 18px rgba(0, 0, 0, 0.35) !important;
+}
+
+html.dark .seven-day-card.card-today {
+  border-color: #ff4b72 !important;
+  box-shadow: 0 0 20px rgba(255, 75, 114, 0.38) !important;
+}
+
+html.dark .seven-day-card.card-night-shift {
+  border: 2px solid #c084fc !important;
+  background: linear-gradient(180deg, rgba(42, 25, 62, 0.95) 0%, rgba(19, 27, 46, 0.95) 100%) !important;
+  box-shadow: 0 0 22px rgba(192, 132, 252, 0.38), 0 4px 20px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Month Calendar in Dark Mode (High Contrast Neon Matching Image 1) */
+html.dark .cal-weekday-bar {
+  background: linear-gradient(90deg, #0284c7 0%, #0369a1 100%);
+  color: #ffffff;
+}
+
+html.dark .cal-month-cell {
+  color: #e2e8f0;
+}
+
+html.dark .cal-cell-normal {
+  color: #94a3b8;
+  background-color: rgba(25, 33, 52, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+html.dark .cal-cell-normal:hover {
+  background-color: rgba(45, 58, 88, 0.8);
+  color: #ffffff;
+}
+
+html.dark .cal-cell-duty {
+  background-color: #fde047 !important; /* Radiant gold/yellow */
+  color: #713f12 !important;
+  border: 1px solid #eab308 !important;
+  box-shadow: 0 0 12px rgba(234, 179, 8, 0.4) !important;
+  font-weight: 800 !important;
+}
+
+html.dark .cal-cell-off {
+  background-color: #fda4af !important; /* Radiant coral/pink */
+  color: #881337 !important;
+  border: 1px solid #f43f5e !important;
+  box-shadow: 0 0 12px rgba(244, 63, 94, 0.4) !important;
+  font-weight: 800 !important;
+}
+
+html.dark .cal-cell-today {
+  background-color: #00d2ff !important; /* Electric cyan */
+  color: #090d16 !important;
+  font-weight: 900 !important;
+  border: 1px solid #7dd3fc !important;
+  box-shadow: 0 0 18px rgba(0, 210, 255, 0.7) !important;
+}
+
+html.dark .cal-cell-night {
+  background: linear-gradient(135deg, #c084fc 0%, #9333ea 100%) !important;
+  color: #ffffff !important;
+  border: 2px solid #f3e8ff !important;
+  box-shadow: 0 0 18px rgba(192, 132, 252, 0.6) !important;
+  font-weight: 900 !important;
+}
+
+/* Modals & Dialogs in Dark Mode */
+html.dark .bg-white {
+  background-color: #131b2e !important;
+  color: #f8fafc;
+}
+
+html.dark .border-slate-100,
+html.dark .border-slate-200 {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark .text-slate-900 {
+  color: #f8fafc !important;
+}
+
+html.dark .text-slate-800 {
+  color: #f1f5f9 !important;
+}
+
+html.dark .text-slate-700 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-slate-600 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-slate-500 {
+  color: #64748b !important;
+}
+
+html.dark .bg-slate-50 {
+  background-color: rgba(25, 33, 52, 0.6) !important;
+}
+
+html.dark .bg-slate-100 {
+  background-color: rgba(35, 45, 70, 0.6) !important;
+}
+
+html.dark .hover\:bg-slate-50:hover {
+  background-color: rgba(45, 58, 88, 0.6) !important;
+}
+
+html.dark .hover\:bg-slate-100:hover {
+  background-color: rgba(55, 70, 105, 0.6) !important;
+}
+
+/* Dark Mode Form Inputs & Selects */
+html.dark input, 
+html.dark select, 
+html.dark textarea {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Sticky Excel table in Dark Mode */
+html.dark thead th.sticky-col-1 {
+  background-color: #0f172a !important;
+}
+
+html.dark tbody td.sticky-col-1 {
+  background-color: #131b2e !important;
 }
