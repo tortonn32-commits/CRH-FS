@@ -143,6 +143,12 @@ body {
   box-shadow: 0 4px 16px rgba(255, 87, 87, 0.15);
 }
 
+.seven-day-card.card-night-shift {
+  border: 2px solid #a855f7 !important;
+  background: linear-gradient(180deg, #faf5ff 0%, #ffffff 100%) !important;
+  box-shadow: 0 4px 18px rgba(168, 85, 247, 0.22) !important;
+}
+
 /* Month Calendar Grid (Matching Image 2 Reference) */
 .cal-weekday-bar {
   background: #0284c7; /* Bright friendly blue like Image 2 */
@@ -171,6 +177,14 @@ body {
 /* Calendar Color Coding Requested by User:
    มีเวร = สีเหลือง (Yellow / Amber)
    วันหยุด = สีแดง (Red / Coral) */
+.cal-cell-night {
+  background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%) !important;
+  color: #6b21a8 !important;
+  border: 2px solid #a855f7 !important;
+  font-weight: 800 !important;
+  box-shadow: 0 2px 10px rgba(168, 85, 247, 0.3) !important;
+}
+
 .cal-cell-duty {
   background-color: #fef3c7; /* Warm Yellow */
   color: #b45309;
