@@ -23,13 +23,8 @@
     <!-- Neon Emerald Gradient -->
     <linearGradient id="neonGreen" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="50%" stop-color="#10b981"/>
       <stop offset="100%" stop-color="#059669"/>
-    </linearGradient>
-
-    <!-- Gold Accent -->
-    <linearGradient id="goldAccent" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fbbf24"/>
-      <stop offset="100%" stop-color="#d97706"/>
     </linearGradient>
 
     <!-- Glow Filter -->
@@ -60,32 +55,31 @@
   <!-- Glowing Medical Cross Silhouette -->
   <g filter="url(#glow)">
     <!-- Vertical Cross Bar -->
-    <rect x="236" y="130" width="40" height="150" rx="10" fill="url(#neonGreen)"/>
+    <rect x="236" y="125" width="40" height="145" rx="10" fill="url(#neonGreen)"/>
     <!-- Horizontal Cross Bar -->
-    <rect x="181" y="185" width="150" height="40" rx="10" fill="url(#neonGreen)"/>
+    <rect x="183.5" y="177.5" width="145" height="40" rx="10" fill="url(#neonGreen)"/>
   </g>
 
   <!-- Inner High-Contrast Cross -->
-  <rect x="240" y="134" width="32" height="142" rx="8" fill="#ffffff" fill-opacity="0.95"/>
-  <rect x="185" y="189" width="142" height="32" rx="8" fill="#ffffff" fill-opacity="0.95"/>
+  <rect x="240" y="129" width="32" height="137" rx="8" fill="#ffffff" fill-opacity="0.95"/>
+  <rect x="187.5" y="181.5" width="137" height="32" rx="8" fill="#ffffff" fill-opacity="0.95"/>
 
-  <!-- Center Heartbeat / Shift Pulse Wave -->
-  <path d="M190 205 L225 205 L242 165 L260 240 L276 195 L292 212 L322 205" 
+  <!-- Center Heartbeat / Schedule Pulse Wave -->
+  <path d="M192 197.5 L225 197.5 L242 160 L260 235 L276 190 L292 205 L320 197.5" 
         fill="none" stroke="#0f172a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
 
-  <!-- Typography: CRH FS Badge -->
-  <!-- "CRH" Pill Header -->
-  <rect x="176" y="300" width="160" height="34" rx="17" fill="#030712" stroke="url(#borderGlow)" stroke-width="1.5"/>
-  <text x="256" y="323" font-family="'Inter', 'Prompt', sans-serif" font-size="18" font-weight="800" fill="#38bdf8" text-anchor="middle" letter-spacing="4">CRH</text>
+  <!-- Typography: CRH Pill Header -->
+  <rect x="176" y="292" width="160" height="32" rx="16" fill="#030712" stroke="url(#borderGlow)" stroke-width="1.5"/>
+  <text x="256" y="314" font-family="'Inter', 'Prompt', sans-serif" font-size="17" font-weight="800" fill="#38bdf8" text-anchor="middle" letter-spacing="4">CRH</text>
 
-  <!-- "FS" Big Bold Neon Emblem -->
-  <text x="256" y="396" font-family="'Inter', 'Prompt', sans-serif" font-size="64" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="2">
+  <!-- "FS" Big Bold Emblem -->
+  <text x="256" y="388" font-family="'Inter', 'Prompt', sans-serif" font-size="68" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="2">
     FS
   </text>
-  <text x="256" y="396" font-family="'Inter', 'Prompt', sans-serif" font-size="64" font-weight="900" fill="none" stroke="url(#neonGreen)" stroke-width="2" text-anchor="middle" letter-spacing="2" filter="url(#glow)"/>
+  <text x="256" y="388" font-family="'Inter', 'Prompt', sans-serif" font-size="68" font-weight="900" fill="none" stroke="url(#neonGreen)" stroke-width="2" text-anchor="middle" letter-spacing="2" filter="url(#glow)"/>
 
-  <!-- Subtitle Tag: FINANCE & SHIFT -->
-  <text x="256" y="424" font-family="'Inter', 'Prompt', sans-serif" font-size="11" font-weight="700" fill="#94a3b8" text-anchor="middle" letter-spacing="3">FINANCE &amp; SHIFT</text>
+  <!-- Subtitle Tag: FINANCE SCHEDULE -->
+  <text x="256" y="420" font-family="'Inter', 'Prompt', sans-serif" font-size="12" font-weight="800" fill="#94a3b8" text-anchor="middle" letter-spacing="3">FINANCE SCHEDULE</text>
 
   <!-- Corner Status Accent Dots -->
   <circle cx="68" cy="68" r="6" fill="#10b981" filter="url(#glow)"/>

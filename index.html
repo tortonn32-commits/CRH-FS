@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CRH FS - ระบบเวรและภารกิจ ฝ่ายการเงิน รพ.เชียงรายประชานุเคราะห์</title>
+  <title>CRH-FS (Finance Schedule) - ฝ่ายการเงิน รพ.เชียงรายประชานุเคราะห์</title>
   
   <!-- PWA Manifest & App Icons -->
   <link rel="manifest" href="manifest.json">
@@ -12,7 +12,7 @@
   <meta name="theme-color" content="#090d16">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="CRH FS">
+  <meta name="apple-mobile-web-app-title" content="CRH-FS">
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -53,12 +53,12 @@
     <div id="pwaInstallBanner" class="pwa-install-banner flex items-center justify-between p-3.5 mb-4 rounded-2xl text-white shadow-xl transition-all">
       <div class="flex items-center space-x-3 min-w-0">
         <!-- Cool App Icon -->
-        <img src="icon.svg" alt="CRH FS Logo" class="w-11 h-11 rounded-xl shrink-0 shadow-md border border-slate-700/60 object-cover">
+        <img src="icon.svg" alt="CRH-FS Logo" class="w-11 h-11 rounded-xl shrink-0 shadow-md border border-slate-700/60 object-cover">
         <div class="min-w-0">
           <div class="text-sm font-extrabold text-white tracking-tight truncate flex items-center space-x-1.5">
-            <span>ติดตั้ง CRH FS</span>
+            <span>ติดตั้ง CRH-FS</span>
           </div>
-          <div class="text-[11px] text-slate-300 truncate mt-0.5">แตะเพื่อติดตั้งลงบนหน้าจอมือถือ</div>
+          <div class="text-[11px] text-slate-300 truncate mt-0.5">Finance Schedule • แตะเพื่อติดตั้งลงบนหน้าจอมือถือ</div>
         </div>
       </div>
       
@@ -78,48 +78,47 @@
       <div>
         <div class="flex items-center space-x-2">
           <span class="px-2 py-0.5 rounded-md bg-slate-900 text-sky-400 font-black text-[10px] tracking-wider font-mono border border-slate-800">
-            CRH FS
+            CRH-FS
           </span>
           <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-            พฤศจิกายน 2569 • ฝ่ายการเงิน
+            Finance Schedule • ฝ่ายการเงิน
           </span>
         </div>
         <!-- Greeting with full name and nickname -->
-        <h1 class="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight mt-1">
-          สวัสดี, คุณ<span id="headerFullName">จุรีพร ผาบสุวรรณ์</span> <span class="text-coral-500 font-bold" id="headerNickname">(เอ็ม)</span>
+        <h1 class="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight mt-1 flex flex-wrap items-baseline gap-1">
+          <span>สวัสดีคุณ</span>
+          <span id="headerFullName" class="text-slate-900">จุรีพร ผาบสุวรรณ์</span>
+          <span id="headerNickname" class="text-coral-500 font-bold">(เอ็ม)</span>
         </h1>
       </div>
 
-      <!-- User Switcher Pill Button -->
-      <button id="openUserModalBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white border border-slate-200 shadow-sm hover:border-coral-500 transition-all active:scale-95 shrink-0 ml-2 mt-0.5">
-        <span class="w-6 h-6 rounded-full bg-coral-50 text-coral-600 font-bold text-xs flex items-center justify-center border border-coral-200" id="userInitialBadge">
-          EM
-        </span>
-        <span class="text-xs font-semibold text-slate-700">สลับผู้ใช้</span>
+      <!-- User Switcher Pill Button (Clean, without [EM] badge as requested) -->
+      <button id="openUserModalBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white border border-slate-200 shadow-sm hover:border-coral-400 hover:bg-slate-50 transition-all active:scale-95 shrink-0 ml-2 mt-0.5" title="สลับผู้ใช้ / ดูตารางของคนอื่น">
+        <svg class="w-3.5 h-3.5 text-coral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+        </svg>
+        <span class="text-xs font-bold text-slate-700">สลับผู้ใช้</span>
       </button>
     </header>
 
-    <!-- SECTION 1: TODAY & TOMORROW HERO CARDS -->
+    <!-- SECTION 1: TODAY & TOMORROW HERO CARDS (DISTINCT WARM CORAL vs FRESH SKY BLUE) -->
     <section class="space-y-3.5 mb-6">
       
-      <!-- TODAY PRIMARY CARD -->
-      <div id="todayCard" class="ui-card-primary p-5 bg-white">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+      <!-- TODAY PRIMARY CARD (WARM CORAL THEME) -->
+      <div id="todayCard" class="ui-card-today p-5 bg-white">
+        <div class="flex items-center justify-between pb-3 border-b border-rose-100">
           <div class="flex items-center space-x-2">
-            <span class="flex h-2.5 w-2.5 relative">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-coral-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-coral-500"></span>
-            </span>
-            <span class="text-xs font-bold uppercase tracking-wider text-coral-600">
-              สถานะวันนี้
+            <span class="px-2.5 py-0.5 rounded-full bg-rose-500 text-white font-extrabold text-[11px] flex items-center space-x-1.5 shadow-sm shadow-rose-500/20">
+              <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+              <span>สถานะวันนี้</span>
             </span>
           </div>
           <div class="flex items-center space-x-2">
-            <span id="todayDateHeading" class="text-xs font-semibold text-slate-500 font-mono">
-              วันพฤหัสบดีที่ 5 พ.ย. 2569
+            <span id="todayDateHeading" class="text-xs font-semibold text-slate-600 font-mono">
+              วันอาทิตย์ที่ 1 พ.ย. 2569
             </span>
-            <span class="text-xs font-bold px-2 py-0.5 rounded-lg bg-coral-50 text-coral-600 border border-coral-200" id="todayDayOfWeekBadge">
-              พฤหัส
+            <span class="text-xs font-bold px-2 py-0.5 rounded-lg bg-rose-50 text-rose-600 border border-rose-200" id="todayDayOfWeekBadge">
+              อาทิตย์
             </span>
           </div>
         </div>
@@ -128,8 +127,8 @@
         <div class="mt-4">
           <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">เวลาปกติ</div>
           <div class="flex items-baseline justify-between mt-1">
-            <div id="todayStationTitle" class="text-3xl font-black text-slate-900 tracking-tight">ตึกรังสี</div>
-            <span id="todayLocationDetail" class="text-xs text-slate-500">อาคารรังสีวินิจฉัย</span>
+            <div id="todayStationTitle" class="text-3xl font-black text-slate-900 tracking-tight">วันหยุด</div>
+            <span id="todayLocationDetail" class="text-xs text-slate-500">พักประจำสัปดาห์</span>
           </div>
         </div>
 
@@ -157,23 +156,25 @@
         </div>
       </div>
 
-      <!-- TOMORROW COMPANION CARD -->
-      <div id="tomorrowCard" class="ui-card p-4 bg-white border-slate-200">
-        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+      <!-- TOMORROW COMPANION CARD (FRESH SKY BLUE THEME) -->
+      <div id="tomorrowCard" class="ui-card-tomorrow p-4 bg-white">
+        <div class="flex items-center justify-between pb-2 border-b border-sky-100">
           <div class="flex items-center space-x-1.5">
-            <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
-            </svg>
-            <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">วันพรุ่งนี้</span>
+            <span class="px-2.5 py-0.5 rounded-full bg-sky-600 text-white font-extrabold text-[11px] shadow-sm shadow-sky-600/20 flex items-center space-x-1">
+              <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+              </svg>
+              <span>วันพรุ่งนี้</span>
+            </span>
           </div>
-          <span id="tomorrowDateLabel" class="text-xs text-slate-500 font-mono">วันศุกร์ที่ 6 พ.ย. 2569</span>
+          <span id="tomorrowDateLabel" class="text-xs text-slate-600 font-mono">วันจันทร์ที่ 2 พ.ย. 2569</span>
         </div>
 
         <div class="mt-3 flex items-start justify-between">
           <div>
             <div class="text-[11px] text-slate-400">เวลาปกติ</div>
-            <div id="tomorrowRegularStation" class="text-lg font-bold text-slate-900 mt-0.5">คิดชาร์ท 19</div>
-            <div id="tomorrowRegularLocation" class="text-xs text-slate-500">จุดคิดชาร์ท เบอร์ 19</div>
+            <div id="tomorrowRegularStation" class="text-xl font-bold text-slate-900 mt-0.5">PCU</div>
+            <div id="tomorrowRegularLocation" class="text-xs text-slate-500">ตึกบริการปฐมภูมิ (PCU)</div>
           </div>
           <div id="tomorrowOtSection" class="text-right">
             <!-- Dynamic -->
@@ -183,20 +184,17 @@
 
     </section>
 
-    <!-- SECTION 2: 7-DAY FORWARD PLANNING (IMAGE 1 REFERENCE) -->
+    <!-- SECTION 2: 7-DAY FORWARD PLANNING (TEXT 'ตารางทำงาน' REMOVED AS REQUESTED) -->
     <section class="mb-7" id="sectionSevenDays">
-      <div class="flex items-center justify-between mb-3 px-1">
-        <div>
-          <h2 class="text-base font-extrabold text-slate-900 tracking-tight">ตารางทำงาน 7 วันข้างหน้า</h2>
-          <p class="text-xs text-slate-500">เลื่อนซ้าย-ขวาเพื่อดูวันถัดไป</p>
-        </div>
+      <div class="flex items-center justify-between mb-2.5 px-1">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">7 วันถัดไป</span>
         <span class="text-xs font-bold text-rose-500 flex items-center space-x-1 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
           <span class="w-2 h-2 rounded-full bg-rose-500"></span>
           <span>วันหยุดสีแดง</span>
         </span>
       </div>
 
-      <!-- 7 Horizontal Cards Strip (Matching Image 1) -->
+      <!-- 7 Horizontal Cards Strip (Clean Square Blocks) -->
       <div id="sevenDaysStrip" class="seven-day-strip no-scrollbar">
         <!-- Injected via JavaScript -->
       </div>
@@ -251,7 +249,7 @@
       </div>
     </section>
 
-    <!-- SECTION 4: สรุปการเข้างานประจำเดือน & เอกสารต้นฉบับ (ย้ายมาไว้ล่างสุด) -->
+    <!-- SECTION 4: สรุปการเข้างานประจำเดือน & เอกสารต้นฉบับ -->
     <section class="space-y-4 mb-8" id="sectionSummary">
       <div class="text-xs font-bold text-slate-400 uppercase tracking-wider px-1">
         สรุปการเข้างานประจำเดือน & ตรวจสอบเอกสาร
@@ -345,7 +343,7 @@
       <!-- Upload New Excel Button -->
       <button id="openUploadModalBtn" class="w-full p-3 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200 shadow-sm flex items-center justify-center space-x-2 text-slate-700 text-xs font-semibold active:scale-98 transition-all">
         <svg class="w-4 h-4 text-coral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
         </svg>
         <span>อัปโหลดไฟล์ Excel ของเดือนต่อๆ ไป</span>
       </button>
@@ -353,12 +351,12 @@
 
     <!-- Footer Note -->
     <footer class="text-center text-[11px] text-slate-400 pt-2 pb-6">
-      CRH FS • กลุ่มงานการเงินและบัญชี โรงพยาบาลเชียงรายประชานุเคราะห์
+      CRH-FS (Finance Schedule) • กลุ่มงานการเงินและบัญชี โรงพยาบาลเชียงรายประชานุเคราะห์
     </footer>
 
   </div>
 
-  <!-- FLOATING BOTTOM NAVIGATION (Reference Image 3) -->
+  <!-- FLOATING BOTTOM NAVIGATION -->
   <nav class="bottom-nav flex items-center justify-around">
     <button class="bottom-nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
       <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -388,14 +386,14 @@
 
   <!-- ==================== MODALS ==================== -->
 
-  <!-- MODAL: IOS PWA INSTALL GUIDE (วิธีติดตั้งบน iPhone) -->
+  <!-- MODAL: IOS PWA INSTALL GUIDE -->
   <div id="iosInstallModal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity">
     <div class="bg-white border border-slate-200 w-full max-w-sm rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl text-center">
       <div class="w-16 h-16 mx-auto mb-3 rounded-2xl overflow-hidden shadow-lg border border-slate-200">
-        <img src="icon.svg" alt="CRH FS Icon" class="w-full h-full object-cover">
+        <img src="icon.svg" alt="CRH-FS Icon" class="w-full h-full object-cover">
       </div>
-      <h3 class="text-base font-extrabold text-slate-900">ติดตั้ง CRH FS ลงบนมือถือ</h3>
-      <p class="text-xs text-slate-500 mt-1 mb-4">สำหรับ iPhone / iPad ทำตาม 2 ขั้นตอนนี้ได้ทันที:</p>
+      <h3 class="text-base font-extrabold text-slate-900">ติดตั้ง CRH-FS ลงบนมือถือ</h3>
+      <p class="text-xs text-slate-500 mt-1 mb-4">Finance Schedule (สำหรับ iPhone / iPad):</p>
       
       <div class="space-y-3 text-left text-xs bg-slate-50 p-3.5 rounded-2xl border border-slate-200 mb-4">
         <div class="flex items-start space-x-2.5">
@@ -418,7 +416,7 @@
     </div>
   </div>
 
-  <!-- MODAL: ADD / EDIT LEAVE & SHIFT SWAP (บันทึกวันลา / สลับวันหยุด) -->
+  <!-- MODAL: ADD / EDIT LEAVE & SHIFT SWAP -->
   <div id="noteModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity">
     <div class="bg-white border border-slate-200 w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
@@ -502,64 +500,169 @@
     </div>
   </div>
 
-  <!-- MODAL: ORIGINAL IMAGE VIEWER (PAN & ZOOM) -->
-  <div id="imageViewerModal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex flex-col hidden">
-    <div class="flex items-center justify-between px-4 py-3 bg-white border-b border-slate-200 z-10">
-      <span class="text-sm font-bold text-slate-900">รูปภาพตารางปฏิบัติงาน พ.ย. 2569</span>
-      <div class="flex items-center space-x-2">
-        <button id="zoomOutBtn" class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-bold hover:bg-slate-200">－</button>
-        <button id="zoomResetBtn" class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-semibold hover:bg-slate-200">รีเซ็ต</button>
-        <button id="zoomInBtn" class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-bold hover:bg-slate-200">＋</button>
-        <button id="closeImageModalBtn" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 ml-2 flex items-center justify-center text-xs font-bold">✕</button>
+  <!-- MODAL: ORIGINAL IMAGE VIEWER (PINCH-TO-ZOOM / NATIVE GALLERY FEEL) -->
+  <div id="imageViewerModal" class="fixed inset-0 z-50 bg-slate-950 flex flex-col hidden select-none">
+    <!-- Header with iOS Back Button (Left), Title (Center), Close (Right) -->
+    <div class="flex items-center justify-between px-3.5 py-3 bg-slate-900/95 border-b border-slate-800 z-10 backdrop-blur-md">
+      <!-- iOS Back Button -->
+      <button id="imageViewerIosBackBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-slate-800 hover:bg-slate-700 active:scale-95 text-white text-xs font-bold transition-all shadow-sm">
+        <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <span>ย้อนกลับ</span>
+      </button>
+
+      <div class="text-center px-2 min-w-0">
+        <h3 class="text-xs font-bold text-white truncate">รูปถ่ายตารางปฏิบัติงาน</h3>
+        <p class="text-[10px] text-slate-400 truncate">พฤศจิกายน 2569</p>
       </div>
+
+      <!-- Close X Button -->
+      <button id="closeImageModalBtn" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center text-xs font-bold transition-all" title="ปิด">
+        ✕
+      </button>
     </div>
-    <div id="imagePanContainer" class="flex-1 overflow-hidden flex items-center justify-center p-2 panzoom-viewport bg-slate-900">
-      <img id="scheduleImage" src="schedule_nov_2569.jpg" alt="ตารางปฏิบัติงาน เดือนพฤศจิกายน พ.ศ.2569" class="max-w-full max-h-full object-contain transition-transform duration-75 origin-center pointer-events-none rounded-lg shadow-xl">
+
+    <!-- Pinch-to-zoom & Pan Container -->
+    <div id="imagePanContainer" class="flex-1 overflow-hidden flex items-center justify-center p-2 panzoom-viewport bg-slate-950 relative touch-none">
+      <img id="scheduleImage" src="schedule_nov_2569.jpg" alt="ตารางปฏิบัติงาน เดือนพฤศจิกายน พ.ศ.2569" class="zoomable-content max-w-full max-h-full object-contain origin-center select-none pointer-events-none rounded-lg shadow-2xl">
     </div>
-    <div class="py-2 text-center text-xs text-slate-300 bg-slate-950">
-      ใช้นิ้วหรือเมาส์ลากเลื่อนดูรายชื่อและจุดทำงาน
+
+    <!-- Gesture Hint Bar -->
+    <div class="py-2.5 px-4 text-center text-xs text-slate-400 bg-slate-900 border-t border-slate-800 flex items-center justify-center space-x-2">
+      <svg class="w-3.5 h-3.5 text-sky-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/>
+      </svg>
+      <span>ใช้นิ้วถ่างซูมเข้า-ออก หรือแตะ 2 ครั้งเร็วๆ เพื่อซูมขยาย</span>
     </div>
   </div>
 
-  <!-- MODAL: EXCEL VIEWER MODAL -->
-  <div id="excelViewerModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex flex-col hidden">
-    <div class="flex items-center justify-between px-4 py-3 bg-white border-b border-slate-200">
-      <div>
-        <h3 class="text-sm font-bold text-slate-900">ข้อมูลตารางเวรจากไฟล์ Excel ต้นฉบับ</h3>
-        <p class="text-xs text-slate-500">ตารางเวรเดือนพฤศจิกายน 2569</p>
+  <!-- MODAL: EXCEL VIEWER MODAL (OFFLINE & ZOOMABLE) -->
+  <div id="excelViewerModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex flex-col hidden">
+    <!-- Header with iOS Back Button (Left), Title (Center), Close (Right) -->
+    <div class="flex items-center justify-between px-3.5 py-3 bg-white border-b border-slate-200 z-10 shadow-sm">
+      <button id="excelViewerIosBackBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-800 text-xs font-bold transition-all">
+        <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <span>ย้อนกลับ</span>
+      </button>
+
+      <div class="text-center px-2 min-w-0">
+        <h3 class="text-xs font-bold text-slate-900 truncate">ไฟล์ Excel ตารางเวรต้นฉบับ</h3>
+        <p class="text-[10px] text-slate-500 truncate">เวรนอกเวลา พฤศจิกายน 2569</p>
       </div>
-      <button id="closeExcelModalBtn" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold">✕</button>
+
+      <button id="closeExcelModalBtn" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 flex items-center justify-center text-xs font-bold transition-all">
+        ✕
+      </button>
     </div>
-    <div class="p-3 bg-slate-50 border-b border-slate-200">
-      <input type="text" id="excelSearchInput" value="จุรีพร" placeholder="ค้นหาชื่อ เช่น จุรีพร, เอ็ม..." class="w-full bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-coral-500">
+
+    <!-- Search & Quick Navigation Bar -->
+    <div class="p-2.5 bg-slate-50 border-b border-slate-200 flex items-center space-x-2">
+      <div class="relative flex-1">
+        <input type="text" id="excelSearchInput" value="" placeholder="ค้นหาชื่อ เช่น จุรีพร, ตะวัน, กัญญ์ภิรมย์..." class="w-full bg-white border border-slate-300 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-coral-500">
+        <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+      </div>
+      <button id="excelViewModeBtn" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100 whitespace-nowrap">
+        ดูทั้งหมด
+      </button>
     </div>
-    <div class="flex-1 overflow-auto p-2 bg-white">
-      <table class="w-full text-left border-collapse">
-        <tbody id="excelTableBody">
+
+    <!-- Spreadsheet Scroll Container -->
+    <div id="excelScrollContainer" class="flex-1 overflow-auto p-2 bg-slate-100">
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto min-w-[720px]">
+        <table class="w-full text-left border-collapse text-xs">
+          <tbody id="excelTableBody">
+            <!-- Injected via JavaScript from window.RAW_SOURCE_CSV -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="py-2 px-3 text-center text-[11px] text-slate-500 bg-white border-t border-slate-200">
+      เลื่อนซ้าย-ขวา เพื่อดูเวรของแต่ละวัน (1 - 30 พ.ย.)
+    </div>
+  </div>
+
+  <!-- MODAL: USER SWITCH & NAME MATCHING MODAL (DUAL TAB) -->
+  <div id="userModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity">
+    <div class="bg-white border border-slate-200 w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl max-h-[90vh] flex flex-col">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3 shrink-0">
+        <div>
+          <h3 class="text-base font-extrabold text-slate-900">จัดการผู้ใช้งาน & จับคู่ชื่อ</h3>
+          <p class="text-xs text-slate-500">ฝ่ายการเงิน รพ.เชียงรายประชานุเคราะห์</p>
+        </div>
+        <button id="closeUserModalBtn" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold transition-colors">
+          ✕
+        </button>
+      </div>
+
+      <!-- Tab Switcher -->
+      <div class="flex rounded-xl bg-slate-100 p-1 mb-4 shrink-0">
+        <button id="tabSwitchUserBtn" class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-slate-900 shadow-sm">
+          ⇄ สลับดูตารางงาน
+        </button>
+        <button id="tabNameMappingBtn" class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900">
+          ⚙ จับคู่ชื่อเล่น-ชื่อจริง
+        </button>
+      </div>
+
+      <!-- TAB 1 CONTENT: SWITCH USER -->
+      <div id="tabContentSwitchUser" class="space-y-3 overflow-y-auto flex-1 pr-1">
+        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
+          <div class="text-[11px] text-slate-400 font-semibold mb-1">ผู้ใช้ปัจจุบันที่กำลังแสดงผล:</div>
+          <div class="flex items-center justify-between">
+            <div>
+              <span id="currentUserDisplayLabel" class="text-sm font-extrabold text-slate-900">จุรีพร ผาบสุวรรณ์ (เอ็ม)</span>
+              <span id="currentUserPairedBadge" class="ml-1.5 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold">ยืนยันแล้ว</span>
+            </div>
+            <button id="setAsMyProfileBtn" class="px-2.5 py-1 rounded-lg bg-coral-500 text-white font-bold text-[11px] shadow-sm hover:bg-coral-600">
+              ⭐ ตั้งเป็นของฉัน
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Sub-Tabs -->
+        <div class="flex items-center justify-between pt-1">
+          <div class="text-xs font-bold text-slate-700">เลือกดูของเจ้าหน้าที่ท่านอื่น:</div>
+          <div class="flex space-x-1 text-[11px]">
+            <button id="filterNicknamesBtn" class="px-2 py-0.5 rounded-md font-bold bg-slate-200 text-slate-800">ชื่อเล่น (15 คน)</button>
+            <button id="filterRealNamesBtn" class="px-2 py-0.5 rounded-md font-semibold text-slate-500 hover:text-slate-800">ชื่อจริง (17 คน)</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Staff Cards Grid -->
+        <div id="staffListGrid" class="grid grid-cols-2 gap-2 pb-2">
           <!-- Injected via JavaScript -->
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- MODAL: USER SWITCH MODAL -->
-  <div id="userModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-    <div class="bg-white border border-slate-200 w-full max-w-sm rounded-3xl p-5 shadow-2xl">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
-        <h3 class="text-sm font-bold text-slate-900">สลับผู้ใช้งาน</h3>
-        <button id="closeUserModalBtn" class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center text-xs font-bold">✕</button>
-      </div>
-      <div class="mb-4">
-        <label class="block text-xs font-semibold text-slate-600 mb-1.5">พิมพ์ชื่อเล่นของคุณ:</label>
-        <div class="flex space-x-2">
-          <input type="text" id="customNicknameInput" placeholder="เช่น เอ็ม" class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-coral-500">
-          <button id="saveUserBtn" class="px-4 py-2 rounded-xl bg-coral-500 hover:bg-coral-600 font-bold text-xs text-white">บันทึก</button>
         </div>
       </div>
-      <div class="text-xs font-semibold text-slate-400 mb-2">หรือเลือกจากรายชื่อ:</div>
-      <div id="staffListGrid" class="grid grid-cols-2 gap-2 max-h-56 overflow-y-auto pr-1">
-        <!-- Injected via JavaScript -->
+
+      <!-- TAB 2 CONTENT: NAME MATCHING SETUP (NO MORE RANDOM GUESSES!) -->
+      <div id="tabContentNameMapping" class="space-y-3 overflow-y-auto flex-1 pr-1 hidden">
+        <div class="p-3 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs">
+          <strong>คำชี้แจง:</strong> เนื่องจากตารางเวลาปกติใช้ <em>ชื่อเล่น</em> (15 คน) ส่วนตารางเวรใน Excel ใช้ <em>ชื่อจริง</em> (17 คน) 
+          คุณสามารถเลือกจับคู่ชื่อของแต่ละคนเพื่อรวมตารางทำงานให้สมบูรณ์ได้ที่นี่
+        </div>
+
+        <div id="nameMappingTableContainer" class="space-y-2.5">
+          <!-- 15 Nicknames with Select dropdowns injected via JS -->
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+          <button id="resetMappingBtn" class="text-xs font-semibold text-slate-500 hover:text-slate-800">
+            รีเซ็ตค่าเริ่มต้น
+          </button>
+          <button id="saveMappingBtn" class="px-4 py-2 rounded-xl bg-coral-500 hover:bg-coral-600 text-white font-bold text-xs shadow-md shadow-coral-500/20 active:scale-95 transition-all">
+            💾 บันทึกการจับคู่ชื่อ
+          </button>
+        </div>
       </div>
+
     </div>
   </div>
 

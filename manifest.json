@@ -1,7 +1,7 @@
 {
-  "name": "CRH FS - ระบบเวรและภารกิจฝ่ายการเงิน",
-  "short_name": "CRH FS",
-  "description": "ระบบบริหารเวรและภารกิจประจำวัน ฝ่ายการเงิน รพ.เชียงรายประชานุเคราะห์",
+  "name": "CRH-FS (Finance Schedule) - ฝ่ายการเงิน รพ.เชียงรายฯ",
+  "short_name": "CRH-FS",
+  "description": "CRH-FS (Finance Schedule) ระบบบริหารตารางเวรและการปฏิบัติงาน ฝ่ายการเงิน รพ.เชียงรายประชานุเคราะห์",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#090d16",
