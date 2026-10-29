@@ -3173,7 +3173,7 @@ window.getResolvedStaff = function(identifier) {
 };
 
 // ฟังก์ชันคำนวณการแทนเวร "แทน บ่ายดึก" เชื่อมโยงระหว่างคนที่มีเวร IPD ดึก/บ่าย กับคนที่ขึ้นแทน
-window.getSubstitutionInfo = function(date, viewingNickname) {
+window.getSubstitutionInfo = function(date, viewingNickname, viewingRealName) {
   const dayStations = window.ALL_DAILY_STATIONS[date];
   if (!dayStations) return null;
 
@@ -3221,9 +3221,22 @@ window.getSubstitutionInfo = function(date, viewingNickname) {
     targetLocation = getStationLocation(targetStation);
   }
 
-  // 5. ตรวจสอบบทบาทของคนที่กำลังเปิดดูอยู่ (viewingNickname)
-  const isViewerSubstitute = (viewingNickname && viewingNickname === substituteNickname);
-  const isViewerNightShift = (viewingNickname && (viewingNickname === nightShiftNickname || viewingNickname === nightShiftRealName));
+  // 5. ตรวจสอบบทบาทของคนที่กำลังเปิดดูอยู่ (viewingNickname หรือ viewingRealName)
+  const norm = str => (str || '').replace(/\s+/g, ' ').trim().toLowerCase();
+  const vNick = norm(viewingNickname);
+  const vReal = norm(viewingRealName);
+  const sNick = norm(substituteNickname);
+  const nReal = norm(nightShiftRealName);
+  const nNick = norm(nightShiftNickname);
+
+  const isViewerSubstitute = (
+    (vNick && (vNick === sNick || (userMap[vNick] && norm(userMap[vNick]) === sNick))) ||
+    (vReal && userMap[substituteNickname] && norm(userMap[substituteNickname]) === vReal)
+  );
+  const isViewerNightShift = (
+    (vNick && (vNick === nNick || (userMap[vNick] && norm(userMap[vNick]) === nReal))) ||
+    (vReal && (vReal === nReal || (nightShiftNickname && norm(userMap[nightShiftNickname]) === vReal)))
+  );
 
   return {
     date: date,
@@ -3278,7 +3291,7 @@ window.buildMonthSchedule = function(selectedIdentifier) {
     const userNote = customNotes[date] || null;
 
     // ข้อมูลเชื่อมโยงเวรแทนบ่ายดึก
-    const subInfo = window.getSubstitutionInfo(date, nickname);
+    const subInfo = window.getSubstitutionInfo(date, nickname, realName);
 
     list.push({
       date: date,

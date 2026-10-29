@@ -594,7 +594,7 @@
         `;
         el.todayLocationDetail.innerHTML = `
           <div class="text-xs text-emerald-800 font-semibold mt-1">
-            ${day.regularDuty.location} • มี${subName} ขึ้นแทนช่วง 08:00 - 16:00 น.
+            ${day.regularDuty.location} • มีคนปฏิบัติแทน : ${subName} (เวรแทนบ่ายดึก)
           </div>
         `;
       } else {
@@ -683,7 +683,7 @@
         } else if (sub && sub.isViewerNightShift) {
           const subName = sub.substituteNickname ? `คุณ${sub.substituteNickname}` : 'มีเจ้าหน้าที่';
           el.tomorrowRegularStation.innerHTML = `${day.regularDuty.title} <span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-lg border border-emerald-300">(${subName} แทน)</span>`;
-          el.tomorrowRegularLocation.textContent = `${day.regularDuty.location} • มี${subName} ขึ้นแทนช่วง 08:00 - 16:00 น.`;
+          el.tomorrowRegularLocation.textContent = `${day.regularDuty.location} • มีคนปฏิบัติแทน : ${subName} (เวรแทนบ่ายดึก)`;
         } else {
           el.tomorrowRegularStation.textContent = day.regularDuty.title;
           el.tomorrowRegularLocation.textContent = day.regularDuty.location;
@@ -1496,29 +1496,17 @@
         const targetLoc = sub.targetLocation || 'กลุ่มงานการเงิน';
         const replacedName = sub.nightShiftNickname ? `คุณ${sub.nightShiftNickname}` : (sub.nightShiftRealName ? `คุณ${sub.nightShiftRealName}` : '');
         subNoticeHtml = `
-          <div class="mt-2.5 p-3 rounded-2xl bg-sky-50 border border-sky-200 text-sky-950 text-xs">
-            <div class="font-extrabold flex items-center space-x-1.5 text-sky-900">
-              <span class="w-2 h-2 rounded-full bg-sky-500"></span>
-              <span>ภารกิจแทนบ่ายดึก (เวลา 08:00 - 16:00 น.)</span>
-            </div>
-            <div class="mt-1 text-[11px] leading-relaxed">
-              ➔ <strong>จุดที่ต้องไปเข้า:</strong> <span class="font-bold text-sky-800 text-xs underline">${target}</span> (${targetLoc})<br>
-              ➔ <strong>ไปปฏิบัติงานแทน:</strong> <strong>${replacedName}</strong> (เนื่องจากติดเวร IPD ดึก/บ่าย)
-            </div>
+          <div class="mt-2.5 p-3 rounded-2xl bg-sky-50 border border-sky-200 text-sky-950 text-xs font-bold flex items-center space-x-2">
+            <span class="w-2 h-2 rounded-full bg-sky-500 shrink-0"></span>
+            <span>ปฏิบัติงานแทน${replacedName ? ` : <strong class="text-sky-800 font-extrabold">${replacedName}</strong>` : ''} ➔ ไปเข้า <strong class="text-sky-900 font-black">${target}</strong></span>
           </div>
         `;
       } else if (sub && sub.isViewerNightShift) {
         const subName = sub.substituteNickname ? `คุณ${sub.substituteNickname}` : 'มีเจ้าหน้าที่';
         subNoticeHtml = `
-          <div class="mt-2.5 p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-950 text-xs">
-            <div class="font-extrabold flex items-center space-x-1.5 text-emerald-900">
-              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-              <span>มีคนปฏิบัติงานแทนเวลาปกติ (08:00 - 16:00 น.)</span>
-            </div>
-            <div class="mt-1 text-[11px] leading-relaxed">
-              ➔ <strong>ผู้ปฏิบัติงานแทนคุณ:</strong> <strong class="text-emerald-800">${subName}</strong> (เวรแทนบ่ายดึก)<br>
-              ➔ <strong>หมายเหตุ:</strong> คุณได้พักผ่อนเวลาปกติ เนื่องจากมีเวร IPD ดึก (00:00 - 08:00) / IPD บ่าย (16:00 - 24:00)
-            </div>
+          <div class="mt-2.5 p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-950 text-xs font-bold flex items-center space-x-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+            <span>มีคนปฏิบัติแทน : <strong class="text-emerald-800 font-extrabold">${subName}</strong> (เวรแทนบ่ายดึก)</span>
           </div>
         `;
       }
