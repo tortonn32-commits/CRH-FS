@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a101d"/>
+      <stop offset="50%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+
+    <!-- Border Glow Gradient -->
+    <linearGradient id="borderGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="50%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+
+    <!-- Core Shield Gradient -->
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <!-- Neon Emerald Gradient -->
+    <linearGradient id="neonGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+
+    <!-- Gold Accent -->
+    <linearGradient id="goldAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+
+    <!-- Glow Filter -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- App Icon Base Squircle -->
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#bgGrad)"/>
+  
+  <!-- Outer Neon Border Rim -->
+  <rect x="20" y="20" width="472" height="472" rx="108" fill="none" stroke="url(#borderGlow)" stroke-width="4" stroke-opacity="0.8"/>
+  <rect x="26" y="26" width="460" height="460" rx="102" fill="none" stroke="url(#borderGlow)" stroke-width="1.5" stroke-opacity="0.3"/>
+
+  <!-- High-Tech Hexagonal Shield Background -->
+  <g filter="url(#softShadow)">
+    <path d="M256 64 L416 136 V288 C416 376 256 448 256 448 C256 448 96 376 96 288 V136 Z" 
+          fill="url(#shieldGrad)" stroke="url(#borderGlow)" stroke-width="3" stroke-opacity="0.6"/>
+  </g>
+
+  <!-- Medical Cross + Financial Diamond Emblem -->
+  <!-- Glowing Medical Cross Silhouette -->
+  <g filter="url(#glow)">
+    <!-- Vertical Cross Bar -->
+    <rect x="236" y="130" width="40" height="150" rx="10" fill="url(#neonGreen)"/>
+    <!-- Horizontal Cross Bar -->
+    <rect x="181" y="185" width="150" height="40" rx="10" fill="url(#neonGreen)"/>
+  </g>
+
+  <!-- Inner High-Contrast Cross -->
+  <rect x="240" y="134" width="32" height="142" rx="8" fill="#ffffff" fill-opacity="0.95"/>
+  <rect x="185" y="189" width="142" height="32" rx="8" fill="#ffffff" fill-opacity="0.95"/>
+
+  <!-- Center Heartbeat / Shift Pulse Wave -->
+  <path d="M190 205 L225 205 L242 165 L260 240 L276 195 L292 212 L322 205" 
+        fill="none" stroke="#0f172a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Typography: CRH FS Badge -->
+  <!-- "CRH" Pill Header -->
+  <rect x="176" y="300" width="160" height="34" rx="17" fill="#030712" stroke="url(#borderGlow)" stroke-width="1.5"/>
+  <text x="256" y="323" font-family="'Inter', 'Prompt', sans-serif" font-size="18" font-weight="800" fill="#38bdf8" text-anchor="middle" letter-spacing="4">CRH</text>
+
+  <!-- "FS" Big Bold Neon Emblem -->
+  <text x="256" y="396" font-family="'Inter', 'Prompt', sans-serif" font-size="64" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="2">
+    FS
+  </text>
+  <text x="256" y="396" font-family="'Inter', 'Prompt', sans-serif" font-size="64" font-weight="900" fill="none" stroke="url(#neonGreen)" stroke-width="2" text-anchor="middle" letter-spacing="2" filter="url(#glow)"/>
+
+  <!-- Subtitle Tag: FINANCE & SHIFT -->
+  <text x="256" y="424" font-family="'Inter', 'Prompt', sans-serif" font-size="11" font-weight="700" fill="#94a3b8" text-anchor="middle" letter-spacing="3">FINANCE &amp; SHIFT</text>
+
+  <!-- Corner Status Accent Dots -->
+  <circle cx="68" cy="68" r="6" fill="#10b981" filter="url(#glow)"/>
+  <circle cx="444" cy="68" r="6" fill="#38bdf8" filter="url(#glow)"/>
+</svg>
