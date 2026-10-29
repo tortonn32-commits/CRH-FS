@@ -32,8 +32,9 @@
     lastTapTime: 0,
 
     // Excel Table State
+    excelMode: 'summary', // 'summary' | 'detailed'
     excelSearchKeyword: '',
-    excelOnlyWithDuty: false
+    excelHideEmptyRows: true
   };
 
   // DOM Elements Cache
@@ -124,9 +125,17 @@
     el.openExcelModalBtn = document.getElementById('openExcelModalBtn');
     el.closeExcelModalBtn = document.getElementById('closeExcelModalBtn');
     el.excelViewerIosBackBtn = document.getElementById('excelViewerIosBackBtn');
+    el.excelMainTable = document.getElementById('excelMainTable');
+    el.excelTableHead = document.getElementById('excelTableHead');
     el.excelTableBody = document.getElementById('excelTableBody');
     el.excelSearchInput = document.getElementById('excelSearchInput');
-    el.excelViewModeBtn = document.getElementById('excelViewModeBtn');
+    el.excelClearSearchBtn = document.getElementById('excelClearSearchBtn');
+    el.excelModeSummaryBtn = document.getElementById('excelModeSummaryBtn');
+    el.excelModeDetailedBtn = document.getElementById('excelModeDetailedBtn');
+    el.excelQuickMyProfileBtn = document.getElementById('excelQuickMyProfileBtn');
+    el.excelResultCountLabel = document.getElementById('excelResultCountLabel');
+    el.excelDetailedFilterContainer = document.getElementById('excelDetailedFilterContainer');
+    el.excelHideEmptyRowsCheckbox = document.getElementById('excelHideEmptyRowsCheckbox');
 
     // User & Name Mapping Modal
     el.userModal = document.getElementById('userModal');
@@ -248,19 +257,75 @@
     if (el.excelViewerIosBackBtn) {
       el.excelViewerIosBackBtn.addEventListener('click', () => closeModalWithHistory(el.excelViewerModal));
     }
-    if (el.excelSearchInput) {
-      el.excelSearchInput.addEventListener('input', (e) => {
-        state.excelSearchKeyword = e.target.value.trim().toLowerCase();
+
+    if (el.excelModeSummaryBtn) {
+      el.excelModeSummaryBtn.addEventListener('click', () => setExcelMode('summary'));
+    }
+    if (el.excelModeDetailedBtn) {
+      el.excelModeDetailedBtn.addEventListener('click', () => setExcelMode('detailed'));
+    }
+
+    if (el.excelQuickMyProfileBtn) {
+      el.excelQuickMyProfileBtn.addEventListener('click', () => {
+        const staff = window.getResolvedStaff(state.currentUser);
+        const myName = staff.realName || staff.displayName || '';
+        const searchInputVal = (el.excelSearchInput ? el.excelSearchInput.value.trim().toLowerCase() : '');
+
+        if (searchInputVal && myName.toLowerCase().includes(searchInputVal)) {
+          // Toggle off
+          state.excelSearchKeyword = '';
+          if (el.excelSearchInput) el.excelSearchInput.value = '';
+          if (el.excelClearSearchBtn) {
+            el.excelClearSearchBtn.classList.add('hidden');
+            el.excelClearSearchBtn.classList.remove('flex');
+          }
+          el.excelQuickMyProfileBtn.className = 'px-2.5 py-1.5 rounded-xl bg-coral-50 hover:bg-coral-100 text-coral-700 border border-coral-200 text-[11px] font-bold flex items-center space-x-1 shrink-0 active:scale-95 transition-all';
+        } else {
+          // Toggle on
+          state.excelSearchKeyword = myName.toLowerCase();
+          if (el.excelSearchInput) el.excelSearchInput.value = myName;
+          if (el.excelClearSearchBtn) {
+            el.excelClearSearchBtn.classList.remove('hidden');
+            el.excelClearSearchBtn.classList.add('flex');
+          }
+          el.excelQuickMyProfileBtn.className = 'px-2.5 py-1.5 rounded-xl bg-coral-500 hover:bg-coral-600 text-white border border-coral-600 text-[11px] font-bold flex items-center space-x-1 shrink-0 active:scale-95 transition-all';
+        }
         renderExcelTable();
       });
     }
-    if (el.excelViewModeBtn) {
-      el.excelViewModeBtn.addEventListener('click', () => {
-        state.excelOnlyWithDuty = !state.excelOnlyWithDuty;
-        el.excelViewModeBtn.textContent = state.excelOnlyWithDuty ? 'เฉพาะมีเวร' : 'ดูทั้งหมด';
-        el.excelViewModeBtn.className = state.excelOnlyWithDuty 
-          ? 'px-3 py-1.5 rounded-xl bg-coral-500 text-white text-xs font-bold whitespace-nowrap'
-          : 'px-3 py-1.5 rounded-xl bg-white border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100 whitespace-nowrap';
+
+    if (el.excelSearchInput) {
+      el.excelSearchInput.addEventListener('input', (e) => {
+        state.excelSearchKeyword = e.target.value.trim().toLowerCase();
+        if (el.excelClearSearchBtn) {
+          if (state.excelSearchKeyword) {
+            el.excelClearSearchBtn.classList.remove('hidden');
+            el.excelClearSearchBtn.classList.add('flex');
+          } else {
+            el.excelClearSearchBtn.classList.add('hidden');
+            el.excelClearSearchBtn.classList.remove('flex');
+          }
+        }
+        renderExcelTable();
+      });
+    }
+
+    if (el.excelClearSearchBtn) {
+      el.excelClearSearchBtn.addEventListener('click', () => {
+        state.excelSearchKeyword = '';
+        if (el.excelSearchInput) el.excelSearchInput.value = '';
+        el.excelClearSearchBtn.classList.add('hidden');
+        el.excelClearSearchBtn.classList.remove('flex');
+        if (el.excelQuickMyProfileBtn) {
+          el.excelQuickMyProfileBtn.className = 'px-2.5 py-1.5 rounded-xl bg-coral-50 hover:bg-coral-100 text-coral-700 border border-coral-200 text-[11px] font-bold flex items-center space-x-1 shrink-0 active:scale-95 transition-all';
+        }
+        renderExcelTable();
+      });
+    }
+
+    if (el.excelHideEmptyRowsCheckbox) {
+      el.excelHideEmptyRowsCheckbox.addEventListener('change', (e) => {
+        state.excelHideEmptyRows = e.target.checked;
         renderExcelTable();
       });
     }
@@ -495,8 +560,47 @@
 
     // Regular Daytime Duty (เวลาปกติ)
     if (day.regularDuty) {
-      el.todayStationTitle.textContent = day.regularDuty.title;
-      el.todayLocationDetail.textContent = day.regularDuty.location;
+      const sub = day.substitutionInfo;
+      if (sub && sub.isViewerSubstitute) {
+        // กรณีผู้ใช้มีเวร "แทน บ่ายดึก" (เช่น ปอ วันที่ 5) -> บอกว่าต้องไปแทนใคร ที่ห้องไหน
+        const target = sub.targetStation || 'จุดเข้าเวร';
+        const targetLoc = sub.targetLocation || 'กลุ่มงานการเงิน';
+        const replacedName = sub.nightShiftNickname ? `คุณ${sub.nightShiftNickname}` : (sub.nightShiftRealName ? `คุณ${sub.nightShiftRealName}` : '');
+
+        el.todayStationTitle.innerHTML = `
+          <div class="flex flex-wrap items-baseline gap-2">
+            <span>แทน บ่ายดึก</span>
+            <span class="text-sm font-bold text-sky-700 bg-sky-100 px-2.5 py-0.5 rounded-xl border border-sky-300">
+              ➔ ไปเข้า: ${target}
+            </span>
+          </div>
+        `;
+        el.todayLocationDetail.innerHTML = `
+          <div class="text-xs text-sky-800 font-semibold mt-1">
+            📍 ${targetLoc} ${replacedName ? `• (ไปแทน${replacedName})` : ''}
+          </div>
+        `;
+      } else if (sub && sub.isViewerNightShift) {
+        // กรณีผู้ใช้อยู่เวรดึก/บ่าย (เช่น เอ็ม วันที่ 5) -> แจ้งว่ามีคนมาแทนที่จุดปกติ
+        const subName = sub.substituteNickname ? `คุณ${sub.substituteNickname}` : 'มีเจ้าหน้าที่';
+
+        el.todayStationTitle.innerHTML = `
+          <div class="flex flex-wrap items-baseline gap-2">
+            <span>${day.regularDuty.title}</span>
+            <span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-xl border border-emerald-300">
+              🔄 ${subName} แทนบ่ายดึก
+            </span>
+          </div>
+        `;
+        el.todayLocationDetail.innerHTML = `
+          <div class="text-xs text-emerald-800 font-semibold mt-1">
+            ${day.regularDuty.location} • มี${subName} ขึ้นแทนช่วง 08:00 - 16:00 น.
+          </div>
+        `;
+      } else {
+        el.todayStationTitle.textContent = day.regularDuty.title;
+        el.todayLocationDetail.textContent = day.regularDuty.location;
+      }
     } else if (day.isDayOff) {
       el.todayStationTitle.textContent = 'วันหยุด';
       el.todayLocationDetail.textContent = 'พักประจำสัปดาห์';
@@ -570,8 +674,20 @@
 
     if (el.tomorrowRegularStation) {
       if (day.regularDuty) {
-        el.tomorrowRegularStation.textContent = day.regularDuty.title;
-        el.tomorrowRegularLocation.textContent = day.regularDuty.location;
+        const sub = day.substitutionInfo;
+        if (sub && sub.isViewerSubstitute) {
+          const target = sub.targetStation || 'จุดเข้าเวร';
+          const replacedName = sub.nightShiftNickname ? `คุณ${sub.nightShiftNickname}` : '';
+          el.tomorrowRegularStation.innerHTML = `แทน บ่ายดึก <span class="text-xs font-bold text-sky-700 bg-sky-100 px-2 py-0.5 rounded-lg border border-sky-300">➔ ${target}</span>`;
+          el.tomorrowRegularLocation.textContent = `${sub.targetLocation || 'กลุ่มงานการเงิน'} ${replacedName ? `• (แทน${replacedName})` : ''}`;
+        } else if (sub && sub.isViewerNightShift) {
+          const subName = sub.substituteNickname ? `คุณ${sub.substituteNickname}` : 'มีเจ้าหน้าที่';
+          el.tomorrowRegularStation.innerHTML = `${day.regularDuty.title} <span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-lg border border-emerald-300">(${subName} แทน)</span>`;
+          el.tomorrowRegularLocation.textContent = `${day.regularDuty.location} • มี${subName} ขึ้นแทนช่วง 08:00 - 16:00 น.`;
+        } else {
+          el.tomorrowRegularStation.textContent = day.regularDuty.title;
+          el.tomorrowRegularLocation.textContent = day.regularDuty.location;
+        }
       } else if (day.isDayOff) {
         el.tomorrowRegularStation.textContent = 'วันหยุด';
         el.tomorrowRegularLocation.textContent = 'พักประจำสัปดาห์';
@@ -628,19 +744,30 @@
         subText = `<div class="text-[9px] text-slate-400">พักประจำสัปดาห์</div>`;
       } else {
         const regular = day.regularDuty ? day.regularDuty.title : '-';
-        mainText = `<div class="text-xs font-bold text-slate-900 leading-tight">${regular}</div>`;
+        const sub = day.substitutionInfo;
 
-        if (day.otDuties && day.otDuties.length > 0) {
-          const shiftNames = day.otDuties.map(ot => {
-            if (ot.name.includes("ดึก")) return "IPD ดึก";
-            if (ot.name.includes("บ่าย")) return "IPD บ่าย";
-            if (ot.name.includes("เช้า")) return "IPD เช้า";
-            return ot.name;
-          }).join('+');
-
-          subText = `<div class="text-[9px] font-bold text-amber-700 bg-amber-50 rounded px-1 py-0.5 mt-1 border border-amber-200 truncate">เวร ${shiftNames}</div>`;
+        if (sub && sub.isViewerSubstitute) {
+          const target = sub.targetStation || 'บ่ายดึก';
+          mainText = `<div class="text-xs font-black text-sky-700 leading-tight">แทน: ${target}</div>`;
+          const replacedName = sub.nightShiftNickname ? `แทน${sub.nightShiftNickname}` : '';
+          subText = `<div class="text-[9px] font-bold text-sky-700 bg-sky-50 rounded px-1 py-0.5 mt-1 border border-sky-200 truncate">📍 ${replacedName || 'แทนบ่ายดึก'}</div>`;
+        } else if (sub && sub.isViewerNightShift) {
+          mainText = `<div class="text-xs font-bold text-slate-900 leading-tight">${regular}</div>`;
+          const subName = sub.substituteNickname ? `${sub.substituteNickname} แทน` : 'มีคนแทน';
+          subText = `<div class="text-[9px] font-bold text-emerald-700 bg-emerald-50 rounded px-1 py-0.5 mt-1 border border-emerald-200 truncate">🔄 ${subName}</div>`;
         } else {
-          subText = `<div class="text-[9px] text-slate-400 mt-1">เวลาปกติ</div>`;
+          mainText = `<div class="text-xs font-bold text-slate-900 leading-tight">${regular}</div>`;
+          if (day.otDuties && day.otDuties.length > 0) {
+            const shiftNames = day.otDuties.map(ot => {
+              if (ot.name.includes("ดึก")) return "IPD ดึก";
+              if (ot.name.includes("บ่าย")) return "IPD บ่าย";
+              if (ot.name.includes("เช้า")) return "IPD เช้า";
+              return ot.name;
+            }).join('+');
+            subText = `<div class="text-[9px] font-bold text-amber-700 bg-amber-50 rounded px-1 py-0.5 mt-1 border border-amber-200 truncate">เวร ${shiftNames}</div>`;
+          } else {
+            subText = `<div class="text-[9px] text-slate-400 mt-1">เวลาปกติ</div>`;
+          }
         }
       }
 
@@ -777,10 +904,200 @@
   // ==========================================
   // EXCEL TABLE RENDER (100% OFFLINE VIA data.js)
   // ==========================================
+  function setExcelMode(mode) {
+    state.excelMode = mode;
+    if (mode === 'summary') {
+      if (el.excelModeSummaryBtn) {
+        el.excelModeSummaryBtn.className = 'px-3 py-1.5 rounded-lg transition-all bg-white text-slate-900 shadow-sm font-bold';
+      }
+      if (el.excelModeDetailedBtn) {
+        el.excelModeDetailedBtn.className = 'px-3 py-1.5 rounded-lg transition-all text-slate-600 hover:text-slate-900 font-semibold';
+      }
+      if (el.excelDetailedFilterContainer) {
+        el.excelDetailedFilterContainer.classList.add('hidden');
+        el.excelDetailedFilterContainer.classList.remove('flex');
+      }
+    } else {
+      if (el.excelModeDetailedBtn) {
+        el.excelModeDetailedBtn.className = 'px-3 py-1.5 rounded-lg transition-all bg-white text-slate-900 shadow-sm font-bold';
+      }
+      if (el.excelModeSummaryBtn) {
+        el.excelModeSummaryBtn.className = 'px-3 py-1.5 rounded-lg transition-all text-slate-600 hover:text-slate-900 font-semibold';
+      }
+      if (el.excelDetailedFilterContainer) {
+        el.excelDetailedFilterContainer.classList.remove('hidden');
+        el.excelDetailedFilterContainer.classList.add('flex');
+      }
+    }
+    renderExcelTable();
+  }
+
+  function getDutyBadge(category) {
+    if (!category) return { label: 'เวร', cls: 'bg-slate-100 text-slate-700 border-slate-200' };
+    const cat = category.trim();
+    if (cat.includes('ดึก')) {
+      return { label: 'ดึก', cls: 'bg-purple-100 text-purple-900 border-purple-300' };
+    }
+    if (cat.includes('เซ็นทรัล')) {
+      return { label: 'เซ็นทรัล', cls: 'bg-emerald-100 text-emerald-900 border-emerald-300' };
+    }
+    if (cat.includes('19')) {
+      return { label: 'บ.19', cls: 'bg-indigo-100 text-indigo-900 border-indigo-300' };
+    }
+    if (cat.includes('เสริมเบอร์ 9/1') || cat.includes('เสริม 9/1')) {
+      return { label: 'เสริม 9/1', cls: 'bg-rose-100 text-rose-900 border-rose-300' };
+    }
+    if (cat.includes('เสริมเบอร์ 9/2') || cat.includes('เสริม 9/2')) {
+      return { label: 'เสริม 9/2', cls: 'bg-rose-100 text-rose-900 border-rose-300' };
+    }
+    if (cat.includes('เสริมเบอร์ 9/3') || cat.includes('เสริม 9/3')) {
+      return { label: 'เสริม 9/3', cls: 'bg-rose-100 text-rose-900 border-rose-300' };
+    }
+    if (cat.includes('เช้าเบอร์ 9 เสริม') || cat.includes('เช้าเสริม 9')) {
+      return { label: 'เช้าเสริม 9', cls: 'bg-cyan-100 text-cyan-900 border-cyan-300' };
+    }
+    if (cat.includes('เช้าเบอร์ 9') || cat.includes('เช้า 9')) {
+      return { label: 'เช้า 9', cls: 'bg-sky-100 text-sky-900 border-sky-300' };
+    }
+    if (cat.includes('IPD เช้า')) {
+      return { label: 'เช้า IPD', cls: 'bg-sky-100 text-sky-900 border-sky-300' };
+    }
+    if (cat.includes('บ่ายเบอร์ 9') || cat.includes('บ่าย 9')) {
+      return { label: 'บ่าย 9', cls: 'bg-amber-100 text-amber-900 border-amber-300' };
+    }
+    if (cat.includes('บ่าย')) {
+      return { label: 'บ่าย', cls: 'bg-amber-100 text-amber-900 border-amber-300' };
+    }
+    if (cat.includes('เช้า')) {
+      return { label: 'เช้า', cls: 'bg-sky-100 text-sky-900 border-sky-300' };
+    }
+    return { label: cat.substring(0, 8), cls: 'bg-slate-100 text-slate-800 border-slate-200' };
+  }
+
   function renderExcelTable() {
-    if (!el.excelTableBody) return;
+    if (!el.excelTableBody || !el.excelTableHead) return;
+    el.excelTableHead.innerHTML = '';
     el.excelTableBody.innerHTML = '';
 
+    const filter = (state.excelSearchKeyword || '').trim().toLowerCase();
+    const dayShortNames = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'];
+    const currentStaff = window.getResolvedStaff(state.currentUser);
+
+    // ========================================================
+    // MODE 1: SUMMARY MODE (1 Staff = 1 Clean Consolidated Row)
+    // ========================================================
+    if (state.excelMode === 'summary') {
+      // 1. Build Header
+      let headerHtml = `
+        <tr class="bg-slate-900 text-white text-[11px] font-bold sticky top-0 z-20">
+          <th class="p-2 border border-slate-700 sticky-col-1 whitespace-nowrap min-w-[130px] max-w-[160px]">ชื่อ - สกุล</th>
+          <th class="p-1 border border-slate-700 text-center whitespace-nowrap min-w-[44px]">รวม</th>
+      `;
+
+      for (let d = 1; d <= 30; d++) {
+        const dayOfWeek = (d - 1) % 7; // Nov 1 = Sunday = index 0
+        const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+        headerHtml += `
+          <th class="p-1 text-center border border-slate-700 min-w-[36px] ${isWeekend ? 'bg-rose-950/80 text-rose-200' : 'bg-slate-800 text-slate-200'}">
+            <div class="leading-tight font-extrabold">${d}</div>
+            <div class="text-[9px] font-normal opacity-75">${dayShortNames[dayOfWeek]}</div>
+          </th>
+        `;
+      }
+      headerHtml += `</tr>`;
+      el.excelTableHead.innerHTML = headerHtml;
+
+      // 2. Build Rows for all 17 staff
+      const staffList = window.REAL_NAME_LIST || (window.ALL_STAFF_OT ? Object.keys(window.ALL_STAFF_OT) : []);
+      const rowsFragment = document.createDocumentFragment();
+      let matchedCount = 0;
+
+      staffList.forEach(realName => {
+        const staffObj = window.getResolvedStaff(realName);
+        const nickname = staffObj.nickname || '';
+
+        // Search Keyword Filter
+        if (filter) {
+          const matchReal = realName.toLowerCase().includes(filter);
+          const matchNick = nickname.toLowerCase().includes(filter);
+          if (!matchReal && !matchNick) return;
+        }
+
+        matchedCount++;
+
+        const isCurrentUser = (realName === currentStaff.realName || (nickname && nickname === currentStaff.nickname));
+        const otObj = (window.ALL_STAFF_OT && window.ALL_STAFF_OT[realName]) ? window.ALL_STAFF_OT[realName] : {};
+
+        // Calculate total duties
+        let totalDuties = 0;
+        for (let d = 1; d <= 30; d++) {
+          totalDuties += (otObj[String(d)] || []).length;
+        }
+
+        const tr = document.createElement('tr');
+        tr.className = `border-b border-slate-200 hover:bg-slate-50 transition-colors text-[11px] ${isCurrentUser ? 'bg-amber-50/60 font-semibold' : 'bg-white'}`;
+
+        let rowHtml = `
+          <td class="p-2 border-b border-r border-slate-200 sticky-col-1 whitespace-nowrap ${isCurrentUser ? 'bg-amber-50 text-amber-950' : 'bg-white text-slate-900'}">
+            <div class="flex items-center space-x-1.5">
+              <span class="font-bold truncate">${realName}</span>
+              ${nickname ? `<span class="px-1.5 py-0.5 rounded-full text-[10px] font-extrabold ${isCurrentUser ? 'bg-amber-200/90 text-amber-900' : 'bg-slate-100 text-coral-600'}">(${nickname})</span>` : ''}
+              ${isCurrentUser ? `<span class="px-1.5 py-0.2 rounded-full bg-coral-500 text-white text-[9px] font-black">ฉัน</span>` : ''}
+            </div>
+          </td>
+          <td class="p-1 text-center border-b border-r border-slate-200 ${isCurrentUser ? 'bg-amber-50/80' : 'bg-slate-50/70'}">
+            <span class="inline-block px-1.5 py-0.5 rounded-full text-[10px] font-black ${totalDuties > 0 ? 'bg-coral-50 border border-coral-200 text-coral-700' : 'text-slate-300'}">
+              ${totalDuties}
+            </span>
+          </td>
+        `;
+
+        for (let d = 1; d <= 30; d++) {
+          const dayOfWeek = (d - 1) % 7;
+          const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+          const duties = otObj[String(d)] || [];
+
+          if (duties.length > 0) {
+            let chipsHtml = '';
+            duties.forEach(duty => {
+              const b = getDutyBadge(duty.category || duty.name || duty.shift);
+              chipsHtml += `<span class="px-1 py-0.5 rounded text-[9px] font-bold border whitespace-nowrap leading-none shadow-2xs ${b.cls}">${b.label}</span>`;
+            });
+            rowHtml += `
+              <td class="p-1 text-center border-b border-r border-slate-200 ${isWeekend ? 'bg-rose-50/50' : 'bg-amber-50/20'} min-w-[36px]">
+                <div class="flex flex-col gap-0.5 items-center justify-center">
+                  ${chipsHtml}
+                </div>
+              </td>
+            `;
+          } else {
+            rowHtml += `
+              <td class="p-1 text-center border-b border-r border-slate-200 ${isWeekend ? 'bg-rose-50/20 text-slate-300' : 'text-slate-200'} min-w-[36px]">
+                <span class="text-slate-300 text-[10px] select-none">-</span>
+              </td>
+            `;
+          }
+        }
+
+        tr.innerHTML = rowHtml;
+        rowsFragment.appendChild(tr);
+      });
+
+      if (matchedCount === 0) {
+        el.excelTableBody.innerHTML = `<tr><td colspan="32" class="p-8 text-center text-slate-400 font-medium">ไม่พบเจ้าหน้าที่ตรงกับคำค้นหา "${filter}"</td></tr>`;
+      } else {
+        el.excelTableBody.appendChild(rowsFragment);
+      }
+
+      if (el.excelResultCountLabel) {
+        el.excelResultCountLabel.textContent = `กำลังแสดง ${matchedCount} คน (รวม 17 คน)`;
+      }
+      return;
+    }
+
+    // ========================================================
+    // MODE 2: DETAILED MODE (Grouped by Shift Type from CSV)
+    // ========================================================
     const rawCsv = window.RAW_SOURCE_CSV || '';
     if (!rawCsv) {
       el.excelTableBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">ไม่มีข้อมูลตารางเวร</td></tr>`;
@@ -790,37 +1107,33 @@
     const lines = rawCsv.split(/\r?\n/);
     if (lines.length < 4) return;
 
-    // Header row 1 (Titles & Dates)
+    // Header Titles & Dates from raw CSV lines
     const headerCols = lines[1].split(',');
-    // Header row 2 (Day names: ศุกร์ เสาร์ อาทิตย์...)
     const dayNameCols = lines[2].split(',');
 
-    // Render Table Header
-    const thead = document.createElement('thead');
-    thead.className = 'bg-slate-900 text-white text-[11px] font-bold sticky top-0 z-20';
-    let headerHtml = `
-      <tr>
-        <th class="p-2 border border-slate-700 sticky-col-1 whitespace-nowrap">ชื่อ - สกุล</th>
-        <th class="p-2 border border-slate-700 sticky-col-2 whitespace-nowrap">เวร</th>
+    let detailedHeaderHtml = `
+      <tr class="bg-slate-900 text-white text-[11px] font-bold sticky top-0 z-20">
+        <th class="p-2 border border-slate-700 sticky-col-1 whitespace-nowrap min-w-[130px] max-w-[160px]">ชื่อ - สกุล</th>
+        <th class="p-2 border border-slate-700 whitespace-nowrap min-w-[110px]">ประเภทเวร</th>
+        <th class="p-1 border border-slate-700 text-center whitespace-nowrap min-w-[40px]">รวม</th>
     `;
 
     for (let c = 5; c <= 34; c++) {
       const dateNum = headerCols[c] ? headerCols[c].trim() : '';
       const dayName = dayNameCols[c] ? dayNameCols[c].trim() : '';
       const isWeekend = (dayName === 'เสาร์' || dayName === 'อาทิต');
-      headerHtml += `
-        <th class="p-1.5 text-center border border-slate-700 min-w-[28px] ${isWeekend ? 'bg-rose-900/60 text-rose-200' : 'bg-slate-800'}">
-          <div>${dateNum}</div>
+      detailedHeaderHtml += `
+        <th class="p-1 text-center border border-slate-700 min-w-[34px] ${isWeekend ? 'bg-rose-950/80 text-rose-200' : 'bg-slate-800 text-slate-200'}">
+          <div class="leading-tight font-extrabold">${dateNum}</div>
           <div class="text-[9px] font-normal opacity-75">${dayName}</div>
         </th>
       `;
     }
-    headerHtml += `</tr>`;
-    thead.innerHTML = headerHtml;
+    detailedHeaderHtml += `</tr>`;
+    el.excelTableHead.innerHTML = detailedHeaderHtml;
 
-    // Render Rows (Skipping headers)
-    const filter = (state.excelSearchKeyword || '').trim().toLowerCase();
     const rowsFragment = document.createDocumentFragment();
+    let rowCount = 0;
 
     for (let r = 4; r < lines.length; r++) {
       const line = lines[r];
@@ -832,35 +1145,43 @@
 
       if (!name || (!type && !shift)) continue;
 
-      // Filter by search keyword
-      if (filter && !name.toLowerCase().includes(filter) && !type.toLowerCase().includes(filter) && !shift.toLowerCase().includes(filter)) {
+      // Filter by search keyword (supports Real Name, Nickname, Shift Type)
+      const staffInfo = window.getResolvedStaff(name);
+      const nickname = (staffInfo && staffInfo.nickname) ? staffInfo.nickname.toLowerCase() : '';
+      if (filter && !name.toLowerCase().includes(filter) && !nickname.includes(filter) && !type.toLowerCase().includes(filter) && !shift.toLowerCase().includes(filter)) {
         continue;
       }
 
-      // Check if row has any duty
-      let hasAnyDutyInRow = false;
+      // Count duties in this row
+      let rowDutyCount = 0;
       for (let c = 5; c <= 34; c++) {
         if ((parts[c] || '').trim() === '1') {
-          hasAnyDutyInRow = true;
-          break;
+          rowDutyCount++;
         }
       }
 
-      if (state.excelOnlyWithDuty && !hasAnyDutyInRow) {
+      // Filter out empty rows if checkbox is checked
+      if (state.excelHideEmptyRows && rowDutyCount === 0) {
         continue;
       }
 
+      rowCount++;
+      const isCurrentUser = (name === currentStaff.realName || name.includes(currentStaff.nickname));
+
       const tr = document.createElement('tr');
-      tr.className = 'border-b border-slate-200 hover:bg-slate-50 transition-colors text-[11px]';
+      tr.className = `border-b border-slate-200 hover:bg-slate-50 transition-colors text-[11px] ${isCurrentUser ? 'bg-amber-50/40' : 'bg-white'}`;
 
       let rowHtml = `
-        <td class="p-2 border border-slate-200 sticky-col-1 font-bold text-slate-900 whitespace-nowrap bg-white">
+        <td class="p-2 border border-slate-200 sticky-col-1 font-bold whitespace-nowrap ${isCurrentUser ? 'bg-amber-50 text-amber-950' : 'bg-white text-slate-900'}">
           ${name}
         </td>
-        <td class="p-1.5 border border-slate-200 sticky-col-2 font-semibold text-slate-700 whitespace-nowrap bg-white">
-          <span class="px-1.5 py-0.5 rounded text-[10px] ${shift.includes('ดึก') ? 'bg-purple-100 text-purple-800' : shift.includes('บ่าย') ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">
+        <td class="p-1.5 border border-slate-200 whitespace-nowrap bg-white">
+          <span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${shift.includes('ดึก') ? 'bg-purple-100 text-purple-900 border border-purple-200' : shift.includes('บ่าย') ? 'bg-amber-100 text-amber-900 border border-amber-200' : 'bg-sky-100 text-sky-900 border border-sky-200'}">
             ${type} ${shift}
           </span>
+        </td>
+        <td class="p-1 border border-slate-200 text-center font-black ${rowDutyCount > 0 ? 'text-coral-600 bg-coral-50/50' : 'text-slate-300'}">
+          ${rowDutyCount}
         </td>
       `;
 
@@ -871,13 +1192,13 @@
 
         if (val === '1') {
           rowHtml += `
-            <td class="p-1 text-center border border-slate-200 bg-amber-100/90 font-black text-amber-900">
+            <td class="p-1 text-center border border-slate-200 bg-amber-100/90 font-black text-amber-900 min-w-[34px]">
               ●
             </td>
           `;
         } else {
           rowHtml += `
-            <td class="p-1 text-center border border-slate-200 ${isWeekend ? 'bg-rose-50/40 text-slate-300' : 'text-slate-200'}">
+            <td class="p-1 text-center border border-slate-200 ${isWeekend ? 'bg-rose-50/40 text-slate-300' : 'text-slate-200'} min-w-[34px]">
               ·
             </td>
           `;
@@ -888,8 +1209,15 @@
       rowsFragment.appendChild(tr);
     }
 
-    el.excelTableBody.parentNode.insertBefore(thead, el.excelTableBody);
-    el.excelTableBody.appendChild(rowsFragment);
+    if (rowCount === 0) {
+      el.excelTableBody.innerHTML = `<tr><td colspan="34" class="p-8 text-center text-slate-400 font-medium">ไม่พบแถวกะเวรที่ค้นหา</td></tr>`;
+    } else {
+      el.excelTableBody.appendChild(rowsFragment);
+    }
+
+    if (el.excelResultCountLabel) {
+      el.excelResultCountLabel.textContent = `กำลังแสดง ${rowCount} กะเวร ${state.excelHideEmptyRows ? '(ซ่อนแถว 0 เวร)' : ''}`;
+    }
   }
 
   // ==========================================
@@ -1159,12 +1487,48 @@
     if (!el.dayDetailModal || !el.dayDetailContent) return;
 
     let regularHtml = '';
+    const sub = day.substitutionInfo;
+
     if (day.regularDuty) {
+      let subNoticeHtml = '';
+      if (sub && sub.isViewerSubstitute) {
+        const target = sub.targetStation || 'จุดเข้าเวร';
+        const targetLoc = sub.targetLocation || 'กลุ่มงานการเงิน';
+        const replacedName = sub.nightShiftNickname ? `คุณ${sub.nightShiftNickname}` : (sub.nightShiftRealName ? `คุณ${sub.nightShiftRealName}` : '');
+        subNoticeHtml = `
+          <div class="mt-2.5 p-3 rounded-2xl bg-sky-50 border border-sky-200 text-sky-950 text-xs">
+            <div class="font-extrabold flex items-center space-x-1.5 text-sky-900">
+              <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+              <span>ภารกิจแทนบ่ายดึก (เวลา 08:00 - 16:00 น.)</span>
+            </div>
+            <div class="mt-1 text-[11px] leading-relaxed">
+              ➔ <strong>จุดที่ต้องไปเข้า:</strong> <span class="font-bold text-sky-800 text-xs underline">${target}</span> (${targetLoc})<br>
+              ➔ <strong>ไปปฏิบัติงานแทน:</strong> <strong>${replacedName}</strong> (เนื่องจากติดเวร IPD ดึก/บ่าย)
+            </div>
+          </div>
+        `;
+      } else if (sub && sub.isViewerNightShift) {
+        const subName = sub.substituteNickname ? `คุณ${sub.substituteNickname}` : 'มีเจ้าหน้าที่';
+        subNoticeHtml = `
+          <div class="mt-2.5 p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-950 text-xs">
+            <div class="font-extrabold flex items-center space-x-1.5 text-emerald-900">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span>มีคนปฏิบัติงานแทนเวลาปกติ (08:00 - 16:00 น.)</span>
+            </div>
+            <div class="mt-1 text-[11px] leading-relaxed">
+              ➔ <strong>ผู้ปฏิบัติงานแทนคุณ:</strong> <strong class="text-emerald-800">${subName}</strong> (เวรแทนบ่ายดึก)<br>
+              ➔ <strong>หมายเหตุ:</strong> คุณได้พักผ่อนเวลาปกติ เนื่องจากมีเวร IPD ดึก (00:00 - 08:00) / IPD บ่าย (16:00 - 24:00)
+            </div>
+          </div>
+        `;
+      }
+
       regularHtml = `
         <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100">
           <div class="text-[10px] font-semibold text-slate-400 uppercase">เวลาปกติ</div>
           <div class="text-lg font-bold text-slate-900 mt-1">${day.regularDuty.title}</div>
           <div class="text-xs text-slate-500 mt-0.5">${day.regularDuty.location}</div>
+          ${subNoticeHtml}
         </div>
       `;
     } else if (day.isDayOff) {

@@ -3172,6 +3172,72 @@ window.getResolvedStaff = function(identifier) {
   };
 };
 
+// ฟังก์ชันคำนวณการแทนเวร "แทน บ่ายดึก" เชื่อมโยงระหว่างคนที่มีเวร IPD ดึก/บ่าย กับคนที่ขึ้นแทน
+window.getSubstitutionInfo = function(date, viewingNickname) {
+  const dayStations = window.ALL_DAILY_STATIONS[date];
+  if (!dayStations) return null;
+
+  // 1. หาว่าใครในตารางเวลาปกติมีหน้าที่ "แทน บ่ายดึก" ในวันนี้
+  let substituteNickname = null;
+  for (let nick in dayStations) {
+    if (dayStations[nick].includes("แทน บ่ายดึก")) {
+      substituteNickname = nick;
+      break;
+    }
+  }
+
+  // 2. หาว่าใครมีเวร IPD ดึก หรือ IPD บ่าย ในวันนี้จากไฟล์ Excel
+  let nightShiftRealName = null;
+  let nightShiftDuties = [];
+  if (window.ALL_STAFF_OT) {
+    for (let realName in window.ALL_STAFF_OT) {
+      const otList = window.ALL_STAFF_OT[realName]["" + date] || [];
+      const ipdDuties = otList.filter(ot => ot.type === "IPD" && (ot.name.includes("ดึก") || ot.name.includes("บ่าย")));
+      if (ipdDuties.length > 0) {
+        nightShiftRealName = realName;
+        nightShiftDuties = ipdDuties;
+        break;
+      }
+    }
+  }
+
+  if (!nightShiftRealName && !substituteNickname) return null;
+
+  // 3. แปลงชื่อจริงของคนอยู่เวรดึก/บ่าย ให้เป็นชื่อเล่น
+  const userMap = window.getNameMapping();
+  let nightShiftNickname = null;
+  for (let nick in userMap) {
+    if (userMap[nick] === nightShiftRealName) {
+      nightShiftNickname = nick;
+      break;
+    }
+  }
+
+  // 4. ค้นหาจุดเข้างานปกติของคนที่อยู่เวรดึก/บ่าย (จุดที่คนแทนบ่ายดึกต้องไปเข้าแทน)
+  let targetStation = null;
+  let targetLocation = null;
+  if (nightShiftNickname && dayStations[nightShiftNickname]) {
+    targetStation = dayStations[nightShiftNickname];
+    targetLocation = getStationLocation(targetStation);
+  }
+
+  // 5. ตรวจสอบบทบาทของคนที่กำลังเปิดดูอยู่ (viewingNickname)
+  const isViewerSubstitute = (viewingNickname && viewingNickname === substituteNickname);
+  const isViewerNightShift = (viewingNickname && (viewingNickname === nightShiftNickname || viewingNickname === nightShiftRealName));
+
+  return {
+    date: date,
+    substituteNickname: substituteNickname,
+    nightShiftRealName: nightShiftRealName,
+    nightShiftNickname: nightShiftNickname,
+    targetStation: targetStation,
+    targetLocation: targetLocation,
+    nightShiftDuties: nightShiftDuties,
+    isViewerSubstitute: isViewerSubstitute,
+    isViewerNightShift: isViewerNightShift
+  };
+};
+
 // ฟังก์ชันสร้างตารางของบุคคลที่เลือก (ไม่ล็อกที่เอ็ม)
 window.buildMonthSchedule = function(selectedIdentifier) {
   const daysOfWeek = ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัส", "ศุกร์", "เสาร์"];
@@ -3211,6 +3277,9 @@ window.buildMonthSchedule = function(selectedIdentifier) {
     const isDayOff = (!regularDuty && !hasDuty);
     const userNote = customNotes[date] || null;
 
+    // ข้อมูลเชื่อมโยงเวรแทนบ่ายดึก
+    const subInfo = window.getSubstitutionInfo(date, nickname);
+
     list.push({
       date: date,
       dayName: dayName,
@@ -3220,7 +3289,8 @@ window.buildMonthSchedule = function(selectedIdentifier) {
       otDuties: otList,
       hasDuty: hasDuty,
       isDayOff: isDayOff,
-      userNote: userNote
+      userNote: userNote,
+      substitutionInfo: subInfo
     });
   }
 

@@ -532,7 +532,7 @@
   <!-- MODAL: EXCEL VIEWER MODAL (OFFLINE & ZOOMABLE) -->
   <div id="excelViewerModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex flex-col hidden">
     <!-- Header with iOS Back Button (Left), Title (Center), Close (Right) -->
-    <div class="flex items-center justify-between px-3.5 py-3 bg-white border-b border-slate-200 z-10 shadow-sm">
+    <div class="flex items-center justify-between px-3.5 py-3 bg-white border-b border-slate-200 z-10 shadow-sm shrink-0">
       <button id="excelViewerIosBackBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-800 text-xs font-bold transition-all">
         <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
@@ -550,32 +550,60 @@
       </button>
     </div>
 
-    <!-- Search & Quick Navigation Bar -->
-    <div class="p-2.5 bg-slate-50 border-b border-slate-200 flex items-center space-x-2">
-      <div class="relative flex-1">
-        <input type="text" id="excelSearchInput" value="" placeholder="ค้นหาชื่อ เช่น จุรีพร, ตะวัน, กัญญ์ภิรมย์..." class="w-full bg-white border border-slate-300 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-coral-500">
-        <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <!-- View Mode Switcher + Search Bar -->
+    <div class="p-2.5 bg-slate-50 border-b border-slate-200 space-y-2 shrink-0">
+      <!-- Mode Toggle & Quick Action -->
+      <div class="flex items-center justify-between gap-2">
+        <div class="flex bg-slate-200/90 p-0.5 rounded-xl text-xs font-bold">
+          <button id="excelModeSummaryBtn" class="px-3 py-1.5 rounded-lg transition-all bg-white text-slate-900 shadow-sm">
+            👤 สรุป 1 บรรทัด/คน
+          </button>
+          <button id="excelModeDetailedBtn" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 hover:text-slate-900">
+            📄 แยกกะละเอียด
+          </button>
+        </div>
+
+        <button id="excelQuickMyProfileBtn" class="px-2.5 py-1.5 rounded-xl bg-coral-50 hover:bg-coral-100 text-coral-700 border border-coral-200 text-[11px] font-bold flex items-center space-x-1 shrink-0 active:scale-95 transition-all">
+          <span>👤 ดูของฉัน</span>
+        </button>
+      </div>
+
+      <!-- Search Input -->
+      <div class="relative flex items-center">
+        <input type="text" id="excelSearchInput" value="" placeholder="ค้นหาชื่อ เช่น จุรีพร, เอ็ม, ตะวัน, ดารุวรรณ..." class="w-full bg-white border border-slate-300 rounded-xl pl-8 pr-8 py-1.5 text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-coral-500">
+        <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
         </svg>
+        <button id="excelClearSearchBtn" class="absolute right-2.5 w-4 h-4 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 text-[10px] items-center justify-center hidden">✕</button>
       </div>
-      <button id="excelViewModeBtn" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100 whitespace-nowrap">
-        ดูทั้งหมด
-      </button>
+
+      <!-- Status / Filter strip -->
+      <div class="flex items-center justify-between text-[11px] text-slate-500 px-0.5">
+        <span id="excelResultCountLabel" class="font-medium text-slate-700">กำลังแสดง 17 คน</span>
+        <div id="excelDetailedFilterContainer" class="hidden items-center space-x-1.5">
+          <label class="flex items-center space-x-1 cursor-pointer text-[11px] text-slate-600">
+            <input type="checkbox" id="excelHideEmptyRowsCheckbox" checked class="rounded border-slate-300 text-coral-600 focus:ring-coral-500 text-xs">
+            <span>ซ่อนแถวว่าง (0 เวร)</span>
+          </label>
+        </div>
+      </div>
     </div>
 
     <!-- Spreadsheet Scroll Container -->
     <div id="excelScrollContainer" class="flex-1 overflow-auto p-2 bg-slate-100">
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto min-w-[720px]">
-        <table class="w-full text-left border-collapse text-xs">
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto">
+        <table id="excelMainTable" class="w-full text-left border-collapse text-xs">
+          <thead id="excelTableHead"></thead>
           <tbody id="excelTableBody">
-            <!-- Injected via JavaScript from window.RAW_SOURCE_CSV -->
+            <!-- Injected via JavaScript -->
           </tbody>
         </table>
       </div>
     </div>
 
-    <div class="py-2 px-3 text-center text-[11px] text-slate-500 bg-white border-t border-slate-200">
-      เลื่อนซ้าย-ขวา เพื่อดูเวรของแต่ละวัน (1 - 30 พ.ย.)
+    <div class="py-2 px-3 text-center text-[11px] text-slate-500 bg-white border-t border-slate-200 shrink-0 flex items-center justify-between">
+      <span class="text-[10px] text-slate-500">💡 ม่วง=ดึก, ส้ม=บ่าย, ฟ้า=เช้า, เขียว=เซ็นทรัล</span>
+      <span class="text-[10px] text-slate-500 font-medium">เลื่อนซ้าย-ขวา ↔</span>
     </div>
   </div>
 
