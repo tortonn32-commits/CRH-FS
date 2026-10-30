@@ -234,14 +234,24 @@
     cacheElements();
     initTheme();
 
-    // 1. Log visit analytics
-    CloudDB.logVisit(state.currentUser);
-
-    // 2. Try fetching latest cloud name mappings if connected
+    // 1. Try fetching latest cloud name mappings if connected
     const cloudMap = await CloudDB.fetchNameMappings();
     if (cloudMap) {
       console.log('CRH-FS: Synced name mappings from Supabase cloud');
     }
+
+    // 2. Check if this device has an onboarded user
+    const savedUser = localStorage.getItem('crh_active_user') || localStorage.getItem('crh_default_user_profile');
+    const isFirstTime = !savedUser;
+
+    if (isFirstTime) {
+      state.currentUser = 'เอ็ม'; // Temporary placeholder for initial DOM rendering
+    } else {
+      state.currentUser = savedUser;
+    }
+
+    // 3. Log visit analytics
+    CloudDB.logVisit(state.currentUser);
 
     loadScheduleData();
     bindEvents();
@@ -249,6 +259,11 @@
     setupPinchToZoom();
     renderAll();
     setupSheetUploader();
+
+    // 4. If first-time user, launch onboarding modal
+    if (isFirstTime) {
+      showOnboardingModal();
+    }
   }
 
   function cacheElements() {
@@ -375,6 +390,14 @@
     el.excelFileInput = document.getElementById('excelFileInput');
     el.dropZone = document.getElementById('dropZone');
     el.uploadStatus = document.getElementById('uploadStatus');
+
+    // First-Time Onboarding Modal
+    el.onboardingModal = document.getElementById('onboardingModal');
+    el.onboardingNicknameSelect = document.getElementById('onboardingNicknameSelect');
+    el.onboardingRealNameSection = document.getElementById('onboardingRealNameSection');
+    el.onboardingRealNameSelect = document.getElementById('onboardingRealNameSelect');
+    el.onboardingPairedNotice = document.getElementById('onboardingPairedNotice');
+    el.onboardingSubmitBtn = document.getElementById('onboardingSubmitBtn');
   }
 
   function loadScheduleData() {
@@ -729,6 +752,75 @@
     }
     if (el.closeUploadModalBtn) {
       el.closeUploadModalBtn.addEventListener('click', () => closeModalWithHistory(el.uploadExcelModal));
+    }
+
+    // First-Time Onboarding Modal Events
+    if (el.onboardingNicknameSelect) {
+      el.onboardingNicknameSelect.addEventListener('change', () => {
+        const chosenNick = el.onboardingNicknameSelect.value;
+        if (!chosenNick) {
+          if (el.onboardingRealNameSection) el.onboardingRealNameSection.classList.add('hidden');
+          if (el.onboardingSubmitBtn) {
+            el.onboardingSubmitBtn.disabled = true;
+            el.onboardingSubmitBtn.className = 'w-full py-2.5 rounded-xl bg-slate-200 dark:bg-white/10 text-slate-400 dark:text-slate-500 font-bold text-xs cursor-not-allowed transition-all';
+            el.onboardingSubmitBtn.textContent = 'กรุณาเลือกชื่อของคุณก่อน';
+          }
+          return;
+        }
+
+        // Show Real Name Section
+        if (el.onboardingRealNameSection) el.onboardingRealNameSection.classList.remove('hidden');
+
+        const currentMap = window.getNameMapping();
+        const existingReal = currentMap[chosenNick] || '';
+
+        if (el.onboardingRealNameSelect) {
+          el.onboardingRealNameSelect.value = existingReal;
+        }
+
+        if (el.onboardingPairedNotice) {
+          if (existingReal) {
+            el.onboardingPairedNotice.textContent = `✓ จับคู่ไว้กับ: คุณ${existingReal} (เปลี่ยนได้หากไม่ถูกต้อง)`;
+            el.onboardingPairedNotice.className = 'text-[11px] text-emerald-600 dark:text-emerald-400 font-medium block';
+          } else {
+            el.onboardingPairedNotice.textContent = `⚠️ ยังไม่ได้จับคู่ชื่อจริง กรุณาเลือกชื่อจริงด้านล่าง`;
+            el.onboardingPairedNotice.className = 'text-[11px] text-amber-600 dark:text-amber-400 font-medium block';
+          }
+        }
+
+        if (el.onboardingSubmitBtn) {
+          el.onboardingSubmitBtn.disabled = false;
+          el.onboardingSubmitBtn.className = 'w-full py-2.5 rounded-xl bg-coral-500 hover:bg-coral-600 text-white font-bold text-xs shadow-md shadow-coral-500/25 active:scale-95 transition-all cursor-pointer';
+          el.onboardingSubmitBtn.textContent = `🚀 เริ่มต้นดูตารางเวรของคุณ${chosenNick}`;
+        }
+      });
+    }
+
+    if (el.onboardingSubmitBtn) {
+      el.onboardingSubmitBtn.addEventListener('click', async () => {
+        const nick = el.onboardingNicknameSelect ? el.onboardingNicknameSelect.value : '';
+        const real = el.onboardingRealNameSelect ? el.onboardingRealNameSelect.value : '';
+
+        if (!nick) {
+          alert('กรุณาเลือกชื่อเล่นของคุณก่อนครับ');
+          return;
+        }
+
+        // Save real name pairing if selected
+        if (real) {
+          const currentMap = window.getNameMapping();
+          currentMap[nick] = real;
+          await CloudDB.saveNameMappings(currentMap);
+        }
+
+        // Save active user profile
+        switchUser(nick);
+        localStorage.setItem('crh_default_user_profile', nick);
+        localStorage.setItem('crh_user_onboarded', 'true');
+
+        closeModalWithHistory(el.onboardingModal);
+        alert(`🎉 ยินดีต้อนรับคุณ ${nick}!\nระบบได้ตั้งค่าตารางเวรให้คุณเรียบร้อยแล้วครับ`);
+      });
     }
 
     // Close on backdrop tap
@@ -1719,6 +1811,39 @@
     if (state.activeUserModalTab === 'admin') {
       renderAdminDashboard();
     }
+  }
+
+  function showOnboardingModal() {
+    if (!el.onboardingModal) return;
+
+    // Populate nicknames
+    if (el.onboardingNicknameSelect) {
+      let nickHtml = `<option value="">-- กรุณาเลือกชื่อเล่นของคุณ --</option>`;
+      const currentMap = window.getNameMapping();
+      window.NICKNAME_LIST.forEach(nick => {
+        const paired = currentMap[nick] ? `(จับคู่: คุณ${currentMap[nick]})` : `(ยังไม่จับคู่)`;
+        nickHtml += `<option value="${nick}">คุณ${nick} ${paired}</option>`;
+      });
+      el.onboardingNicknameSelect.innerHTML = nickHtml;
+    }
+
+    // Populate real names
+    if (el.onboardingRealNameSelect) {
+      let realHtml = `<option value="">-- เลือกชื่อ-นามสกุลจริงของคุณ --</option>`;
+      window.REAL_NAME_LIST.forEach(rn => {
+        realHtml += `<option value="${rn}">คุณ${rn}</option>`;
+      });
+      el.onboardingRealNameSelect.innerHTML = realHtml;
+    }
+
+    if (el.onboardingRealNameSection) el.onboardingRealNameSection.classList.add('hidden');
+    if (el.onboardingSubmitBtn) {
+      el.onboardingSubmitBtn.disabled = true;
+      el.onboardingSubmitBtn.className = 'w-full py-2.5 rounded-xl bg-slate-200 dark:bg-white/10 text-slate-400 dark:text-slate-500 font-bold text-xs cursor-not-allowed transition-all';
+      el.onboardingSubmitBtn.textContent = 'กรุณาเลือกชื่อของคุณก่อน';
+    }
+
+    openModalWithHistory(el.onboardingModal);
   }
 
   function renderStaffSelectorGrid() {
