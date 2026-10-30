@@ -773,7 +773,7 @@
             <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">ระบุรหัส PIN เพื่อดูยอดสถิติผู้ใช้งาน และสิทธิ์แก้ไขฐานข้อมูล</p>
           </div>
           <div class="max-w-[200px] mx-auto space-y-2">
-            <input type="password" id="adminPinInput" maxlength="6" placeholder="รหัส PIN (เริ่มต้น 2569)" class="w-full text-center px-3 py-2 text-sm font-bold tracking-widest rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-coral-500">
+            <input type="password" id="adminPinInput" maxlength="6" placeholder="ระบุรหัส PIN" class="w-full text-center px-3 py-2 text-sm font-bold tracking-widest rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-coral-500">
             <button id="adminLoginBtn" class="w-full py-2 rounded-xl bg-coral-500 hover:bg-coral-600 text-white font-bold text-xs shadow-md shadow-coral-500/20 transition-all">
               🔓 ปลดล็อคแอดมิน
             </button>
@@ -836,10 +836,7 @@
           </div>
 
           <!-- Admin Security & Exit -->
-          <div class="pt-2 flex items-center justify-between border-t border-slate-100 dark:border-white/5 text-xs">
-            <button id="changeAdminPinBtn" class="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white">
-              🔑 เปลี่ยนรหัส PIN
-            </button>
+          <div class="pt-2 flex items-center justify-end border-t border-slate-100 dark:border-white/5 text-xs">
             <button id="adminLogoutBtn" class="px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-bold transition-colors">
               🔒 ออกจากระบบแอดมิน
             </button>

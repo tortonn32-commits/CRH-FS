@@ -658,18 +658,23 @@
       el.tabAdminBtn.addEventListener('click', () => setUserModalTab('admin'));
     }
 
-    // Admin Login / Unlock
+    // Admin Login / Unlock (Fixed master PIN: 0612 for all devices)
+    const MASTER_ADMIN_PIN = '0612';
+
     if (el.adminLoginBtn) {
       el.adminLoginBtn.addEventListener('click', () => {
         const pin = el.adminPinInput ? el.adminPinInput.value.trim() : '';
-        const savedPin = localStorage.getItem('crh_admin_pin') || '2569';
-        if (pin === savedPin) {
+        if (pin === MASTER_ADMIN_PIN) {
           state.isAdmin = true;
           sessionStorage.setItem('crh_is_admin', 'true');
           renderAdminDashboard();
           renderNameMappingSetup();
         } else {
-          alert('รหัส PIN แอดมินไม่ถูกต้องครับ (รหัสเริ่มต้นคือ: 2569)');
+          alert('รหัส PIN แอดมินไม่ถูกต้องครับ');
+          if (el.adminPinInput) {
+            el.adminPinInput.value = '';
+            el.adminPinInput.focus();
+          }
         }
       });
     }
@@ -709,25 +714,6 @@
         alert('บันทึกการตั้งค่า Supabase แล้ว! กำลังทดสอบเชื่อมต่อ...');
         await CloudDB.logVisit(state.currentUser);
         await renderAdminDashboard();
-      });
-    }
-
-    // Change Admin PIN
-    if (el.changeAdminPinBtn) {
-      el.changeAdminPinBtn.addEventListener('click', () => {
-        const currentPin = localStorage.getItem('crh_admin_pin') || '2569';
-        const verifyPin = prompt('กรุณายืนยันรหัส PIN เดิม:');
-        if (verifyPin !== currentPin) {
-          alert('รหัส PIN เดิมไม่ถูกต้องครับ');
-          return;
-        }
-        const newPin = prompt('กำหนดรหัส PIN แอดมินใหม่ (4-6 หลัก):');
-        if (newPin && newPin.trim().length >= 4) {
-          localStorage.setItem('crh_admin_pin', newPin.trim());
-          alert('เปลี่ยนรหัส PIN แอดมินเรียบร้อยแล้ว จดจำรหัสนี้ไว้ใช้นะครับ');
-        } else if (newPin !== null) {
-          alert('รหัส PIN ต้องมีความยาวอย่างน้อย 4 หลักครับ');
-        }
       });
     }
 
