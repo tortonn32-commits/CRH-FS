@@ -43,15 +43,21 @@
   // ==========================================
   // CLOUD DATABASE & LIVE ANALYTICS (SUPABASE)
   // ==========================================
+  const DEFAULT_SUPABASE_URL = 'https://piimqiybzynnhtvlryxe.supabase.co';
+  const DEFAULT_SUPABASE_KEY = 'sb_publishable_XS-i3KEVRFkux0XSEKxZKQ_1XASRwy5';
+
   const CloudDB = {
     getConfig() {
       try {
         const saved = localStorage.getItem('crh_supabase_config');
-        if (saved) return JSON.parse(saved);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && parsed.url && parsed.key) return parsed;
+        }
       } catch (e) {}
       return {
-        url: (window.CRH_SUPABASE_URL || '').trim(),
-        key: (window.CRH_SUPABASE_KEY || '').trim()
+        url: (window.CRH_SUPABASE_URL || DEFAULT_SUPABASE_URL).trim(),
+        key: (window.CRH_SUPABASE_KEY || DEFAULT_SUPABASE_KEY).trim()
       };
     },
 
