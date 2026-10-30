@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="th">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CRH-FS (Finance Schedule) - ฝ่ายการเงิน รพ.เชียงรายประชานุเคราะห์</title>
+  <title>CRH-FS (Finance Schedule) - เธเนเธฒเธขเธเธฒเธฃเน€เธเธดเธ เธฃเธ.เน€เธเธตเธขเธเธฃเธฒเธขเธเธฃเธฐเธเธฒเธเธธเน€เธเธฃเธฒเธฐเธซเน</title>
   
   <!-- PWA Manifest & App Icons -->
   <link rel="manifest" href="manifest.json">
@@ -58,65 +58,65 @@
   <!-- Custom Styles -->
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-[#f8fafc] dark:bg-[#0b0f17] text-slate-900 dark:text-slate-100 min-h-screen pb-12 antialiased transition-colors duration-200">
+<body class="bg-[#f8fafc] dark:bg-[#0b0b0e] text-slate-900 dark:text-slate-100 min-h-screen pb-12 antialiased transition-colors duration-200">
 
   <!-- Mobile / Tablet Container -->
   <div class="max-w-md mx-auto px-4 pt-4 pb-8">
 
-    <!-- PWA INSTALL BANNER -->
+    <!-- PWA INSTALL BANNER (Indigo Gradient โ€” Prism Style) -->
     <div id="pwaInstallBanner" class="pwa-install-banner flex items-center justify-between p-3.5 mb-4 rounded-2xl text-white shadow-xl transition-all">
       <div class="flex items-center space-x-3 min-w-0">
         <img src="icon.svg" alt="CRH-FS Logo" class="w-11 h-11 rounded-xl shrink-0 shadow-md border border-slate-700/60 object-cover">
         <div class="min-w-0">
           <div class="text-sm font-bold text-white tracking-tight truncate flex items-center space-x-1.5">
-            <span>ติดตั้ง CRH-FS</span>
+            <span>เธ•เธดเธ”เธ•เธฑเนเธ CRH-FS</span>
           </div>
-          <div class="text-[11px] text-slate-300 truncate mt-0.5">Finance Schedule • แตะเพื่อติดตั้งลงบนหน้าจอมือถือ</div>
+          <div class="text-[11px] text-slate-300 truncate mt-0.5">Finance Schedule โ€ข เนเธ•เธฐเน€เธเธทเนเธญเธ•เธดเธ”เธ•เธฑเนเธเธฅเธเธเธเธซเธเนเธฒเธเธญเธกเธทเธญเธ–เธทเธญ</div>
         </div>
       </div>
       
       <div class="flex items-center space-x-2 shrink-0 ml-3">
-        <button id="pwaInstallBtn" class="px-4 py-2 rounded-xl bg-[#0284c7] hover:bg-[#0369a1] active:scale-95 text-white font-bold text-xs shadow-md shadow-sky-500/20 transition-all whitespace-nowrap">
-          ติดตั้งแอป
+        <button id="pwaInstallBtn" class="px-4 py-2 rounded-xl bg-white/20 hover:bg-white/30 active:scale-95 text-white font-bold text-xs shadow-md shadow-indigo-500/20 border border-white/20 transition-all whitespace-nowrap">
+          เธ•เธดเธ”เธ•เธฑเนเธเนเธญเธ
         </button>
         <button id="closePwaBannerBtn" class="w-7 h-7 rounded-full text-slate-400 hover:text-white hover:bg-slate-800 flex items-center justify-center text-xs font-bold transition-colors">
-          ✕
+          โ•
         </button>
       </div>
     </div>
 
-    <!-- Top Navigation Header (Linear Minimalist Style) -->
-    <header class="flex items-start justify-between pb-3 mb-4 animate-fade-in-up stagger-1">
+    <!-- Top Navigation Header (Prism Style) -->
+    <header class="flex items-start justify-between pb-3 mb-4 animate-fade-in-up stagger-1 prism-header-glow">
       <div>
         <div class="flex items-center space-x-2">
-          <span class="px-2 py-0.5 rounded-md bg-slate-900 dark:bg-white/10 text-sky-400 dark:text-sky-300 font-bold text-[10px] tracking-wider font-mono border border-slate-800 dark:border-white/10">
+          <span class="px-2 py-0.5 rounded-md bg-slate-900 dark:bg-indigo-500/20 text-sky-400 dark:text-indigo-300 font-bold text-[10px] tracking-wider font-mono border border-slate-800 dark:border-indigo-500/30">
             CRH-FS
           </span>
           <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">
-            Finance Schedule • ฝ่ายการเงิน
+            Finance Schedule โ€ข เธเนเธฒเธขเธเธฒเธฃเน€เธเธดเธ
           </span>
         </div>
         <!-- Greeting with high visual hierarchy -->
         <h1 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white tracking-tight mt-1 flex flex-wrap items-baseline gap-1.5">
-          <span>สวัสดีคุณ</span>
-          <span id="headerFullName" class="text-slate-900 dark:text-white font-bold">จุรีพร ผาบสุวรรณ์</span>
-          <span id="headerNickname" class="text-rose-500 dark:text-rose-400 font-semibold">(เอ็ม)</span>
+          <span>เธชเธงเธฑเธชเธ”เธตเธเธธเธ“</span>
+          <span id="headerFullName" class="text-slate-900 dark:text-white font-bold">เธเธธเธฃเธตเธเธฃ เธเธฒเธเธชเธธเธงเธฃเธฃเธ“เน</span>
+          <span id="headerNickname" class="text-rose-500 dark:text-rose-400 font-semibold">(เน€เธญเนเธก)</span>
         </h1>
       </div>
 
       <!-- Action Buttons: Theme Switcher + User Switcher (Sleek Apple/Linear style) -->
       <div class="flex items-center space-x-2 shrink-0 ml-2 mt-0.5">
         <!-- Dark / Light Mode Switcher Button -->
-        <button id="themeToggleBtn" class="flex items-center justify-center w-8 h-8 rounded-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-xs hover:bg-slate-50 dark:hover:bg-white/10 transition-all active:scale-95 text-slate-700 dark:text-amber-300" title="สลับโหมดมืด / สว่าง">
-          <span id="themeToggleIcon" class="text-sm leading-none select-none transition-transform duration-300">🌙</span>
+        <button id="themeToggleBtn" class="flex items-center justify-center w-8 h-8 rounded-lg bg-white dark:bg-[#1a1926] border border-slate-200 dark:border-white/10 shadow-xs hover:bg-slate-50 dark:hover:bg-[#21203a] transition-all active:scale-95 text-slate-700 dark:text-amber-300" title="เธชเธฅเธฑเธเนเธซเธกเธ”เธกเธทเธ” / เธชเธงเนเธฒเธ">
+          <span id="themeToggleIcon" class="text-sm leading-none select-none transition-transform duration-300">๐</span>
         </button>
 
         <!-- User Switcher Pill Button -->
-        <button id="openUserModalBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-xs hover:bg-slate-50 dark:hover:bg-white/10 transition-all active:scale-95" title="สลับผู้ใช้ / ดูตารางของคนอื่น">
+        <button id="openUserModalBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-[#1a1926] border border-slate-200 dark:border-white/10 shadow-xs hover:bg-slate-50 dark:hover:bg-[#21203a] transition-all active:scale-95" title="เธชเธฅเธฑเธเธเธนเนเนเธเน / เธ”เธนเธ•เธฒเธฃเธฒเธเธเธญเธเธเธเธญเธทเนเธ">
           <svg class="w-3.5 h-3.5 text-rose-500 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
           </svg>
-          <span class="text-xs font-bold text-slate-700 dark:text-slate-200">สลับผู้ใช้</span>
+          <span class="text-xs font-bold text-slate-700 dark:text-slate-200">เธชเธฅเธฑเธเธเธนเนเนเธเน</span>
         </button>
       </div>
     </header>
@@ -124,37 +124,37 @@
     <!-- SECTION 1: TODAY & TOMORROW HERO CARDS -->
     <section class="space-y-3.5 mb-6 animate-fade-in-up stagger-1">
       
-      <!-- TODAY PRIMARY HERO CARD (LINEAR / APPLE HEALTH STYLE) -->
-      <div id="todayCard" class="ui-card-today p-5 bg-white dark:bg-[#131b26]">
+      <!-- TODAY PRIMARY HERO CARD (PRISM STYLE) -->
+      <div id="todayCard" class="ui-card-today p-5 bg-white dark:bg-[#161622]">
         <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5">
           <div id="todayStatusContainer" class="flex items-center space-x-2">
             <span id="todayStatusBadge" class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-rose-500/10 text-rose-500 dark:text-rose-400 border border-rose-500/20 text-[11px] font-semibold">
               <span class="w-1.5 h-1.5 rounded-full bg-rose-500 dark:bg-rose-400 animate-pulse"></span>
-              <span id="todayStatusText">สถานะวันนี้</span>
+              <span id="todayStatusText">เธชเธ–เธฒเธเธฐเธงเธฑเธเธเธตเน</span>
             </span>
           </div>
           <div class="flex items-center space-x-2">
             <span id="todayDateHeading" class="text-xs font-medium text-slate-500 dark:text-slate-400 font-mono">
-              วันอาทิตย์ที่ 1 พ.ย. 2569
+              เธงเธฑเธเธญเธฒเธ—เธดเธ•เธขเนเธ—เธตเน 1 เธ.เธข. 2569
             </span>
             <span class="text-xs font-semibold px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300" id="todayDayOfWeekBadge">
-              อาทิตย์
+              เธญเธฒเธ—เธดเธ•เธขเน
             </span>
           </div>
         </div>
 
         <!-- Regular Work Station -->
         <div class="mt-4">
-          <div id="todayRegularSectionLabel" class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">เวลาปกติ (08:00 - 16:00 น.)</div>
+          <div id="todayRegularSectionLabel" class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">เน€เธงเธฅเธฒเธเธเธ•เธด (08:00 - 16:00 เธ.)</div>
           <div class="flex items-baseline justify-between mt-1">
-            <div id="todayStationTitle" class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">วันหยุด</div>
-            <span id="todayLocationDetail" class="text-xs text-slate-500 dark:text-slate-400 font-medium">พักประจำสัปดาห์</span>
+            <div id="todayStationTitle" class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">เธงเธฑเธเธซเธขเธธเธ”</div>
+            <span id="todayLocationDetail" class="text-xs text-slate-500 dark:text-slate-400 font-medium">เธเธฑเธเธเธฃเธฐเธเธณเธชเธฑเธเธ”เธฒเธซเน</span>
           </div>
         </div>
 
         <!-- Extra / Night Shift / Afternoon Shift -->
         <div class="mt-4 pt-3 border-t border-slate-100 dark:border-white/5">
-          <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">เวรนอกเวลา</div>
+          <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">เน€เธงเธฃเธเธญเธเน€เธงเธฅเธฒ</div>
           <div id="todayShiftsContainer" class="space-y-1.5">
             <!-- Injected via JavaScript -->
           </div>
@@ -167,22 +167,22 @@
       </div>
 
       <!-- TOMORROW COMPANION CARD -->
-      <div id="tomorrowCard" class="ui-card-tomorrow p-4 bg-white dark:bg-[#131b26]">
+      <div id="tomorrowCard" class="ui-card-tomorrow p-4 bg-white dark:bg-[#161622]">
         <div class="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-white/5">
           <div class="flex items-center space-x-1.5">
             <span class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20 text-[11px] font-semibold">
               <span class="w-1.5 h-1.5 rounded-full bg-sky-500 dark:bg-sky-400"></span>
-              <span>วันพรุ่งนี้</span>
+              <span>เธงเธฑเธเธเธฃเธธเนเธเธเธตเน</span>
             </span>
           </div>
-          <span id="tomorrowDateLabel" class="text-xs text-slate-500 dark:text-slate-400 font-mono">วันจันทร์ที่ 2 พ.ย. 2569</span>
+          <span id="tomorrowDateLabel" class="text-xs text-slate-500 dark:text-slate-400 font-mono">เธงเธฑเธเธเธฑเธเธ—เธฃเนเธ—เธตเน 2 เธ.เธข. 2569</span>
         </div>
 
         <div class="mt-3 flex items-start justify-between">
           <div>
-            <div id="tomorrowRegularSectionLabel" class="text-[11px] text-slate-400 uppercase tracking-wider font-medium">เวลาปกติ</div>
+            <div id="tomorrowRegularSectionLabel" class="text-[11px] text-slate-400 uppercase tracking-wider font-medium">เน€เธงเธฅเธฒเธเธเธ•เธด</div>
             <div id="tomorrowRegularStation" class="text-xl font-bold text-slate-900 dark:text-white mt-0.5">PCU</div>
-            <div id="tomorrowRegularLocation" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">ตึกบริการปฐมภูมิ (PCU)</div>
+            <div id="tomorrowRegularLocation" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">เธ•เธถเธเธเธฃเธดเธเธฒเธฃเธเธเธกเธ เธนเธกเธด (PCU)</div>
           </div>
           <div id="tomorrowOtSection" class="text-right">
             <!-- Dynamic -->
@@ -195,9 +195,9 @@
     <!-- SECTION 2: 7-DAY FORWARD PLANNING (CLEAN & COMPACT) -->
     <section class="mb-7 animate-fade-in-up stagger-2" id="sectionSevenDays">
       <div class="flex items-center justify-between mb-2.5 px-1">
-        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">7 วันถัดไป</span>
+        <span class="text-xs font-bold text-slate-400 dark:text-indigo-400 uppercase tracking-wider">7 เธงเธฑเธเธ–เธฑเธ”เนเธ</span>
         <span class="text-[11px] font-semibold text-slate-400 flex items-center space-x-1">
-          <span>เลื่อนซ้าย-ขวา</span>
+          <span>เน€เธฅเธทเนเธญเธเธเนเธฒเธข-เธเธงเธฒ</span>
           <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
           </svg>
@@ -210,30 +210,30 @@
       </div>
     </section>
 
-    <!-- SECTION 3: MONTH CALENDAR VIEW (MODERN MINIMALIST • NO SOLID BLUE BLOCK) -->
+    <!-- SECTION 3: MONTH CALENDAR VIEW (MODERN MINIMALIST โ€ข NO SOLID BLUE BLOCK) -->
     <section class="mb-8 animate-fade-in-up stagger-3" id="sectionCalendar">
-      <div class="ui-card p-4 bg-white dark:bg-[#131b26] overflow-hidden">
+      <div class="ui-card p-4 bg-white dark:bg-[#161622] overflow-hidden">
         <div class="flex items-center justify-between pb-3 mb-2 border-b border-slate-100 dark:border-white/5">
           <div class="flex items-center space-x-2">
             <svg class="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
             </svg>
-            <h3 class="text-base font-bold text-slate-900 dark:text-white">พฤศจิกายน 2569</h3>
+            <h3 class="text-base font-bold text-slate-900 dark:text-white">เธเธคเธจเธเธดเธเธฒเธขเธ 2569</h3>
           </div>
           <div class="flex items-center space-x-1">
-            <span class="text-xs text-slate-400 font-medium">มุมมองรายเดือน</span>
+            <span class="text-xs text-slate-400 font-medium">เธกเธธเธกเธกเธญเธเธฃเธฒเธขเน€เธ”เธทเธญเธ</span>
           </div>
         </div>
 
         <!-- Clean Modern Weekday Header Bar (No solid blue block as requested) -->
         <div class="grid grid-cols-7 text-center py-2 text-xs font-semibold text-slate-400 dark:text-slate-400 border-b border-slate-100 dark:border-white/5 mb-2.5 tracking-wider">
-          <div>จ</div>
-          <div>อ</div>
-          <div>พ</div>
-          <div>พฤ</div>
-          <div>ศ</div>
-          <div>ส</div>
-          <div>อา</div>
+          <div>เธ</div>
+          <div>เธญ</div>
+          <div>เธ</div>
+          <div>เธเธค</div>
+          <div>เธจ</div>
+          <div>เธช</div>
+          <div>เธญเธฒ</div>
         </div>
 
         <!-- Calendar Dates Grid -->
@@ -245,35 +245,35 @@
         <div class="mt-4 pt-3 border-t border-slate-100 dark:border-white/5 flex items-center justify-around text-xs">
           <div class="flex items-center space-x-1.5">
             <span class="w-2.5 h-2.5 rounded-full bg-purple-500 shadow-xs"></span>
-            <span class="text-slate-600 dark:text-slate-300 font-medium">เวรดึก 🌙</span>
+            <span class="text-slate-600 dark:text-slate-300 font-medium">เน€เธงเธฃเธ”เธถเธ ๐</span>
           </div>
           <div class="flex items-center space-x-1.5">
             <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-xs"></span>
-            <span class="text-slate-600 dark:text-slate-300 font-medium">เวรบ่าย/OT</span>
+            <span class="text-slate-600 dark:text-slate-300 font-medium">เน€เธงเธฃเธเนเธฒเธข/OT</span>
           </div>
           <div class="flex items-center space-x-1.5">
             <span class="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-xs"></span>
-            <span class="text-slate-600 dark:text-slate-300 font-medium">วันหยุด</span>
+            <span class="text-slate-600 dark:text-slate-300 font-medium">เธงเธฑเธเธซเธขเธธเธ”</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SECTION 4: สรุปการเข้างานประจำเดือน & เอกสารต้นฉบับ -->
+    <!-- SECTION 4: เธชเธฃเธธเธเธเธฒเธฃเน€เธเนเธฒเธเธฒเธเธเธฃเธฐเธเธณเน€เธ”เธทเธญเธ & เน€เธญเธเธชเธฒเธฃเธ•เนเธเธเธเธฑเธ -->
     <section class="space-y-4 mb-8 animate-fade-in-up stagger-4" id="sectionSummary">
-      <div class="text-xs font-bold text-slate-400 uppercase tracking-wider px-1">
-        สรุปการเข้างานประจำเดือน & ตรวจสอบเอกสาร
+      <div class="text-xs font-bold text-slate-400 dark:text-indigo-400 uppercase tracking-wider px-1">
+        เธชเธฃเธธเธเธเธฒเธฃเน€เธเนเธฒเธเธฒเธเธเธฃเธฐเธเธณเน€เธ”เธทเธญเธ & เธ•เธฃเธงเธเธชเธญเธเน€เธญเธเธชเธฒเธฃ
       </div>
 
       <!-- KPI Summary Card -->
-      <div class="ui-card p-4 bg-white dark:bg-[#131b26]">
+      <div class="ui-card p-4 bg-white dark:bg-[#161622]">
         <div class="flex items-center justify-between mb-3">
           <div>
-            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">สรุปการเข้างานประจำเดือน</h4>
-            <div class="text-sm font-bold text-slate-900 dark:text-white">จำแนกตามจุดปฏิบัติงาน</div>
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">เธชเธฃเธธเธเธเธฒเธฃเน€เธเนเธฒเธเธฒเธเธเธฃเธฐเธเธณเน€เธ”เธทเธญเธ</h4>
+            <div class="text-sm font-bold text-slate-900 dark:text-white">เธเธณเนเธเธเธ•เธฒเธกเธเธธเธ”เธเธเธดเธเธฑเธ•เธดเธเธฒเธ</div>
           </div>
           <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-white/10">
-            รวม 30 วัน
+            เธฃเธงเธก 30 เธงเธฑเธ
           </span>
         </div>
 
@@ -285,8 +285,8 @@
               <path class="text-rose-500 dark:text-rose-400" stroke-dasharray="75, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
             </svg>
             <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-              <span id="kpiTotalWorkDays" class="text-lg font-bold text-slate-900 dark:text-white leading-none">20</span>
-              <span class="text-[9px] font-medium text-slate-400 mt-0.5">วันทำงาน</span>
+              <span id="kpiTotalWorkDays" class="text-lg font-bold text-indigo-600 dark:text-indigo-400 leading-none">20</span>
+              <span class="text-[9px] font-medium text-slate-400 mt-0.5">เธงเธฑเธเธ—เธณเธเธฒเธ</span>
             </div>
           </div>
 
@@ -295,30 +295,30 @@
             <div class="flex items-center justify-between">
               <span class="text-slate-500 dark:text-slate-400 flex items-center space-x-1.5">
                 <span class="w-2 h-2 rounded-full bg-teal-500"></span>
-                <span>เวลาปกติ</span>
+                <span>เน€เธงเธฅเธฒเธเธเธ•เธด</span>
               </span>
-              <span class="font-bold text-slate-800 dark:text-slate-200" id="kpiRegularDays">20 วัน</span>
+              <span class="font-bold text-slate-800 dark:text-slate-200" id="kpiRegularDays">20 เธงเธฑเธ</span>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-slate-500 dark:text-slate-400 flex items-center space-x-1.5">
                 <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-                <span>เวรนอกเวลา/OT</span>
+                <span>เน€เธงเธฃเธเธญเธเน€เธงเธฅเธฒ/OT</span>
               </span>
-              <span class="font-bold text-amber-600 dark:text-amber-400" id="kpiOtShifts">14 เวร</span>
+              <span class="font-bold text-amber-600 dark:text-amber-400" id="kpiOtShifts">14 เน€เธงเธฃ</span>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-slate-500 dark:text-slate-400 flex items-center space-x-1.5">
                 <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-                <span>วันหยุด (Day Off)</span>
+                <span>เธงเธฑเธเธซเธขเธธเธ” (Day Off)</span>
               </span>
-              <span class="font-bold text-rose-600 dark:text-rose-400" id="kpiOffDays">4 วัน</span>
+              <span class="font-bold text-rose-600 dark:text-rose-400" id="kpiOffDays">4 เธงเธฑเธ</span>
             </div>
           </div>
         </div>
 
         <!-- Station Pills Grid -->
         <div>
-          <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">สรุปตามจุดเข้างาน (เวลาปกติ)</div>
+          <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">เธชเธฃเธธเธเธ•เธฒเธกเธเธธเธ”เน€เธเนเธฒเธเธฒเธ (เน€เธงเธฅเธฒเธเธเธ•เธด)</div>
           <div id="stationPillsGrid" class="grid grid-cols-3 gap-2">
             <!-- Populated dynamically via JS -->
           </div>
@@ -328,40 +328,40 @@
       <!-- Verification Tools Grid -->
       <div class="grid grid-cols-2 gap-2.5">
         <!-- View Original Image Button -->
-        <button id="openImageModalBtn" class="p-3.5 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center transition-all active:scale-95 group">
+        <button id="openImageModalBtn" class="p-3.5 rounded-2xl bg-white dark:bg-[#161622] hover:bg-slate-50 dark:hover:bg-[#1a1926] border border-slate-200 dark:border-white/8 shadow-sm flex flex-col items-center justify-center text-center transition-all active:scale-95 group">
           <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-1.5">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
             </svg>
           </div>
-          <span class="text-xs font-bold text-slate-800">รูปถ่ายต้นฉบับ</span>
-          <span class="text-[10px] text-slate-400">ซูมดูตารางงานจริง</span>
+          <span class="text-xs font-bold text-slate-800 dark:text-slate-100">เธฃเธนเธเธ–เนเธฒเธขเธ•เนเธเธเธเธฑเธ</span>
+          <span class="text-[10px] text-slate-400">เธเธนเธกเธ”เธนเธ•เธฒเธฃเธฒเธเธเธฒเธเธเธฃเธดเธ</span>
         </button>
 
         <!-- View Excel Table Button -->
-        <button id="openExcelModalBtn" class="p-3.5 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center transition-all active:scale-95 group">
+        <button id="openExcelModalBtn" class="p-3.5 rounded-2xl bg-white dark:bg-[#161622] hover:bg-slate-50 dark:hover:bg-[#1a1926] border border-slate-200 dark:border-white/8 shadow-sm flex flex-col items-center justify-center text-center transition-all active:scale-95 group">
           <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-1.5">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
             </svg>
           </div>
-          <span class="text-xs font-bold text-slate-800">ไฟล์ Excel ต้นฉบับ</span>
-          <span class="text-[10px] text-slate-400">ตารางเวรนอกเวลา/OT</span>
+          <span class="text-xs font-bold text-slate-800 dark:text-slate-100">เนเธเธฅเน Excel เธ•เนเธเธเธเธฑเธ</span>
+          <span class="text-[10px] text-slate-400">เธ•เธฒเธฃเธฒเธเน€เธงเธฃเธเธญเธเน€เธงเธฅเธฒ/OT</span>
         </button>
       </div>
 
       <!-- Upload New Excel Button -->
-      <button id="openUploadModalBtn" class="w-full p-3 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200 shadow-sm flex items-center justify-center space-x-2 text-slate-700 text-xs font-semibold active:scale-98 transition-all">
+      <button id="openUploadModalBtn" class="w-full p-3 rounded-2xl bg-white dark:bg-[#161622] hover:bg-slate-50 dark:hover:bg-[#1a1926] border border-slate-200 dark:border-white/8 shadow-sm flex items-center justify-center space-x-2 text-slate-700 dark:text-slate-200 text-xs font-semibold active:scale-98 transition-all">
         <svg class="w-4 h-4 text-coral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
         </svg>
-        <span>อัปโหลดไฟล์ Excel ของเดือนต่อๆ ไป</span>
+        <span>เธญเธฑเธเนเธซเธฅเธ”เนเธเธฅเน Excel เธเธญเธเน€เธ”เธทเธญเธเธ•เนเธญเน เนเธ</span>
       </button>
     </section>
 
     <!-- Footer Note -->
     <footer class="text-center text-[11px] text-slate-400 pt-2 pb-6">
-      CRH-FS (Finance Schedule) • กลุ่มงานการเงินและบัญชี โรงพยาบาลเชียงรายประชานุเคราะห์
+      CRH-FS (Finance Schedule) โ€ข เธเธฅเธธเนเธกเธเธฒเธเธเธฒเธฃเน€เธเธดเธเนเธฅเธฐเธเธฑเธเธเธต เนเธฃเธเธเธขเธฒเธเธฒเธฅเน€เธเธตเธขเธเธฃเธฒเธขเธเธฃเธฐเธเธฒเธเธธเน€เธเธฃเธฒเธฐเธซเน
     </footer>
 
   </div>
@@ -370,7 +370,7 @@
 
   <!-- MODAL: IN-APP BROWSER (LINE / FB MESSENGER) & INSTALL GUIDE -->
   <div id="inAppBrowserModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity">
-    <div class="bg-white dark:bg-[#131b26] border border-slate-200 dark:border-white/10 w-full max-w-sm rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl text-center transform transition-transform">
+    <div class="bg-white dark:bg-[#161622] border border-slate-200 dark:border-white/10 w-full max-w-sm rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl text-center transform transition-transform">
       
       <!-- Top Icon & Header -->
       <div class="relative w-16 h-16 mx-auto mb-3">
@@ -378,19 +378,19 @@
           <img src="icon.svg" alt="CRH-FS Icon" class="w-full h-full object-cover">
         </div>
         <div class="absolute -top-1 -right-1 w-6 h-6 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-md animate-bounce">
-          💡
+          ๐’ก
         </div>
       </div>
 
       <div class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20 text-[10px] font-bold tracking-wide uppercase mb-1.5">
-        <span>คำแนะนำก่อนใช้งาน • ติดตั้งแอป</span>
+        <span>เธเธณเนเธเธฐเธเธณเธเนเธญเธเนเธเนเธเธฒเธ โ€ข เธ•เธดเธ”เธ•เธฑเนเธเนเธญเธ</span>
       </div>
       
       <h3 id="inAppModalTitle" class="text-base font-bold text-slate-900 dark:text-white">
-        เปิดด้วยเบราว์เซอร์เพื่อติดตั้งแอป
+        เน€เธเธดเธ”เธ”เนเธงเธขเน€เธเธฃเธฒเธงเนเน€เธเธญเธฃเนเน€เธเธทเนเธญเธ•เธดเธ”เธ•เธฑเนเธเนเธญเธ
       </h3>
       <p id="inAppModalSubtitle" class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-4 leading-relaxed">
-        เปิดจาก <span class="font-semibold text-emerald-500">LINE</span> หรือ <span class="font-semibold text-sky-500">Messenger</span> ระบบจะอยู่ในเบราว์เซอร์ของแอป ทำให้ไม่สามารถกดติดตั้งแอปได้
+        เน€เธเธดเธ”เธเธฒเธ <span class="font-semibold text-emerald-500">LINE</span> เธซเธฃเธทเธญ <span class="font-semibold text-sky-500">Messenger</span> เธฃเธฐเธเธเธเธฐเธญเธขเธนเนเนเธเน€เธเธฃเธฒเธงเนเน€เธเธญเธฃเนเธเธญเธเนเธญเธ เธ—เธณเนเธซเนเนเธกเนเธชเธฒเธกเธฒเธฃเธ–เธเธ”เธ•เธดเธ”เธ•เธฑเนเธเนเธญเธเนเธ”เน
       </p>
 
       <!-- 3-Step Visual Guide -->
@@ -402,7 +402,7 @@
             1
           </div>
           <div class="text-slate-700 dark:text-slate-200 leading-tight">
-            แตะปุ่มจุดสามจุด <span class="inline-flex items-center justify-center px-1.5 py-0.5 bg-slate-200 dark:bg-white/10 rounded font-mono font-bold text-[11px] text-slate-800 dark:text-slate-200">⋯</span> หรือไอคอนแชร์ ที่ <strong class="text-sky-600 dark:text-sky-400">มุมบนขวา</strong> ของหน้าจอ
+            เนเธ•เธฐเธเธธเนเธกเธเธธเธ”เธชเธฒเธกเธเธธเธ” <span class="inline-flex items-center justify-center px-1.5 py-0.5 bg-slate-200 dark:bg-white/10 rounded font-mono font-bold text-[11px] text-slate-800 dark:text-slate-200">โฏ</span> เธซเธฃเธทเธญเนเธญเธเธญเธเนเธเธฃเน เธ—เธตเน <strong class="text-sky-600 dark:text-sky-400">เธกเธธเธกเธเธเธเธงเธฒ</strong> เธเธญเธเธซเธเนเธฒเธเธญ
           </div>
         </div>
 
@@ -412,7 +412,7 @@
             2
           </div>
           <div class="text-slate-700 dark:text-slate-200 leading-tight">
-            เลือก <strong class="text-slate-900 dark:text-white">"เปิดด้วยเบราว์เซอร์อื่น"</strong> (หรือเปิดใน Safari สำหรับ iPhone / เปิดใน Chrome สำหรับ Android)
+            เน€เธฅเธทเธญเธ <strong class="text-slate-900 dark:text-white">"เน€เธเธดเธ”เธ”เนเธงเธขเน€เธเธฃเธฒเธงเนเน€เธเธญเธฃเนเธญเธทเนเธ"</strong> (เธซเธฃเธทเธญเน€เธเธดเธ”เนเธ Safari เธชเธณเธซเธฃเธฑเธ iPhone / เน€เธเธดเธ”เนเธ Chrome เธชเธณเธซเธฃเธฑเธ Android)
           </div>
         </div>
 
@@ -422,7 +422,7 @@
             3
           </div>
           <div class="text-slate-700 dark:text-slate-200 leading-tight">
-            กดปุ่ม <strong class="text-emerald-600 dark:text-emerald-400">"เพิ่มไปยังหน้าจอโฮม"</strong> หรือ <strong>"ติดตั้งแอป"</strong> เพื่อติดตั้งไอคอนลงบนหน้าจอมือถือ
+            เธเธ”เธเธธเนเธก <strong class="text-emerald-600 dark:text-emerald-400">"เน€เธเธดเนเธกเนเธเธขเธฑเธเธซเธเนเธฒเธเธญเนเธฎเธก"</strong> เธซเธฃเธทเธญ <strong>"เธ•เธดเธ”เธ•เธฑเนเธเนเธญเธ"</strong> เน€เธเธทเนเธญเธ•เธดเธ”เธ•เธฑเนเธเนเธญเธเธญเธเธฅเธเธเธเธซเธเนเธฒเธเธญเธกเธทเธญเธ–เธทเธญ
           </div>
         </div>
 
@@ -434,17 +434,17 @@
           <svg class="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
           </svg>
-          <span id="inAppCopyLinkText">คัดลอกลิงก์ (นำไปเปิดในเบราว์เซอร์)</span>
+          <span id="inAppCopyLinkText">เธเธฑเธ”เธฅเธญเธเธฅเธดเธเธเน (เธเธณเนเธเน€เธเธดเธ”เนเธเน€เธเธฃเธฒเธงเนเน€เธเธญเธฃเน)</span>
         </button>
 
         <button id="closeInAppModalBtn" type="button" class="w-full py-2.5 rounded-xl bg-[#0284c7] hover:bg-[#0369a1] text-white font-bold text-xs shadow-md shadow-sky-500/25 transition-all active:scale-98">
-          เข้าใจแล้ว / เข้าใช้งานตารางเวร
+          เน€เธเนเธฒเนเธเนเธฅเนเธง / เน€เธเนเธฒเนเธเนเธเธฒเธเธ•เธฒเธฃเธฒเธเน€เธงเธฃ
         </button>
       </div>
 
       <div class="mt-3 text-[11px] text-slate-400 dark:text-slate-500 flex items-center justify-center space-x-1.5">
         <input type="checkbox" id="dontShowInAppAgain" class="rounded border-slate-300 text-sky-600 focus:ring-sky-500">
-        <label for="dontShowInAppAgain" class="cursor-pointer select-none">ไม่ต้องแสดงคำแนะนำนี้อีก</label>
+        <label for="dontShowInAppAgain" class="cursor-pointer select-none">เนเธกเนเธ•เนเธญเธเนเธชเธ”เธเธเธณเนเธเธฐเธเธณเธเธตเนเธญเธตเธ</label>
       </div>
 
     </div>
@@ -456,26 +456,26 @@
       <div class="w-16 h-16 mx-auto mb-3 rounded-2xl overflow-hidden shadow-lg border border-slate-200">
         <img src="icon.svg" alt="CRH-FS Icon" class="w-full h-full object-cover">
       </div>
-      <h3 class="text-base font-bold text-slate-900">ติดตั้ง CRH-FS ลงบนมือถือ</h3>
-      <p class="text-xs text-slate-500 mt-1 mb-4">Finance Schedule (สำหรับ iPhone / iPad):</p>
+      <h3 class="text-base font-bold text-slate-900">เธ•เธดเธ”เธ•เธฑเนเธ CRH-FS เธฅเธเธเธเธกเธทเธญเธ–เธทเธญ</h3>
+      <p class="text-xs text-slate-500 mt-1 mb-4">Finance Schedule (เธชเธณเธซเธฃเธฑเธ iPhone / iPad):</p>
       
       <div class="space-y-3 text-left text-xs bg-slate-50 p-3.5 rounded-2xl border border-slate-200 mb-4">
         <div class="flex items-start space-x-2.5">
           <div class="w-5 h-5 rounded-full bg-sky-500 text-white font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">1</div>
           <div class="text-slate-700">
-            แตะปุ่ม <strong>"แชร์"</strong> (สัญลักษณ์สี่เหลี่ยมมีลูกศรชี้ขึ้น <svg class="w-3.5 h-3.5 inline text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>) ที่แถบเมนูด้านล่างของ Safari
+            เนเธ•เธฐเธเธธเนเธก <strong>"เนเธเธฃเน"</strong> (เธชเธฑเธเธฅเธฑเธเธฉเธ“เนเธชเธตเนเน€เธซเธฅเธตเนเธขเธกเธกเธตเธฅเธนเธเธจเธฃเธเธตเนเธเธถเนเธ <svg class="w-3.5 h-3.5 inline text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>) เธ—เธตเนเนเธ–เธเน€เธกเธเธนเธ”เนเธฒเธเธฅเนเธฒเธเธเธญเธ Safari
           </div>
         </div>
         <div class="flex items-start space-x-2.5">
           <div class="w-5 h-5 rounded-full bg-sky-500 text-white font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">2</div>
           <div class="text-slate-700">
-            เลื่อนลงแล้วแตะที่ <strong>"เพิ่มไปยังหน้าจอโฮม"</strong> (Add to Home Screen)
+            เน€เธฅเธทเนเธญเธเธฅเธเนเธฅเนเธงเนเธ•เธฐเธ—เธตเน <strong>"เน€เธเธดเนเธกเนเธเธขเธฑเธเธซเธเนเธฒเธเธญเนเธฎเธก"</strong> (Add to Home Screen)
           </div>
         </div>
       </div>
 
       <button id="closeIosInstallBtn" class="w-full py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition-colors">
-        เข้าใจแล้ว
+        เน€เธเนเธฒเนเธเนเธฅเนเธง
       </button>
     </div>
   </div>
@@ -485,63 +485,63 @@
     <div class="bg-white border border-slate-200 w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
         <div>
-          <h3 class="text-base font-bold text-slate-900">บันทึกวันลา / สลับวันหยุด</h3>
-          <p id="noteModalDateLabel" class="text-xs text-slate-500">วันพฤหัสบดีที่ 5 พ.ย. 2569</p>
+          <h3 class="text-base font-bold text-slate-900">เธเธฑเธเธ—เธถเธเธงเธฑเธเธฅเธฒ / เธชเธฅเธฑเธเธงเธฑเธเธซเธขเธธเธ”</h3>
+          <p id="noteModalDateLabel" class="text-xs text-slate-500">เธงเธฑเธเธเธคเธซเธฑเธชเธเธ”เธตเธ—เธตเน 5 เธ.เธข. 2569</p>
         </div>
         <button id="closeNoteModalBtn" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold">
-          ✕
+          โ•
         </button>
       </div>
 
       <div class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1.5">ประเภทการบันทึก:</label>
+          <label class="block text-xs font-semibold text-slate-600 mb-1.5">เธเธฃเธฐเน€เธ เธ—เธเธฒเธฃเธเธฑเธเธ—เธถเธ:</label>
           <div class="grid grid-cols-3 gap-2">
             <button type="button" class="note-type-pill p-2 rounded-xl border text-xs font-semibold text-center border-slate-200 active" data-type="leave">
-              วันลา
+              เธงเธฑเธเธฅเธฒ
             </button>
             <button type="button" class="note-type-pill p-2 rounded-xl border text-xs font-semibold text-center border-slate-200" data-type="swap">
-              สลับวันหยุด
+              เธชเธฅเธฑเธเธงเธฑเธเธซเธขเธธเธ”
             </button>
             <button type="button" class="note-type-pill p-2 rounded-xl border text-xs font-semibold text-center border-slate-200" data-type="general">
-              บันทึกทั่วไป
+              เธเธฑเธเธ—เธถเธเธ—เธฑเนเธงเนเธ
             </button>
           </div>
         </div>
 
         <div id="leaveReasonContainer">
-          <label class="block text-xs font-semibold text-slate-600 mb-1">เหตุผลการลา:</label>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">เน€เธซเธ•เธธเธเธฅเธเธฒเธฃเธฅเธฒ:</label>
           <select id="leaveReasonSelect" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-coral-500">
-            <option value="ลาพักร้อน">ลาพักร้อน</option>
-            <option value="ลากิจส่วนตัว">ลากิจส่วนตัว</option>
-            <option value="ลาป่วย">ลาป่วย</option>
-            <option value="ลาอบรม/สัมมนา">ลาอบรม/สัมมนา</option>
-            <option value="ลาอื่นๆ">ลาอื่นๆ</option>
+            <option value="เธฅเธฒเธเธฑเธเธฃเนเธญเธ">เธฅเธฒเธเธฑเธเธฃเนเธญเธ</option>
+            <option value="เธฅเธฒเธเธดเธเธชเนเธงเธเธ•เธฑเธง">เธฅเธฒเธเธดเธเธชเนเธงเธเธ•เธฑเธง</option>
+            <option value="เธฅเธฒเธเนเธงเธข">เธฅเธฒเธเนเธงเธข</option>
+            <option value="เธฅเธฒเธญเธเธฃเธก/เธชเธฑเธกเธกเธเธฒ">เธฅเธฒเธญเธเธฃเธก/เธชเธฑเธกเธกเธเธฒ</option>
+            <option value="เธฅเธฒเธญเธทเนเธเน">เธฅเธฒเธญเธทเนเธเน</option>
           </select>
         </div>
 
         <div id="swapTargetContainer">
-          <label class="block text-xs font-semibold text-slate-600 mb-1">สลับวันหยุดกับใคร (เช่น เต่า, แตง):</label>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">เธชเธฅเธฑเธเธงเธฑเธเธซเธขเธธเธ”เธเธฑเธเนเธเธฃ (เน€เธเนเธ เน€เธ•เนเธฒ, เนเธ•เธ):</label>
           <select id="swapTargetSelect" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-coral-500">
             <!-- Populated by JS -->
           </select>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">หมายเหตุเพิ่มเติม:</label>
-          <input type="text" id="noteTextInput" placeholder="เช่น ลาพักร้อน สลับกับเต่า" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-coral-500">
+          <label class="block text-xs font-semibold text-slate-600 mb-1">เธซเธกเธฒเธขเน€เธซเธ•เธธเน€เธเธดเนเธกเน€เธ•เธดเธก:</label>
+          <input type="text" id="noteTextInput" placeholder="เน€เธเนเธ เธฅเธฒเธเธฑเธเธฃเนเธญเธ เธชเธฅเธฑเธเธเธฑเธเน€เธ•เนเธฒ" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-coral-500">
         </div>
 
         <div class="flex items-center justify-between pt-2 border-t border-slate-100">
           <button id="deleteNoteBtn" class="text-xs font-semibold text-rose-500 hover:text-rose-600 hidden">
-            ลบรายการนี้
+            เธฅเธเธฃเธฒเธขเธเธฒเธฃเธเธตเน
           </button>
           <div class="flex space-x-2 ml-auto">
             <button id="cancelNoteBtn" class="px-3.5 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-semibold hover:bg-slate-200">
-              ยกเลิก
+              เธขเธเน€เธฅเธดเธ
             </button>
             <button id="saveNoteBtn" class="px-5 py-2 rounded-xl bg-coral-500 hover:bg-coral-600 text-white text-xs font-semibold shadow-sm">
-              บันทึก
+              เธเธฑเธเธ—เธถเธ
             </button>
           </div>
         </div>
@@ -553,9 +553,9 @@
   <div id="dayDetailModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity">
     <div class="bg-white border border-slate-200 w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl max-h-[85vh] overflow-y-auto">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
-        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">รายละเอียดงานประจำวัน</span>
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">เธฃเธฒเธขเธฅเธฐเน€เธญเธตเธขเธ”เธเธฒเธเธเธฃเธฐเธเธณเธงเธฑเธ</span>
         <button id="closeDayModalBtn" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold">
-          ✕
+          โ•
         </button>
       </div>
       <div id="dayDetailContent">
@@ -573,23 +573,23 @@
         <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
         </svg>
-        <span>ย้อนกลับ</span>
+        <span>เธขเนเธญเธเธเธฅเธฑเธ</span>
       </button>
 
       <div class="text-center px-2 min-w-0">
-        <h3 class="text-xs font-bold text-white truncate">รูปถ่ายตารางปฏิบัติงาน</h3>
-        <p class="text-[10px] text-slate-400 truncate">พฤศจิกายน 2569</p>
+        <h3 class="text-xs font-bold text-white truncate">เธฃเธนเธเธ–เนเธฒเธขเธ•เธฒเธฃเธฒเธเธเธเธดเธเธฑเธ•เธดเธเธฒเธ</h3>
+        <p class="text-[10px] text-slate-400 truncate">เธเธคเธจเธเธดเธเธฒเธขเธ 2569</p>
       </div>
 
       <!-- Close X Button -->
-      <button id="closeImageModalBtn" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center text-xs font-bold transition-all" title="ปิด">
-        ✕
+      <button id="closeImageModalBtn" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center text-xs font-bold transition-all" title="เธเธดเธ”">
+        โ•
       </button>
     </div>
 
     <!-- Pinch-to-zoom & Pan Container -->
     <div id="imagePanContainer" class="flex-1 overflow-hidden flex items-center justify-center p-2 panzoom-viewport bg-slate-950 relative touch-none">
-      <img id="scheduleImage" src="schedule_nov_2569.jpg" alt="ตารางปฏิบัติงาน เดือนพฤศจิกายน พ.ศ.2569" class="zoomable-content max-w-full max-h-full object-contain origin-center select-none pointer-events-none rounded-lg shadow-2xl">
+      <img id="scheduleImage" src="schedule_nov_2569.jpg" alt="เธ•เธฒเธฃเธฒเธเธเธเธดเธเธฑเธ•เธดเธเธฒเธ เน€เธ”เธทเธญเธเธเธคเธจเธเธดเธเธฒเธขเธ เธ.เธจ.2569" class="zoomable-content max-w-full max-h-full object-contain origin-center select-none pointer-events-none rounded-lg shadow-2xl">
     </div>
 
     <!-- Gesture Hint Bar -->
@@ -597,7 +597,7 @@
       <svg class="w-3.5 h-3.5 text-sky-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/>
       </svg>
-      <span>ใช้นิ้วถ่างซูมเข้า-ออก หรือแตะ 2 ครั้งเร็วๆ เพื่อซูมขยาย</span>
+      <span>เนเธเนเธเธดเนเธงเธ–เนเธฒเธเธเธนเธกเน€เธเนเธฒ-เธญเธญเธ เธซเธฃเธทเธญเนเธ•เธฐ 2 เธเธฃเธฑเนเธเน€เธฃเนเธงเน เน€เธเธทเนเธญเธเธนเธกเธเธขเธฒเธข</span>
     </div>
   </div>
 
@@ -609,16 +609,16 @@
         <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
         </svg>
-        <span>ย้อนกลับ</span>
+        <span>เธขเนเธญเธเธเธฅเธฑเธ</span>
       </button>
 
       <div class="text-center px-2 min-w-0">
-        <h3 class="text-xs font-bold text-slate-900 truncate">ไฟล์ Excel ตารางเวรต้นฉบับ</h3>
-        <p class="text-[10px] text-slate-500 truncate">เวรนอกเวลา พฤศจิกายน 2569</p>
+        <h3 class="text-xs font-bold text-slate-900 truncate">เนเธเธฅเน Excel เธ•เธฒเธฃเธฒเธเน€เธงเธฃเธ•เนเธเธเธเธฑเธ</h3>
+        <p class="text-[10px] text-slate-500 truncate">เน€เธงเธฃเธเธญเธเน€เธงเธฅเธฒ เธเธคเธจเธเธดเธเธฒเธขเธ 2569</p>
       </div>
 
       <button id="closeExcelModalBtn" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 flex items-center justify-center text-xs font-bold transition-all">
-        ✕
+        โ•
       </button>
     </div>
 
@@ -628,34 +628,34 @@
       <div class="flex items-center justify-between gap-2">
         <div class="flex bg-slate-200/90 p-0.5 rounded-xl text-xs font-bold">
           <button id="excelModeSummaryBtn" class="px-3 py-1.5 rounded-lg transition-all bg-white text-slate-900 shadow-sm">
-            👤 สรุป 1 บรรทัด/คน
+            ๐‘ค เธชเธฃเธธเธ 1 เธเธฃเธฃเธ—เธฑเธ”/เธเธ
           </button>
           <button id="excelModeDetailedBtn" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 hover:text-slate-900">
-            📄 แยกกะละเอียด
+            ๐“ เนเธขเธเธเธฐเธฅเธฐเน€เธญเธตเธขเธ”
           </button>
         </div>
 
         <button id="excelQuickMyProfileBtn" class="px-2.5 py-1.5 rounded-xl bg-coral-50 hover:bg-coral-100 text-coral-700 border border-coral-200 text-[11px] font-bold flex items-center space-x-1 shrink-0 active:scale-95 transition-all">
-          <span>👤 ดูของฉัน</span>
+          <span>๐‘ค เธ”เธนเธเธญเธเธเธฑเธ</span>
         </button>
       </div>
 
       <!-- Search Input -->
       <div class="relative flex items-center">
-        <input type="text" id="excelSearchInput" value="" placeholder="ค้นหาชื่อ เช่น จุรีพร, เอ็ม, ตะวัน, ดารุวรรณ..." class="w-full bg-white border border-slate-300 rounded-xl pl-8 pr-8 py-1.5 text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-coral-500">
+        <input type="text" id="excelSearchInput" value="" placeholder="เธเนเธเธซเธฒเธเธทเนเธญ เน€เธเนเธ เธเธธเธฃเธตเธเธฃ, เน€เธญเนเธก, เธ•เธฐเธงเธฑเธ, เธ”เธฒเธฃเธธเธงเธฃเธฃเธ“..." class="w-full bg-white border border-slate-300 rounded-xl pl-8 pr-8 py-1.5 text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-coral-500">
         <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
         </svg>
-        <button id="excelClearSearchBtn" class="absolute right-2.5 w-4 h-4 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 text-[10px] items-center justify-center hidden">✕</button>
+        <button id="excelClearSearchBtn" class="absolute right-2.5 w-4 h-4 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 text-[10px] items-center justify-center hidden">โ•</button>
       </div>
 
       <!-- Status / Filter strip -->
       <div class="flex items-center justify-between text-[11px] text-slate-500 px-0.5">
-        <span id="excelResultCountLabel" class="font-medium text-slate-700">กำลังแสดง 17 คน</span>
+        <span id="excelResultCountLabel" class="font-medium text-slate-700">เธเธณเธฅเธฑเธเนเธชเธ”เธ 17 เธเธ</span>
         <div id="excelDetailedFilterContainer" class="hidden items-center space-x-1.5">
           <label class="flex items-center space-x-1 cursor-pointer text-[11px] text-slate-600">
             <input type="checkbox" id="excelHideEmptyRowsCheckbox" checked class="rounded border-slate-300 text-coral-600 focus:ring-coral-500 text-xs">
-            <span>ซ่อนแถวว่าง (0 เวร)</span>
+            <span>เธเนเธญเธเนเธ–เธงเธงเนเธฒเธ (0 เน€เธงเธฃ)</span>
           </label>
         </div>
       </div>
@@ -674,8 +674,8 @@
     </div>
 
     <div class="py-2 px-3 text-center text-[11px] text-slate-500 bg-white border-t border-slate-200 shrink-0 flex items-center justify-between">
-      <span class="text-[10px] text-slate-500">💡 ม่วง=ดึก, ส้ม=บ่าย, ฟ้า=เช้า, เขียว=เซ็นทรัล</span>
-      <span class="text-[10px] text-slate-500 font-medium">เลื่อนซ้าย-ขวา ↔</span>
+      <span class="text-[10px] text-slate-500">๐’ก เธกเนเธงเธ=เธ”เธถเธ, เธชเนเธก=เธเนเธฒเธข, เธเนเธฒ=เน€เธเนเธฒ, เน€เธเธตเธขเธง=เน€เธเนเธเธ—เธฃเธฑเธฅ</span>
+      <span class="text-[10px] text-slate-500 font-medium">เน€เธฅเธทเนเธญเธเธเนเธฒเธข-เธเธงเธฒ โ”</span>
     </div>
   </div>
 
@@ -686,49 +686,49 @@
       <!-- Modal Header -->
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3 shrink-0">
         <div>
-          <h3 class="text-base font-bold text-slate-900">จัดการผู้ใช้งาน & จับคู่ชื่อ</h3>
-          <p class="text-xs text-slate-500">ฝ่ายการเงิน รพ.เชียงรายประชานุเคราะห์</p>
+          <h3 class="text-base font-bold text-slate-900">เธเธฑเธ”เธเธฒเธฃเธเธนเนเนเธเนเธเธฒเธ & เธเธฑเธเธเธนเนเธเธทเนเธญ</h3>
+          <p class="text-xs text-slate-500">เธเนเธฒเธขเธเธฒเธฃเน€เธเธดเธ เธฃเธ.เน€เธเธตเธขเธเธฃเธฒเธขเธเธฃเธฐเธเธฒเธเธธเน€เธเธฃเธฒเธฐเธซเน</p>
         </div>
         <button id="closeUserModalBtn" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold transition-colors">
-          ✕
+          โ•
         </button>
       </div>
 
       <!-- Tab Switcher (3 Tabs) -->
       <div class="flex rounded-xl bg-slate-100 dark:bg-white/5 p-1 mb-4 shrink-0 text-xs">
         <button id="tabSwitchUserBtn" class="flex-1 py-1.5 rounded-lg font-bold transition-all bg-white dark:bg-white/10 text-slate-900 dark:text-white shadow-sm">
-          ⇄ สลับตาราง
+          โ เธชเธฅเธฑเธเธ•เธฒเธฃเธฒเธ
         </button>
         <button id="tabNameMappingBtn" class="flex-1 py-1.5 rounded-lg font-bold transition-all text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">
-          👥 จับคู่ชื่อ
+          ๐‘ฅ เธเธฑเธเธเธนเนเธเธทเนเธญ
         </button>
         <button id="tabAdminBtn" class="flex-1 py-1.5 rounded-lg font-bold transition-all text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white flex items-center justify-center space-x-1">
-          <span>📊 สถิติ/แอดมิน</span>
-          <span id="adminLockBadge" class="text-[10px]">🔒</span>
+          <span>๐“ เธชเธ–เธดเธ•เธด/เนเธญเธ”เธกเธดเธ</span>
+          <span id="adminLockBadge" class="text-[10px]">๐”’</span>
         </button>
       </div>
 
       <!-- TAB 1 CONTENT: SWITCH USER -->
       <div id="tabContentSwitchUser" class="space-y-3 overflow-y-auto flex-1 pr-1">
         <div class="p-3 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/5 text-xs">
-          <div class="text-[11px] text-slate-400 dark:text-slate-400 font-semibold mb-1">ผู้ใช้ปัจจุบันที่กำลังแสดงผล:</div>
+          <div class="text-[11px] text-slate-400 dark:text-slate-400 font-semibold mb-1">เธเธนเนเนเธเนเธเธฑเธเธเธธเธเธฑเธเธ—เธตเนเธเธณเธฅเธฑเธเนเธชเธ”เธเธเธฅ:</div>
           <div class="flex items-center justify-between">
             <div>
-              <span id="currentUserDisplayLabel" class="text-sm font-bold text-slate-900 dark:text-white">จุรีพร ผาบสุวรรณ์ (เอ็ม)</span>
-              <span id="currentUserPairedBadge" class="ml-1.5 px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold">ยืนยันแล้ว</span>
+              <span id="currentUserDisplayLabel" class="text-sm font-bold text-slate-900 dark:text-white">เธเธธเธฃเธตเธเธฃ เธเธฒเธเธชเธธเธงเธฃเธฃเธ“เน (เน€เธญเนเธก)</span>
+              <span id="currentUserPairedBadge" class="ml-1.5 px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold">เธขเธทเธเธขเธฑเธเนเธฅเนเธง</span>
             </div>
             <button id="setAsMyProfileBtn" class="px-2.5 py-1 rounded-lg bg-coral-500 hover:bg-coral-600 text-white font-bold text-[11px] shadow-sm">
-              ⭐ ตั้งเป็นของฉัน
+              โญ เธ•เธฑเนเธเน€เธเนเธเธเธญเธเธเธฑเธ
             </button>
           </div>
         </div>
 
         <!-- Filter Sub-Tabs -->
         <div class="flex items-center justify-between pt-1">
-          <div class="text-xs font-bold text-slate-700 dark:text-slate-300">เลือกดูของเจ้าหน้าที่ท่านอื่น:</div>
+          <div class="text-xs font-bold text-slate-700 dark:text-slate-300">เน€เธฅเธทเธญเธเธ”เธนเธเธญเธเน€เธเนเธฒเธซเธเนเธฒเธ—เธตเนเธ—เนเธฒเธเธญเธทเนเธ:</div>
           <div class="flex space-x-1 text-[11px]">
-            <button id="filterNicknamesBtn" class="px-2 py-0.5 rounded-md font-bold bg-slate-200 dark:bg-white/10 text-slate-800 dark:text-white">ชื่อเล่น (15 คน)</button>
-            <button id="filterRealNamesBtn" class="px-2 py-0.5 rounded-md font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white">ชื่อจริง (17 คน)</button>
+            <button id="filterNicknamesBtn" class="px-2 py-0.5 rounded-md font-bold bg-slate-200 dark:bg-white/10 text-slate-800 dark:text-white">เธเธทเนเธญเน€เธฅเนเธ (15 เธเธ)</button>
+            <button id="filterRealNamesBtn" class="px-2 py-0.5 rounded-md font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white">เธเธทเนเธญเธเธฃเธดเธ (17 เธเธ)</button>
           </div>
         </div>
 
@@ -752,10 +752,10 @@
 
         <div id="mappingActionButtons" class="pt-3 border-t border-slate-100 dark:border-white/5 flex items-center justify-between">
           <button id="resetMappingBtn" class="text-xs font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white">
-            รีเซ็ตค่าเริ่มต้น
+            เธฃเธตเน€เธเนเธ•เธเนเธฒเน€เธฃเธดเนเธกเธ•เนเธ
           </button>
           <button id="saveMappingBtn" class="px-4 py-2 rounded-xl bg-coral-500 hover:bg-coral-600 text-white font-bold text-xs shadow-md shadow-coral-500/20 active:scale-95 transition-all">
-            💾 บันทึกขึ้นระบบกลาง (Cloud)
+            ๐’พ เธเธฑเธเธ—เธถเธเธเธถเนเธเธฃเธฐเธเธเธเธฅเธฒเธ (Cloud)
           </button>
         </div>
       </div>
@@ -766,16 +766,16 @@
         <!-- Section: If Locked (PIN Prompt) -->
         <div id="adminLockedView" class="p-5 text-center space-y-3 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/5">
           <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-2xl font-bold">
-            🔐
+            ๐”
           </div>
           <div>
-            <h4 class="text-sm font-bold text-slate-900 dark:text-white">เข้าสู่ระบบผู้ดูแล (คนทำเว็บ)</h4>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">ระบุรหัส PIN เพื่อดูยอดสถิติผู้ใช้งาน และสิทธิ์แก้ไขฐานข้อมูล</p>
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">เน€เธเนเธฒเธชเธนเนเธฃเธฐเธเธเธเธนเนเธ”เธนเนเธฅ (เธเธเธ—เธณเน€เธงเนเธ)</h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">เธฃเธฐเธเธธเธฃเธซเธฑเธช PIN เน€เธเธทเนเธญเธ”เธนเธขเธญเธ”เธชเธ–เธดเธ•เธดเธเธนเนเนเธเนเธเธฒเธ เนเธฅเธฐเธชเธดเธ—เธเธดเนเนเธเนเนเธเธเธฒเธเธเนเธญเธกเธนเธฅ</p>
           </div>
           <div class="max-w-[200px] mx-auto space-y-2">
-            <input type="password" id="adminPinInput" maxlength="6" placeholder="ระบุรหัส PIN" class="w-full text-center px-3 py-2 text-sm font-bold tracking-widest rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-coral-500">
+            <input type="password" id="adminPinInput" maxlength="6" placeholder="เธฃเธฐเธเธธเธฃเธซเธฑเธช PIN" class="w-full text-center px-3 py-2 text-sm font-bold tracking-widest rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-coral-500">
             <button id="adminLoginBtn" class="w-full py-2 rounded-xl bg-coral-500 hover:bg-coral-600 text-white font-bold text-xs shadow-md shadow-coral-500/20 transition-all">
-              🔓 ปลดล็อคแอดมิน
+              ๐”“ เธเธฅเธ”เธฅเนเธญเธเนเธญเธ”เธกเธดเธ
             </button>
           </div>
         </div>
@@ -786,12 +786,12 @@
           <!-- Top Stats Cards -->
           <div class="grid grid-cols-2 gap-2">
             <div class="p-3.5 rounded-2xl bg-sky-500/10 border border-sky-500/20 text-sky-900 dark:text-sky-300">
-              <div class="text-[10px] font-semibold uppercase tracking-wider text-sky-600 dark:text-sky-400">เข้าชมทั้งหมด</div>
-              <div class="text-2xl font-bold mt-1"><span id="adminTotalViews">0</span> <span class="text-xs font-normal">ครั้ง</span></div>
+              <div class="text-[10px] font-semibold uppercase tracking-wider text-sky-600 dark:text-sky-400">เน€เธเนเธฒเธเธกเธ—เธฑเนเธเธซเธกเธ”</div>
+              <div class="text-2xl font-bold mt-1"><span id="adminTotalViews">0</span> <span class="text-xs font-normal">เธเธฃเธฑเนเธ</span></div>
             </div>
             <div class="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-900 dark:text-emerald-300">
-              <div class="text-[10px] font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">ผู้ใช้งานจริง</div>
-              <div class="text-2xl font-bold mt-1"><span id="adminUniqueUsers">0</span> <span class="text-xs font-normal">คน/เครื่อง</span></div>
+              <div class="text-[10px] font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">เธเธนเนเนเธเนเธเธฒเธเธเธฃเธดเธ</div>
+              <div class="text-2xl font-bold mt-1"><span id="adminUniqueUsers">0</span> <span class="text-xs font-normal">เธเธ/เน€เธเธฃเธทเนเธญเธ</span></div>
             </div>
           </div>
 
@@ -799,18 +799,18 @@
           <div class="p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-xs flex items-center justify-between">
             <div class="flex items-center space-x-2">
               <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span class="font-bold text-slate-800 dark:text-slate-200">สถานะระบบ Cloud:</span>
+              <span class="font-bold text-slate-800 dark:text-slate-200">เธชเธ–เธฒเธเธฐเธฃเธฐเธเธ Cloud:</span>
             </div>
             <span id="adminCloudStatusBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-slate-300">
-              กำลังตรวจสอบ...
+              เธเธณเธฅเธฑเธเธ•เธฃเธงเธเธชเธญเธ...
             </span>
           </div>
 
           <!-- Recent Visitors Feed -->
           <div class="space-y-2">
             <div class="flex items-center justify-between text-xs">
-              <span class="font-bold text-slate-800 dark:text-slate-200">ประวัติการเข้าใช้งานล่าสุด</span>
-              <button id="refreshAnalyticsBtn" class="text-[11px] text-sky-500 hover:underline">รีเฟรช ↺</button>
+              <span class="font-bold text-slate-800 dark:text-slate-200">เธเธฃเธฐเธงเธฑเธ•เธดเธเธฒเธฃเน€เธเนเธฒเนเธเนเธเธฒเธเธฅเนเธฒเธชเธธเธ”</span>
+              <button id="refreshAnalyticsBtn" class="text-[11px] text-sky-500 hover:underline">เธฃเธตเน€เธเธฃเธ โบ</button>
             </div>
             <div id="adminRecentVisitorsList" class="space-y-1.5 max-h-36 overflow-y-auto pr-1 text-xs">
               <!-- Logs Injected via JS -->
@@ -820,17 +820,17 @@
           <!-- Supabase Cloud Connection Config -->
           <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-xs space-y-2.5">
             <div class="flex items-center justify-between">
-              <span class="font-bold text-slate-900 dark:text-white">⚙️ เชื่อมต่อฐานข้อมูล Supabase (ฟรี)</span>
-              <span class="text-[10px] text-emerald-500 font-bold">แนะนำ</span>
+              <span class="font-bold text-slate-900 dark:text-white">โ๏ธ เน€เธเธทเนเธญเธกเธ•เนเธญเธเธฒเธเธเนเธญเธกเธนเธฅ Supabase (เธเธฃเธต)</span>
+              <span class="text-[10px] text-emerald-500 font-bold">เนเธเธฐเธเธณ</span>
             </div>
             <p class="text-[11px] text-slate-500 dark:text-slate-400">
-              เพื่อให้ทุกคนเห็นชื่อตรงกันทันที ให้ใส่ URL และ Anon Key จาก Supabase ที่นี่:
+              เน€เธเธทเนเธญเนเธซเนเธ—เธธเธเธเธเน€เธซเนเธเธเธทเนเธญเธ•เธฃเธเธเธฑเธเธ—เธฑเธเธ—เธต เนเธซเนเนเธชเน URL เนเธฅเธฐ Anon Key เธเธฒเธ Supabase เธ—เธตเนเธเธตเน:
             </p>
             <div class="space-y-2">
-              <input type="text" id="supabaseUrlInput" placeholder="Project URL (เช่น https://xyz.supabase.co)" class="w-full px-2.5 py-1.5 text-xs rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/5 text-slate-900 dark:text-white">
+              <input type="text" id="supabaseUrlInput" placeholder="Project URL (เน€เธเนเธ https://xyz.supabase.co)" class="w-full px-2.5 py-1.5 text-xs rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/5 text-slate-900 dark:text-white">
               <input type="password" id="supabaseKeyInput" placeholder="Anon Public Key" class="w-full px-2.5 py-1.5 text-xs rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/5 text-slate-900 dark:text-white">
               <button id="saveSupabaseConfigBtn" class="w-full py-1.5 rounded-xl bg-slate-800 hover:bg-slate-900 dark:bg-white/10 dark:hover:bg-white/15 text-white font-bold text-xs transition-colors">
-                ⚡ บันทึกการเชื่อมต่อ Supabase
+                โก เธเธฑเธเธ—เธถเธเธเธฒเธฃเน€เธเธทเนเธญเธกเธ•เนเธญ Supabase
               </button>
             </div>
           </div>
@@ -838,7 +838,7 @@
           <!-- Admin Security & Exit -->
           <div class="pt-2 flex items-center justify-end border-t border-slate-100 dark:border-white/5 text-xs">
             <button id="adminLogoutBtn" class="px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-bold transition-colors">
-              🔒 ออกจากระบบแอดมิน
+              ๐”’ เธญเธญเธเธเธฒเธเธฃเธฐเธเธเนเธญเธ”เธกเธดเธ
             </button>
           </div>
 
@@ -853,17 +853,17 @@
   <div id="uploadExcelModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 hidden">
     <div class="bg-white border border-slate-200 w-full max-w-sm rounded-3xl p-5 shadow-2xl">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
-        <h3 class="text-sm font-bold text-slate-900">อัปโหลดไฟล์ Excel เดือนใหม่</h3>
-        <button id="closeUploadModalBtn" class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center text-xs font-bold">✕</button>
+        <h3 class="text-sm font-bold text-slate-900">เธญเธฑเธเนเธซเธฅเธ”เนเธเธฅเน Excel เน€เธ”เธทเธญเธเนเธซเธกเน</h3>
+        <button id="closeUploadModalBtn" class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center text-xs font-bold">โ•</button>
       </div>
       <p class="text-xs text-slate-500 mb-3">
-        เลือกหรือลากไฟล์ Excel (.xlsx, .xls หรือ .csv) ของเดือนถัดไปลงในช่องนี้ ระบบจะเชื่อมโยงข้อมูลเข้าดูได้ทันที
+        เน€เธฅเธทเธญเธเธซเธฃเธทเธญเธฅเธฒเธเนเธเธฅเน Excel (.xlsx, .xls เธซเธฃเธทเธญ .csv) เธเธญเธเน€เธ”เธทเธญเธเธ–เธฑเธ”เนเธเธฅเธเนเธเธเนเธญเธเธเธตเน เธฃเธฐเธเธเธเธฐเน€เธเธทเนเธญเธกเนเธขเธเธเนเธญเธกเธนเธฅเน€เธเนเธฒเธ”เธนเนเธ”เนเธ—เธฑเธเธ—เธต
       </p>
       <div id="dropZone" class="border-2 border-dashed border-slate-200 hover:border-coral-400 rounded-2xl p-6 text-center transition-colors cursor-pointer mb-3 bg-slate-50">
         <svg class="w-8 h-8 mx-auto text-slate-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
         </svg>
-        <span class="text-xs font-medium text-slate-600 block">คลิกหรือลากไฟล์มาวางที่นี่</span>
+        <span class="text-xs font-medium text-slate-600 block">เธเธฅเธดเธเธซเธฃเธทเธญเธฅเธฒเธเนเธเธฅเนเธกเธฒเธงเธฒเธเธ—เธตเนเธเธตเน</span>
         <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" class="hidden">
       </div>
       <div id="uploadStatus" class="text-xs text-center min-h-[20px]"></div>
@@ -872,15 +872,15 @@
 
   <!-- MODAL: FIRST TIME ONBOARDING (WELCOME & USER SELECTION) -->
   <div id="onboardingModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-    <div class="bg-white dark:bg-[#131b26] border border-slate-200 dark:border-white/10 w-full max-w-sm rounded-3xl p-6 shadow-2xl flex flex-col max-h-[90vh]">
+    <div class="bg-white dark:bg-[#161622] border border-slate-200 dark:border-white/10 w-full max-w-sm rounded-3xl p-6 shadow-2xl flex flex-col max-h-[90vh]">
       
       <!-- Header with Icon -->
       <div class="text-center pb-4 border-b border-slate-100 dark:border-white/5">
         <div class="w-14 h-14 mx-auto mb-2 rounded-2xl bg-gradient-to-tr from-coral-500 to-rose-400 text-white flex items-center justify-center text-2xl shadow-lg shadow-coral-500/25">
-          👋
+          ๐‘
         </div>
-        <h3 class="text-lg font-bold text-slate-900 dark:text-white">ยินดีต้อนรับสู่ CRH-FS</h3>
-        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">ระบบตารางเวรฝ่ายการเงิน รพ.เชียงรายฯ</p>
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">เธขเธดเธเธ”เธตเธ•เนเธญเธเธฃเธฑเธเธชเธนเน CRH-FS</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">เธฃเธฐเธเธเธ•เธฒเธฃเธฒเธเน€เธงเธฃเธเนเธฒเธขเธเธฒเธฃเน€เธเธดเธ เธฃเธ.เน€เธเธตเธขเธเธฃเธฒเธขเธฏ</p>
       </div>
 
       <!-- Content: Select Profile & Match Real Name -->
@@ -890,10 +890,10 @@
         <div class="space-y-1.5">
           <label class="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center space-x-1.5">
             <span class="w-4 h-4 rounded-full bg-coral-500 text-white text-[10px] font-bold flex items-center justify-center">1</span>
-            <span>คุณคือเจ้าหน้าที่ท่านใด? (เลือกชื่อเล่น):</span>
+            <span>เธเธธเธ“เธเธทเธญเน€เธเนเธฒเธซเธเนเธฒเธ—เธตเนเธ—เนเธฒเธเนเธ”? (เน€เธฅเธทเธญเธเธเธทเนเธญเน€เธฅเนเธ):</span>
           </label>
           <select id="onboardingNicknameSelect" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-white/10 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-coral-500">
-            <option value="" class="bg-white dark:bg-[#131b26] text-slate-900 dark:text-slate-100">-- กรุณาเลือกชื่อเล่นของคุณ --</option>
+            <option value="" class="bg-white dark:bg-[#161622] text-slate-900 dark:text-slate-100">-- เธเธฃเธธเธ“เธฒเน€เธฅเธทเธญเธเธเธทเนเธญเน€เธฅเนเธเธเธญเธเธเธธเธ“ --</option>
             <!-- Injected via JS -->
           </select>
         </div>
@@ -902,20 +902,20 @@
         <div id="onboardingRealNameSection" class="space-y-1.5 hidden">
           <label class="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center space-x-1.5">
             <span class="w-4 h-4 rounded-full bg-sky-500 text-white text-[10px] font-bold flex items-center justify-center">2</span>
-            <span>จับคู่กับชื่อจริงของคุณ (ในตาราง Excel):</span>
+            <span>เธเธฑเธเธเธนเนเธเธฑเธเธเธทเนเธญเธเธฃเธดเธเธเธญเธเธเธธเธ“ (เนเธเธ•เธฒเธฃเธฒเธ Excel):</span>
           </label>
           <select id="onboardingRealNameSelect" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-white/10 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500">
-            <option value="" class="bg-white dark:bg-[#131b26] text-slate-900 dark:text-slate-100">-- เลือกชื่อ-นามสกุลจริง --</option>
+            <option value="" class="bg-white dark:bg-[#161622] text-slate-900 dark:text-slate-100">-- เน€เธฅเธทเธญเธเธเธทเนเธญ-เธเธฒเธกเธชเธเธธเธฅเธเธฃเธดเธ --</option>
             <!-- Injected via JS -->
           </select>
           <p id="onboardingPairedNotice" class="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium hidden">
-            ✓ ชื่อนี้ถูกจับคู่ไว้แล้ว
+            โ“ เธเธทเนเธญเธเธตเนเธ–เธนเธเธเธฑเธเธเธนเนเนเธงเนเนเธฅเนเธง
           </p>
         </div>
 
         <!-- Info Card -->
         <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-900 dark:text-amber-300 text-[11px] leading-relaxed">
-          💡 <strong>หมายเหตุ:</strong> ระบบจะจดจำโปรไฟล์นี้ลงในเครื่องของคุณ เมื่อเปิดใช้งานครั้งต่อไป จะแสดงตารางของคุณทันที และข้อมูลการจับคู่จะซิงค์ให้เพื่อนร่วมงานเห็นตรงกันด้วยครับ
+          ๐’ก <strong>เธซเธกเธฒเธขเน€เธซเธ•เธธ:</strong> เธฃเธฐเธเธเธเธฐเธเธ”เธเธณเนเธเธฃเนเธเธฅเนเธเธตเนเธฅเธเนเธเน€เธเธฃเธทเนเธญเธเธเธญเธเธเธธเธ“ เน€เธกเธทเนเธญเน€เธเธดเธ”เนเธเนเธเธฒเธเธเธฃเธฑเนเธเธ•เนเธญเนเธ เธเธฐเนเธชเธ”เธเธ•เธฒเธฃเธฒเธเธเธญเธเธเธธเธ“เธ—เธฑเธเธ—เธต เนเธฅเธฐเธเนเธญเธกเธนเธฅเธเธฒเธฃเธเธฑเธเธเธนเนเธเธฐเธเธดเธเธเนเนเธซเนเน€เธเธทเนเธญเธเธฃเนเธงเธกเธเธฒเธเน€เธซเนเธเธ•เธฃเธเธเธฑเธเธ”เนเธงเธขเธเธฃเธฑเธ
         </div>
 
       </div>
@@ -923,7 +923,7 @@
       <!-- Action Button -->
       <div class="pt-3 border-t border-slate-100 dark:border-white/5 space-y-2">
         <button id="onboardingSubmitBtn" disabled class="w-full py-2.5 rounded-xl bg-slate-200 dark:bg-white/10 text-slate-400 dark:text-slate-500 font-bold text-xs cursor-not-allowed transition-all">
-          กรุณาเลือกชื่อของคุณก่อน
+          เธเธฃเธธเธ“เธฒเน€เธฅเธทเธญเธเธเธทเนเธญเธเธญเธเธเธธเธ“เธเนเธญเธ
         </button>
       </div>
 

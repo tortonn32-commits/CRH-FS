@@ -1,5 +1,5 @@
 /* ==========================================================================
-   CRH-FS • iOS / Apple Native Mobile Design System
+   CRH-FS • Prism Dark Mode Design System
    Font: Sukhumvit Set (Native iOS) + Anuphan (Cadson Demak) + SF Pro
    ========================================================================== */
 
@@ -27,14 +27,14 @@
 }
 
 /* ==========================================================================
-   DARK MODE SYSTEM (LINEAR.APP / APPLE HEALTH STYLE)
-   Deep Slate: #0b0f17 | Surface Cards: #131b26 | Ultra-subtle borders
+   DARK MODE SYSTEM (PRISM STYLE)
+   Deep Near-Black: #0b0b0e | Surface Cards: #161622 | Indigo Accents
    ========================================================================== */
 html.dark {
-  --bg-app: #0b0f17;
-  --bg-card: #131b26;
-  --bg-card-subtle: #182232;
-  --border-card: rgba(255, 255, 255, 0.07);
+  --bg-app: #0b0b0e;
+  --bg-card: #161622;
+  --bg-card-subtle: #1a1926;
+  --border-card: rgba(255, 255, 255, 0.08);
   --border-subtle: rgba(255, 255, 255, 0.04);
   
   --color-text-main: #f8fafc;
@@ -61,12 +61,13 @@ body {
   overflow-x: hidden;
 }
 
+/* Prism Dark Body — Deep near-black with strong indigo/violet radial glow at top */
 html.dark body {
-  background-color: #0b0f17;
+  background-color: #0b0b0e;
   background-image: 
-    radial-gradient(120% 80% at 50% -20%, rgba(56, 189, 248, 0.06) 0%, transparent 60%),
-    radial-gradient(80% 50% at 90% 20%, rgba(244, 63, 94, 0.04) 0%, transparent 50%),
-    radial-gradient(80% 60% at 10% 80%, rgba(168, 85, 247, 0.04) 0%, transparent 50%);
+    radial-gradient(100% 60% at 50% -10%, rgba(99, 102, 241, 0.18) 0%, rgba(139, 92, 246, 0.10) 40%, transparent 70%),
+    radial-gradient(60% 40% at 80% 10%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
+    radial-gradient(50% 35% at 15% 85%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
   background-attachment: fixed;
 }
 
@@ -102,7 +103,35 @@ button:active, .interactive-btn:active {
 }
 
 /* ==========================================================================
-   CARDS & SURFACES (LINEAR.APP STYLE)
+   PRISM GLASS COMPONENTS
+   ========================================================================== */
+
+/* Reusable Prism glass surface */
+.prism-glass {
+  background: rgba(22, 22, 34, 0.80);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Header purple/indigo radial glow overlay */
+.prism-header-glow {
+  position: relative;
+}
+.prism-header-glow::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: -20px;
+  right: -20px;
+  height: 200px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.20) 0%, rgba(139, 92, 246, 0.10) 50%, transparent 75%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ==========================================================================
+   CARDS & SURFACES (PRISM STYLE)
    ========================================================================== */
 .ui-card {
   background: var(--bg-card);
@@ -113,11 +142,14 @@ button:active, .interactive-btn:active {
 }
 
 html.dark .ui-card {
-  background: rgba(19, 27, 38, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05), 0 8px 28px -4px rgba(0, 0, 0, 0.45);
+  background: rgba(22, 22, 34, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
+    0 8px 32px -4px rgba(0, 0, 0, 0.55),
+    0 0 0 0.5px rgba(99, 102, 241, 0.05);
 }
 
 /* HERO TODAY CARD */
@@ -132,14 +164,17 @@ html.dark .ui-card {
 }
 
 html.dark .ui-card-today {
-  background: rgba(19, 27, 38, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 12px 36px -6px rgba(0, 0, 0, 0.55);
+  background: rgba(22, 22, 34, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+    0 12px 40px -6px rgba(0, 0, 0, 0.60),
+    0 0 30px rgba(99, 102, 241, 0.15);
 }
 
-/* Subtle Top Accent Sheen on Today Card */
+/* Indigo top accent sheen on Today Card (dark) */
 .ui-card-today::before {
   content: '';
   position: absolute;
@@ -151,8 +186,17 @@ html.dark .ui-card-today {
   opacity: 0.8;
 }
 
+html.dark .ui-card-today::before {
+  background: linear-gradient(90deg, transparent 5%, rgba(99, 102, 241, 0.8) 50%, transparent 95%);
+  opacity: 1;
+}
+
 .ui-card-today.card-night-shift::before {
   background: linear-gradient(90deg, transparent 5%, rgba(168, 85, 247, 0.7) 50%, transparent 95%);
+}
+
+html.dark .ui-card-today.card-night-shift::before {
+  background: linear-gradient(90deg, transparent 5%, rgba(168, 85, 247, 0.9) 50%, transparent 95%);
 }
 
 /* HERO TOMORROW CARD */
@@ -165,11 +209,11 @@ html.dark .ui-card-today {
 }
 
 html.dark .ui-card-tomorrow {
-  background: rgba(19, 27, 38, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05), 0 8px 24px -4px rgba(0, 0, 0, 0.4);
+  background: rgba(22, 22, 34, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05), 0 8px 24px -4px rgba(0, 0, 0, 0.45);
 }
 
 /* ==========================================================================
@@ -209,26 +253,26 @@ html.dark .ui-card-tomorrow {
 }
 
 html.dark .seven-day-card {
-  background: rgba(19, 27, 38, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.04), 0 4px 14px rgba(0, 0, 0, 0.3);
+  background: rgba(22, 22, 34, 0.80);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.04), 0 4px 14px rgba(0, 0, 0, 0.35);
   color: #f1f5f9;
 }
 
 html.dark .seven-day-card:hover {
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(99, 102, 241, 0.3);
   transform: translateY(-2px);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 8px 20px rgba(0, 0, 0, 0.45);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 8px 20px rgba(0, 0, 0, 0.45), 0 0 12px rgba(99, 102, 241, 0.08);
 }
 
-/* 7-Day Card Status Styles (Minimalist Subtle Touches) */
+/* 7-Day Card Status Styles */
 .seven-day-card.card-today {
   border-color: rgba(244, 63, 94, 0.35) !important;
 }
 
 html.dark .seven-day-card.card-today {
-  border-color: rgba(56, 189, 248, 0.5) !important;
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 0 14px rgba(56, 189, 248, 0.15) !important;
+  border-color: rgba(99, 102, 241, 0.50) !important;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 0 18px rgba(99, 102, 241, 0.20) !important;
 }
 
 .seven-day-card.card-night-shift {
@@ -241,7 +285,7 @@ html.dark .seven-day-card.card-night-shift {
 }
 
 /* ==========================================================================
-   MONTH CALENDAR (MODERN MINIMALIST • NO SOLID BLUE BLOCK)
+   MONTH CALENDAR (PRISM MINIMALIST)
    ========================================================================== */
 .cal-month-cell {
   aspect-ratio: 1;
@@ -298,7 +342,7 @@ html.dark .cal-cell-off {
   box-shadow: 0 0 10px rgba(244, 63, 94, 0.15);
 }
 
-/* Night Shift: Subtle Violet Pill with Glow */
+/* Night Shift: Violet Pill with Glow */
 .cal-cell-night {
   background-color: rgba(168, 85, 247, 0.15) !important;
   color: #7e22ce !important;
@@ -313,7 +357,7 @@ html.dark .cal-cell-night {
   font-weight: 700 !important;
 }
 
-/* Selected Day (Apple Health Signature Style) */
+/* Selected Day — Prism Indigo (replaces white/black) */
 .cal-cell-today {
   background-color: #0f172a !important;
   color: #ffffff !important;
@@ -321,17 +365,17 @@ html.dark .cal-cell-night {
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25) !important;
 }
 html.dark .cal-cell-today {
-  background-color: #ffffff !important;
-  color: #0b0f17 !important;
+  background-color: #6366f1 !important;
+  color: #ffffff !important;
   font-weight: 700 !important;
-  box-shadow: 0 0 16px rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.50) !important;
 }
 
 /* ==========================================================================
-   MODALS & DIALOGS (LINEAR.APP STYLE)
+   MODALS & DIALOGS (PRISM DARK STYLE)
    ========================================================================== */
 html.dark .bg-white {
-  background-color: #131b26 !important;
+  background-color: #161622 !important;
   color: #f8fafc;
 }
 
@@ -360,24 +404,71 @@ html.dark .hover\:bg-slate-100:hover {
   background-color: rgba(255, 255, 255, 0.09) !important;
 }
 
-/* Form Controls */
+/* Form Controls — Prism */
 html.dark input, 
 html.dark select, 
 html.dark textarea {
-  background-color: #0b0f17 !important;
+  background-color: #0b0b0e !important;
   color: #f8fafc !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.10) !important;
 }
 
 /* Sticky Excel Table */
 html.dark thead th.sticky-col-1 {
-  background-color: #0b0f17 !important;
+  background-color: #0b0b0e !important;
 }
 html.dark tbody td.sticky-col-1 {
-  background-color: #131b26 !important;
+  background-color: #161622 !important;
 }
 
-/* Custom Scrollbars */
+/* ==========================================================================
+   PWA INSTALL BANNER (INDIGO GRADIENT)
+   ========================================================================== */
+.pwa-install-banner {
+  background: linear-gradient(135deg, #6366f1 0%, #7c3aed 100%);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+}
+
+/* ==========================================================================
+   TOOLBAR BUTTONS (PRISM STYLE)
+   ========================================================================== */
+html.dark #themeToggleBtn,
+html.dark #openUserModalBtn {
+  background-color: #1a1926 !important;
+  border-color: rgba(255, 255, 255, 0.10) !important;
+  border-radius: 10px !important;
+}
+
+html.dark #themeToggleBtn:hover,
+html.dark #openUserModalBtn:hover {
+  background-color: #21203a !important;
+  border-color: rgba(99, 102, 241, 0.30) !important;
+}
+
+/* Verification tool buttons (dark prism style) */
+html.dark #openImageModalBtn,
+html.dark #openExcelModalBtn,
+html.dark #openUploadModalBtn {
+  background-color: #161622 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: #f1f5f9 !important;
+}
+
+html.dark #openImageModalBtn:hover,
+html.dark #openExcelModalBtn:hover,
+html.dark #openUploadModalBtn:hover {
+  background-color: #1a1926 !important;
+  border-color: rgba(99, 102, 241, 0.25) !important;
+}
+
+html.dark #openImageModalBtn span,
+html.dark #openExcelModalBtn span {
+  color: #f1f5f9 !important;
+}
+
+/* ==========================================================================
+   CUSTOM SCROLLBARS
+   ========================================================================== */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -396,6 +487,10 @@ html.dark tbody td.sticky-col-1 {
 ::-webkit-scrollbar-thumb {
   background: rgba(148, 163, 184, 0.3);
   border-radius: 9999px;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.25);
 }
 
 /* Panzoom Viewport */
@@ -433,6 +528,6 @@ select option {
 }
 
 html.dark select option {
-  background-color: #131b26 !important;
+  background-color: #161622 !important;
   color: #f8fafc !important;
 }
