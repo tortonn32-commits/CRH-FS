@@ -1818,20 +1818,20 @@
 
     // Populate nicknames
     if (el.onboardingNicknameSelect) {
-      let nickHtml = `<option value="">-- กรุณาเลือกชื่อเล่นของคุณ --</option>`;
+      let nickHtml = `<option value="" class="bg-white dark:bg-[#131b26] text-slate-900 dark:text-slate-100">-- กรุณาเลือกชื่อเล่นของคุณ --</option>`;
       const currentMap = window.getNameMapping();
       window.NICKNAME_LIST.forEach(nick => {
         const paired = currentMap[nick] ? `(จับคู่: คุณ${currentMap[nick]})` : `(ยังไม่จับคู่)`;
-        nickHtml += `<option value="${nick}">คุณ${nick} ${paired}</option>`;
+        nickHtml += `<option value="${nick}" class="bg-white dark:bg-[#131b26] text-slate-900 dark:text-slate-100">คุณ${nick} ${paired}</option>`;
       });
       el.onboardingNicknameSelect.innerHTML = nickHtml;
     }
 
     // Populate real names
     if (el.onboardingRealNameSelect) {
-      let realHtml = `<option value="">-- เลือกชื่อ-นามสกุลจริงของคุณ --</option>`;
+      let realHtml = `<option value="" class="bg-white dark:bg-[#131b26] text-slate-900 dark:text-slate-100">-- เลือกชื่อ-นามสกุลจริงของคุณ --</option>`;
       window.REAL_NAME_LIST.forEach(rn => {
-        realHtml += `<option value="${rn}">คุณ${rn}</option>`;
+        realHtml += `<option value="${rn}" class="bg-white dark:bg-[#131b26] text-slate-900 dark:text-slate-100">คุณ${rn}</option>`;
       });
       el.onboardingRealNameSelect.innerHTML = realHtml;
     }
@@ -1924,10 +1924,10 @@
       const row = document.createElement('div');
       row.className = 'p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 flex flex-col space-y-1.5';
 
-      let optionsHtml = `<option value="">(ยังไม่ระบุชื่อจริง)</option>`;
+      let optionsHtml = `<option value="" class="bg-white dark:bg-[#131b26] text-slate-900 dark:text-slate-100">(ยังไม่ระบุชื่อจริง)</option>`;
       window.REAL_NAME_LIST.forEach(rn => {
         const isSelected = (rn === assignedRealName);
-        optionsHtml += `<option value="${rn}" ${isSelected ? 'selected' : ''}>${rn}</option>`;
+        optionsHtml += `<option value="${rn}" class="bg-white dark:bg-[#131b26] text-slate-900 dark:text-slate-100" ${isSelected ? 'selected' : ''}>${rn}</option>`;
       });
 
       let controlHtml = '';
