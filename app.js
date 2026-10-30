@@ -770,7 +770,7 @@
       if (tomorrowNightDuty) {
         // PRIORITIZE NIGHT SHIFT ON TOMORROW'S CARD!
         el.tomorrowRegularStation.innerHTML = `
-          <div class="flex items-center space-x-2 text-purple-600 dark:text-purple-300 font-extrabold text-xl">
+          <div class="flex items-center space-x-2 text-purple-600 dark:text-purple-300 font-bold text-lg">
             <span>🌙</span>
             <span>${tomorrowNightDuty.name}</span>
             <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-600 text-white">เข้างานเที่ยงคืน</span>
@@ -984,8 +984,8 @@
       if (hasNight) {
         cell.innerHTML = `
           <div class="flex flex-col items-center justify-center leading-none">
-            <span class="font-black">${day.date}</span>
-            <span class="text-[8px] font-black text-purple-900 tracking-tighter mt-0.5">🌙ดึก</span>
+            <span class="font-bold">${day.date}</span>
+            <span class="text-[8px] font-bold text-purple-700 dark:text-purple-300 tracking-tighter mt-0.5">🌙ดึก</span>
           </div>
         `;
       } else {
@@ -1041,7 +1041,7 @@
         pill.className = `p-2 rounded-xl border text-center ${st.color}`;
         pill.innerHTML = `
           <div class="text-[10px] font-semibold opacity-80 truncate">${st.name}</div>
-          <div class="text-sm font-black font-mono mt-0.5">${count} <span class="text-[10px] font-normal">วัน</span></div>
+          <div class="text-sm font-bold font-mono mt-0.5">${count} <span class="text-[10px] font-normal">วัน</span></div>
         `;
         el.stationPillsGrid.appendChild(pill);
       });
@@ -1651,7 +1651,7 @@
           subNoticeHtml = `
             <div class="mt-2.5 p-3 rounded-2xl bg-sky-500/10 dark:bg-sky-500/15 border border-sky-500/20 text-sky-900 dark:text-sky-200 text-xs font-semibold flex items-center space-x-2">
               <span class="w-1.5 h-1.5 rounded-full bg-sky-500 shrink-0"></span>
-              <span>ปฏิบัติงานแทน${replacedName ? ` : <strong class="text-sky-700 dark:text-sky-300 font-bold">${replacedName}</strong>` : ''} ➔ ไปเข้า <strong class="text-sky-800 dark:text-sky-200 font-extrabold">${target}</strong></span>
+              <span>ปฏิบัติงานแทน${replacedName ? ` : <strong class="text-sky-700 dark:text-sky-300 font-bold">${replacedName}</strong>` : ''} ➔ ไปเข้า <strong class="text-sky-800 dark:text-sky-200 font-bold">${target}</strong></span>
             </div>
           `;
         } else if (sub && sub.isViewerNightShift) {
@@ -1667,7 +1667,7 @@
         return `
           <div class="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5">
             <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">เวลาปกติ</div>
-            <div class="text-lg font-extrabold text-slate-900 dark:text-white mt-1">${day.regularDuty.title}</div>
+            <div class="text-lg font-bold text-slate-900 dark:text-white mt-1">${day.regularDuty.title}</div>
             <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-medium">${day.regularDuty.location}</div>
             ${subNoticeHtml}
           </div>
