@@ -413,12 +413,74 @@ html.dark textarea {
   border-color: rgba(255, 255, 255, 0.10) !important;
 }
 
-/* Sticky Excel Table */
-html.dark thead th.sticky-col-1 {
-  background-color: #0b0b0e !important;
+/* Sticky Excel Table (Pin วันที่ & ชื่อคน) */
+#excelScrollContainer {
+  position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#excelMainTable {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  min-width: 100%;
+}
+
+/* 1. Header Sticky (Pin แถววันที่ ด้านบน) */
+#excelTableHead th {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 20 !important;
+  background-color: #0f172a; /* Slate 900 */
+}
+
+/* 2. Column Sticky (Pin คอลัมน์ชื่อคน ด้านซ้าย) */
+.sticky-col-1 {
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 10 !important;
+}
+
+tbody td.sticky-col-1 {
+  background-color: #ffffff;
+  box-shadow: 2px 0 6px -1px rgba(0, 0, 0, 0.08);
+}
+tbody tr[class*="bg-amber-50"] td.sticky-col-1 {
+  background-color: #fef3c7 !important;
+}
+
+/* 3. Top-Left Corner (Pin ทั้งแถวบนและคอลัมน์ซ้าย) */
+#excelTableHead th.sticky-col-1 {
+  position: sticky !important;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 35 !important;
+  background-color: #0f172a !important;
+  box-shadow: 2px 2px 6px -1px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark mode adjustments for Sticky Table */
+html.dark #excelTableHead th {
+  background-color: #161622 !important;
+  color: #f8fafc !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+html.dark #excelTableHead th.sticky-col-1 {
+  background-color: #1a1926 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 2px 2px 8px -1px rgba(0, 0, 0, 0.4);
 }
 html.dark tbody td.sticky-col-1 {
   background-color: #161622 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 2px 0 6px -1px rgba(0, 0, 0, 0.35);
+}
+html.dark tbody tr[class*="bg-amber-50"] td.sticky-col-1 {
+  background-color: #2b2316 !important;
+  color: #fde68a !important;
+}
+html.dark tbody td {
+  border-color: rgba(255, 255, 255, 0.06) !important;
 }
 
 /* ==========================================================================
