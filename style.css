@@ -1,6 +1,6 @@
 /* ==========================================================================
-   CRH FS - Senior UI/UX Designer System
-   Reference Language: Premium Clean White UI & Luxury Dark Neon Mode
+   CRH-FS • Premium Mobile Design System
+   Aesthetic: Ultra-clean, modern, minimalist luxury (Linear.app / Apple Health)
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
@@ -9,61 +9,45 @@
   --font-sans: 'Prompt', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   
-  /* Backgrounds */
-  --bg-app: #f6f7f9;
+  /* Light Mode Palette */
+  --bg-app: #f8fafc;
   --bg-card: #ffffff;
-  --bg-subtle: #f8f9fa;
+  --bg-card-subtle: #f1f5f9;
+  --border-card: rgba(15, 23, 42, 0.08);
+  --border-subtle: rgba(15, 23, 42, 0.04);
   
-  /* Primary & Accent Palette */
-  --color-coral: #ff5757;
-  --color-coral-hover: #f43f5e;
-  --color-coral-light: #fff0f1;
-  
-  --color-green: #10b981;
-  --color-green-light: #ecfdf5;
-  
-  --color-yellow: #f59e0b;
-  --color-yellow-light: #fffbeb;
-  
-  --color-blue: #3b82f6;
-  --color-blue-light: #eff6ff;
-  
-  --color-purple: #8b5cf6;
-  --color-purple-light: #f5f3ff;
-  
-  --color-dark: #1e293b;
   --color-text-main: #0f172a;
-  --color-text-secondary: #64748b;
+  --color-text-secondary: #475569;
   --color-text-muted: #94a3b8;
   
-  --border-subtle: #f1f3f5;
-  --border-card: #eef0f3;
+  --color-coral: #f43f5e;
+  --color-blue: #0284c7;
+  --color-amber: #d97706;
+  --color-purple: #7e22ce;
 }
 
 /* ==========================================================================
-   PREMIUM DARK MODE THEME SYSTEM (IMAGE 1 & 2 REFERENCE)
+   DARK MODE SYSTEM (LINEAR.APP / APPLE HEALTH STYLE)
+   Deep Slate: #0b0f17 | Surface Cards: #131b26 | Ultra-subtle borders
    ========================================================================== */
 html.dark {
-  --bg-app: #090d16;
-  --bg-card: #131b2e;
-  --bg-subtle: #0f172a;
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-card: rgba(255, 255, 255, 0.1);
+  --bg-app: #0b0f17;
+  --bg-card: #131b26;
+  --bg-card-subtle: #182232;
+  --border-card: rgba(255, 255, 255, 0.07);
+  --border-subtle: rgba(255, 255, 255, 0.04);
+  
   --color-text-main: #f8fafc;
   --color-text-secondary: #94a3b8;
   --color-text-muted: #64748b;
+  
+  --color-coral: #fb7185;
+  --color-blue: #38bdf8;
+  --color-amber: #fbbf24;
+  --color-purple: #c084fc;
 }
 
-html.dark body {
-  background-color: #090d16;
-  background-image: 
-    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(0, 210, 255, 0.12), transparent 70%),
-    radial-gradient(ellipse 60% 50% at 85% 15%, rgba(255, 75, 114, 0.1), transparent 60%),
-    radial-gradient(ellipse 70% 60% at 50% 100%, rgba(168, 85, 247, 0.08), transparent 70%);
-  background-attachment: fixed;
-  color: #f8fafc;
-}
-
+/* Document Body */
 body {
   font-family: var(--font-sans);
   background-color: var(--bg-app);
@@ -74,119 +58,191 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color 0.25s ease, color 0.25s ease;
+  overflow-x: hidden;
 }
 
-/* PWA Install Banner Style (Matching User Reference Image) */
-.pwa-install-banner {
-  background: linear-gradient(145deg, #090d16 0%, #0d1527 100%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.35);
-  animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+html.dark body {
+  background-color: #0b0f17;
+  background-image: 
+    radial-gradient(120% 80% at 50% -20%, rgba(56, 189, 248, 0.06) 0%, transparent 60%),
+    radial-gradient(80% 50% at 90% 20%, rgba(244, 63, 94, 0.04) 0%, transparent 50%),
+    radial-gradient(80% 60% at 10% 80%, rgba(168, 85, 247, 0.04) 0%, transparent 50%);
+  background-attachment: fixed;
 }
 
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+/* ==========================================================================
+   ANIMATIONS & MICRO-INTERACTIONS
+   ========================================================================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Base Card Style (Reference Image 3: Soft Rounded White Cards) */
+.animate-fade-in-up {
+  animation: fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.stagger-1 { animation-delay: 0.03s; }
+.stagger-2 { animation-delay: 0.09s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.21s; }
+
+/* Interactive Micro-Press Effect */
+button, .interactive-btn {
+  transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.12s ease;
+}
+button:active, .interactive-btn:active {
+  transform: scale(0.96);
+}
+
+/* ==========================================================================
+   CARDS & SURFACES (LINEAR.APP STYLE)
+   ========================================================================== */
 .ui-card {
   background: var(--bg-card);
   border: 1px solid var(--border-card);
+  border-radius: 20px;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.03);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+html.dark .ui-card {
+  background: rgba(19, 27, 38, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05), 0 8px 28px -4px rgba(0, 0, 0, 0.45);
+}
+
+/* HERO TODAY CARD */
+.ui-card-today {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
   border-radius: 24px;
-  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.03), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 24px -2px rgba(15, 23, 42, 0.05);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.dark .ui-card-today {
+  background: rgba(19, 27, 38, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 12px 36px -6px rgba(0, 0, 0, 0.55);
+}
+
+/* Subtle Top Accent Sheen on Today Card */
+.ui-card-today::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 5%, rgba(244, 63, 94, 0.4) 50%, transparent 95%);
+  opacity: 0.8;
+}
+
+.ui-card-today.card-night-shift::before {
+  background: linear-gradient(90deg, transparent 5%, rgba(168, 85, 247, 0.7) 50%, transparent 95%);
+}
+
+/* HERO TOMORROW CARD */
+.ui-card-tomorrow {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 20px;
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.03);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.ui-card:hover {
-  box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.06);
+html.dark .ui-card-tomorrow {
+  background: rgba(19, 27, 38, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05), 0 8px 24px -4px rgba(0, 0, 0, 0.4);
 }
 
-.ui-card-today {
-  background: var(--bg-card);
-  border: 2px solid #fda4af; /* Rose / Coral 300 */
-  border-radius: 28px;
-  box-shadow: 0 8px 30px -4px rgba(244, 63, 94, 0.12);
-  transition: all 0.2s ease;
-}
-
-.ui-card-tomorrow {
-  background: var(--bg-card);
-  border: 2px solid #7dd3fc; /* Sky Blue 300 */
-  border-radius: 28px;
-  box-shadow: 0 6px 24px -3px rgba(2, 132, 199, 0.1);
-  transition: all 0.2s ease;
-}
-
-.ui-card-today.card-night-shift,
-.ui-card-tomorrow.card-night-shift {
-  border: 2px solid #a855f7 !important;
-  box-shadow: 0 8px 30px -4px rgba(168, 85, 247, 0.25) !important;
-}
-
-/* 7 Days Forward Block (Matching Image 1 Reference) */
+/* ==========================================================================
+   7-DAY SCROLL STRIP (CLEAN & COMPACT)
+   ========================================================================== */
 .seven-day-strip {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   overflow-x: auto;
-  padding: 4px 4px 12px 4px;
+  padding: 4px 2px 14px 2px;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
 }
 
 .seven-day-card {
-  flex: 0 0 120px;
-  min-width: 120px;
+  flex: 0 0 110px;
+  min-width: 110px;
   aspect-ratio: 1 / 1.08;
-  background: #ffffff;
-  border: 1.5px solid var(--border-card);
-  border-radius: 22px;
-  padding: 12px 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 18px;
+  padding: 10px 8px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   text-align: center;
   scroll-snap-align: start;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.02);
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease, border-color 0.18s ease;
   cursor: pointer;
+  position: relative;
 }
 
 .seven-day-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
 }
 
-/* 7 Days Block States (Matching Image 1) */
-.seven-day-card.card-duty {
-  border-color: #fde68a;
-  background: linear-gradient(180deg, #ffffff 0%, #fffdf5 100%);
-  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.08);
+html.dark .seven-day-card {
+  background: rgba(19, 27, 38, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.04), 0 4px 14px rgba(0, 0, 0, 0.3);
+  color: #f1f5f9;
 }
 
-.seven-day-card.card-off {
-  background: #ffffff;
-  border-color: #fecdd3;
+html.dark .seven-day-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 8px 20px rgba(0, 0, 0, 0.45);
 }
 
+/* 7-Day Card Status Styles (Minimalist Subtle Touches) */
 .seven-day-card.card-today {
-  border-color: var(--color-coral);
-  box-shadow: 0 4px 16px rgba(255, 87, 87, 0.15);
+  border-color: rgba(244, 63, 94, 0.35) !important;
+}
+
+html.dark .seven-day-card.card-today {
+  border-color: rgba(56, 189, 248, 0.5) !important;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 0 14px rgba(56, 189, 248, 0.15) !important;
 }
 
 .seven-day-card.card-night-shift {
-  border: 2px solid #a855f7 !important;
-  background: linear-gradient(180deg, #faf5ff 0%, #ffffff 100%) !important;
-  box-shadow: 0 4px 18px rgba(168, 85, 247, 0.22) !important;
+  border-color: rgba(168, 85, 247, 0.35) !important;
 }
 
-/* Month Calendar Grid (Matching Image 2 Reference) */
-.cal-weekday-bar {
-  background: #0284c7; /* Bright friendly blue like Image 2 */
-  color: #ffffff;
-  border-radius: 14px 14px 0 0;
+html.dark .seven-day-card.card-night-shift {
+  border-color: rgba(192, 132, 252, 0.4) !important;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 0 14px rgba(192, 132, 252, 0.15) !important;
 }
 
+/* ==========================================================================
+   MONTH CALENDAR (MODERN MINIMALIST • NO SOLID BLUE BLOCK)
+   ========================================================================== */
 .cal-month-cell {
   aspect-ratio: 1;
   display: flex;
@@ -197,7 +253,7 @@ body {
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
 }
 
@@ -205,80 +261,119 @@ body {
   transform: scale(1.05);
 }
 
-/* Calendar Color Coding Requested by User:
-   มีเวร = สีเหลือง (Yellow / Amber)
-   วันหยุด = สีแดง (Red / Coral) */
-.cal-cell-night {
-  background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%) !important;
-  color: #6b21a8 !important;
-  border: 2px solid #a855f7 !important;
-  font-weight: 800 !important;
-  box-shadow: 0 2px 10px rgba(168, 85, 247, 0.3) !important;
-}
-
-.cal-cell-duty {
-  background-color: #fef3c7; /* Warm Yellow */
-  color: #b45309;
-  border: 1px solid #fde68a;
-  font-weight: 700;
-}
-
-.cal-cell-off {
-  background-color: #fee2e2; /* Soft Red */
-  color: #ef4444;
-  border: 1px solid #fecdd3;
-  font-weight: 700;
-}
-
-.cal-cell-today {
-  background-color: #38bdf8;
-  color: #ffffff;
-  font-weight: 700;
-  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.4);
-}
-
+/* Modern Calendar Cell Styles */
 .cal-cell-normal {
-  color: #334155;
-  background-color: #ffffff;
+  color: var(--color-text-secondary);
+  background-color: transparent;
 }
 .cal-cell-normal:hover {
-  background-color: #f1f5f9;
+  background-color: var(--bg-card-subtle);
 }
 
-/* Floating Bottom Navigation Bar (Reference Image 3) */
-.bottom-nav {
-  position: fixed;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 32px);
-  max-width: 440px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: 36px;
-  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.08), 0 4px 10px -2px rgba(15, 23, 42, 0.03);
-  z-index: 40;
-  padding: 8px 12px;
+/* Duty: Subtle Warm Amber Pill */
+.cal-cell-duty {
+  background-color: rgba(245, 158, 11, 0.12);
+  color: #b45309;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  font-weight: 700;
+}
+html.dark .cal-cell-duty {
+  background-color: rgba(245, 158, 11, 0.15) !important;
+  color: #fbbf24 !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.15);
 }
 
-.bottom-nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 6px 12px;
-  border-radius: 20px;
-  color: #64748b;
-  font-size: 10px;
-  font-weight: 600;
-  transition: all 0.15s ease;
+/* Off: Subtle Rose Pill */
+.cal-cell-off {
+  background-color: rgba(244, 63, 94, 0.1);
+  color: #e11d48;
+  border: 1px solid rgba(244, 63, 94, 0.2);
+  font-weight: 700;
+}
+html.dark .cal-cell-off {
+  background-color: rgba(244, 63, 94, 0.15) !important;
+  color: #fb7185 !important;
+  border: 1px solid rgba(244, 63, 94, 0.3) !important;
+  box-shadow: 0 0 10px rgba(244, 63, 94, 0.15);
 }
 
-.bottom-nav-item.active {
-  color: var(--color-coral);
-  background: var(--color-coral-light);
+/* Night Shift: Subtle Violet Pill with Glow */
+.cal-cell-night {
+  background-color: rgba(168, 85, 247, 0.15) !important;
+  color: #7e22ce !important;
+  border: 1.5px solid rgba(168, 85, 247, 0.4) !important;
+  font-weight: 800 !important;
+}
+html.dark .cal-cell-night {
+  background-color: rgba(168, 85, 247, 0.22) !important;
+  color: #e9d5ff !important;
+  border: 1.5px solid rgba(192, 132, 252, 0.5) !important;
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.25) !important;
+}
+
+/* Selected Day (Apple Health Signature Style) */
+.cal-cell-today {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25) !important;
+}
+html.dark .cal-cell-today {
+  background-color: #ffffff !important;
+  color: #0b0f17 !important;
+  font-weight: 900 !important;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.4) !important;
+}
+
+/* ==========================================================================
+   MODALS & DIALOGS (LINEAR.APP STYLE)
+   ========================================================================== */
+html.dark .bg-white {
+  background-color: #131b26 !important;
+  color: #f8fafc;
+}
+
+html.dark .border-slate-100,
+html.dark .border-slate-200 {
+  border-color: rgba(255, 255, 255, 0.07) !important;
+}
+
+html.dark .text-slate-900 { color: #f8fafc !important; }
+html.dark .text-slate-800 { color: #f1f5f9 !important; }
+html.dark .text-slate-700 { color: #cbd5e1 !important; }
+html.dark .text-slate-600 { color: #94a3b8 !important; }
+html.dark .text-slate-500 { color: #64748b !important; }
+
+html.dark .bg-slate-50 {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+}
+html.dark .bg-slate-100 {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+html.dark .hover\:bg-slate-50:hover {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+}
+html.dark .hover\:bg-slate-100:hover {
+  background-color: rgba(255, 255, 255, 0.09) !important;
+}
+
+/* Form Controls */
+html.dark input, 
+html.dark select, 
+html.dark textarea {
+  background-color: #0b0f17 !important;
+  color: #f8fafc !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Sticky Excel Table */
+html.dark thead th.sticky-col-1 {
+  background-color: #0b0f17 !important;
+}
+html.dark tbody td.sticky-col-1 {
+  background-color: #131b26 !important;
 }
 
 /* Custom Scrollbars */
@@ -295,13 +390,14 @@ body {
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: rgba(148, 163, 184, 0.3);
   border-radius: 9999px;
 }
 
+/* Panzoom Viewport */
 .panzoom-viewport {
   overflow: hidden;
   cursor: grab;
@@ -312,201 +408,8 @@ body {
   cursor: grabbing;
 }
 
-/* Gallery & Sheet Zoom Layer */
 .zoomable-content {
   transform-origin: center center;
   transition: transform 0.08s ease-out;
   will-change: transform;
-}
-
-/* Sticky First Column for Full Excel Spreadsheet View */
-.sticky-col-1 {
-  position: sticky;
-  left: 0;
-  z-index: 15;
-  background-color: #ffffff;
-  box-shadow: 2px 0 6px -2px rgba(0, 0, 0, 0.08);
-}
-thead th.sticky-col-1 {
-  z-index: 25;
-  background-color: #0f172a;
-}
-
-/* ==========================================================================
-   DARK THEME COMPONENTS & NEON GLOW STYLES (MATCHING USER REFERENCE)
-   ========================================================================== */
-
-/* Glassmorphic UI Card in Dark Mode */
-html.dark .ui-card {
-  background: rgba(19, 27, 46, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
-}
-
-/* Today Card Dark Mode: Neon Coral/Pink Glow */
-html.dark .ui-card-today {
-  background: rgba(22, 28, 45, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 2px solid #ff4b72;
-  box-shadow: 0 0 22px rgba(255, 75, 114, 0.32), 0 10px 32px rgba(0, 0, 0, 0.5);
-}
-
-/* Tomorrow Card Dark Mode: Neon Cyan Glow */
-html.dark .ui-card-tomorrow {
-  background: rgba(22, 28, 45, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 2px solid #00d2ff;
-  box-shadow: 0 0 22px rgba(0, 210, 255, 0.32), 0 10px 32px rgba(0, 0, 0, 0.5);
-}
-
-/* 7-Day Cards in Dark Mode */
-html.dark .seven-day-card {
-  background: rgba(19, 27, 46, 0.85);
-  border: 1.5px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
-  color: #f1f5f9;
-}
-
-html.dark .seven-day-card.card-duty {
-  border-color: #f59e0b !important;
-  background: linear-gradient(180deg, rgba(32, 35, 52, 0.95) 0%, rgba(19, 27, 46, 0.95) 100%) !important;
-  box-shadow: 0 0 16px rgba(245, 158, 11, 0.28), 0 4px 18px rgba(0, 0, 0, 0.35) !important;
-}
-
-html.dark .seven-day-card.card-off {
-  border-color: #f43f5e !important;
-  background: linear-gradient(180deg, rgba(38, 25, 35, 0.95) 0%, rgba(19, 27, 46, 0.95) 100%) !important;
-  box-shadow: 0 0 16px rgba(244, 63, 94, 0.28), 0 4px 18px rgba(0, 0, 0, 0.35) !important;
-}
-
-html.dark .seven-day-card.card-today {
-  border-color: #ff4b72 !important;
-  box-shadow: 0 0 20px rgba(255, 75, 114, 0.38) !important;
-}
-
-html.dark .seven-day-card.card-night-shift {
-  border: 2px solid #c084fc !important;
-  background: linear-gradient(180deg, rgba(42, 25, 62, 0.95) 0%, rgba(19, 27, 46, 0.95) 100%) !important;
-  box-shadow: 0 0 22px rgba(192, 132, 252, 0.38), 0 4px 20px rgba(0, 0, 0, 0.45) !important;
-}
-
-/* Month Calendar in Dark Mode (High Contrast Neon Matching Image 1) */
-html.dark .cal-weekday-bar {
-  background: linear-gradient(90deg, #0284c7 0%, #0369a1 100%);
-  color: #ffffff;
-}
-
-html.dark .cal-month-cell {
-  color: #e2e8f0;
-}
-
-html.dark .cal-cell-normal {
-  color: #94a3b8;
-  background-color: rgba(25, 33, 52, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-}
-html.dark .cal-cell-normal:hover {
-  background-color: rgba(45, 58, 88, 0.8);
-  color: #ffffff;
-}
-
-html.dark .cal-cell-duty {
-  background-color: #fde047 !important; /* Radiant gold/yellow */
-  color: #713f12 !important;
-  border: 1px solid #eab308 !important;
-  box-shadow: 0 0 12px rgba(234, 179, 8, 0.4) !important;
-  font-weight: 800 !important;
-}
-
-html.dark .cal-cell-off {
-  background-color: #fda4af !important; /* Radiant coral/pink */
-  color: #881337 !important;
-  border: 1px solid #f43f5e !important;
-  box-shadow: 0 0 12px rgba(244, 63, 94, 0.4) !important;
-  font-weight: 800 !important;
-}
-
-html.dark .cal-cell-today {
-  background-color: #00d2ff !important; /* Electric cyan */
-  color: #090d16 !important;
-  font-weight: 900 !important;
-  border: 1px solid #7dd3fc !important;
-  box-shadow: 0 0 18px rgba(0, 210, 255, 0.7) !important;
-}
-
-html.dark .cal-cell-night {
-  background: linear-gradient(135deg, #c084fc 0%, #9333ea 100%) !important;
-  color: #ffffff !important;
-  border: 2px solid #f3e8ff !important;
-  box-shadow: 0 0 18px rgba(192, 132, 252, 0.6) !important;
-  font-weight: 900 !important;
-}
-
-/* Modals & Dialogs in Dark Mode */
-html.dark .bg-white {
-  background-color: #131b2e !important;
-  color: #f8fafc;
-}
-
-html.dark .border-slate-100,
-html.dark .border-slate-200 {
-  border-color: rgba(255, 255, 255, 0.08) !important;
-}
-
-html.dark .text-slate-900 {
-  color: #f8fafc !important;
-}
-
-html.dark .text-slate-800 {
-  color: #f1f5f9 !important;
-}
-
-html.dark .text-slate-700 {
-  color: #cbd5e1 !important;
-}
-
-html.dark .text-slate-600 {
-  color: #94a3b8 !important;
-}
-
-html.dark .text-slate-500 {
-  color: #64748b !important;
-}
-
-html.dark .bg-slate-50 {
-  background-color: rgba(25, 33, 52, 0.6) !important;
-}
-
-html.dark .bg-slate-100 {
-  background-color: rgba(35, 45, 70, 0.6) !important;
-}
-
-html.dark .hover\:bg-slate-50:hover {
-  background-color: rgba(45, 58, 88, 0.6) !important;
-}
-
-html.dark .hover\:bg-slate-100:hover {
-  background-color: rgba(55, 70, 105, 0.6) !important;
-}
-
-/* Dark Mode Form Inputs & Selects */
-html.dark input, 
-html.dark select, 
-html.dark textarea {
-  background-color: #0f172a !important;
-  color: #f8fafc !important;
-  border-color: rgba(255, 255, 255, 0.12) !important;
-}
-
-/* Sticky Excel table in Dark Mode */
-html.dark thead th.sticky-col-1 {
-  background-color: #0f172a !important;
-}
-
-html.dark tbody td.sticky-col-1 {
-  background-color: #131b2e !important;
 }

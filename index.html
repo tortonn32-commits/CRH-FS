@@ -58,15 +58,14 @@
   <!-- Custom Styles -->
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-[#f6f7f9] dark:bg-[#090d16] text-slate-900 dark:text-slate-100 min-h-screen pb-10 antialiased transition-colors duration-200">
+<body class="bg-[#f8fafc] dark:bg-[#0b0f17] text-slate-900 dark:text-slate-100 min-h-screen pb-12 antialiased transition-colors duration-200">
 
   <!-- Mobile / Tablet Container -->
   <div class="max-w-md mx-auto px-4 pt-4 pb-8">
 
-    <!-- PWA INSTALL BANNER (MATCHING USER'S REFERENCE IMAGE) -->
+    <!-- PWA INSTALL BANNER -->
     <div id="pwaInstallBanner" class="pwa-install-banner flex items-center justify-between p-3.5 mb-4 rounded-2xl text-white shadow-xl transition-all">
       <div class="flex items-center space-x-3 min-w-0">
-        <!-- Cool App Icon -->
         <img src="icon.svg" alt="CRH-FS Logo" class="w-11 h-11 rounded-xl shrink-0 shadow-md border border-slate-700/60 object-cover">
         <div class="min-w-0">
           <div class="text-sm font-extrabold text-white tracking-tight truncate flex items-center space-x-1.5">
@@ -76,7 +75,6 @@
         </div>
       </div>
       
-      <!-- Right Action & Close Buttons -->
       <div class="flex items-center space-x-2 shrink-0 ml-3">
         <button id="pwaInstallBtn" class="px-4 py-2 rounded-xl bg-[#0284c7] hover:bg-[#0369a1] active:scale-95 text-white font-extrabold text-xs shadow-md shadow-sky-500/20 transition-all whitespace-nowrap">
           ติดตั้งแอป
@@ -87,35 +85,35 @@
       </div>
     </div>
 
-    <!-- Top Navigation Header -->
-    <header class="flex items-start justify-between pb-3 mb-4">
+    <!-- Top Navigation Header (Linear Minimalist Style) -->
+    <header class="flex items-start justify-between pb-3 mb-4 animate-fade-in-up stagger-1">
       <div>
         <div class="flex items-center space-x-2">
-          <span class="px-2 py-0.5 rounded-md bg-slate-900 dark:bg-sky-500/20 text-sky-400 dark:text-sky-300 font-black text-[10px] tracking-wider font-mono border border-slate-800 dark:border-sky-500/30">
+          <span class="px-2 py-0.5 rounded-md bg-slate-900 dark:bg-white/10 text-sky-400 dark:text-sky-300 font-black text-[10px] tracking-wider font-mono border border-slate-800 dark:border-white/10">
             CRH-FS
           </span>
-          <span class="text-[11px] font-semibold text-slate-400 dark:text-slate-400 uppercase tracking-wider">
+          <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
             Finance Schedule • ฝ่ายการเงิน
           </span>
         </div>
-        <!-- Greeting with full name and nickname -->
-        <h1 class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white tracking-tight mt-1 flex flex-wrap items-baseline gap-1">
+        <!-- Greeting with high visual hierarchy -->
+        <h1 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight mt-1 flex flex-wrap items-baseline gap-1.5">
           <span>สวัสดีคุณ</span>
           <span id="headerFullName" class="text-slate-900 dark:text-white">จุรีพร ผาบสุวรรณ์</span>
-          <span id="headerNickname" class="text-coral-500 dark:text-rose-400 font-bold">(เอ็ม)</span>
+          <span id="headerNickname" class="text-rose-500 dark:text-rose-400 font-bold">(เอ็ม)</span>
         </h1>
       </div>
 
-      <!-- Action Buttons: Theme Switcher (Dark/Light) + User Switcher -->
+      <!-- Action Buttons: Theme Switcher + User Switcher (Sleek Apple/Linear style) -->
       <div class="flex items-center space-x-2 shrink-0 ml-2 mt-0.5">
         <!-- Dark / Light Mode Switcher Button -->
-        <button id="themeToggleBtn" class="flex items-center justify-center w-9 h-9 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-amber-400 dark:hover:border-amber-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all active:scale-90 text-slate-700 dark:text-amber-300" title="สลับโหมดมืด / สว่าง (Dark/Light Mode)">
-          <span id="themeToggleIcon" class="text-base leading-none select-none transition-transform duration-300">🌙</span>
+        <button id="themeToggleBtn" class="flex items-center justify-center w-8 h-8 rounded-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-xs hover:bg-slate-50 dark:hover:bg-white/10 transition-all active:scale-95 text-slate-700 dark:text-amber-300" title="สลับโหมดมืด / สว่าง">
+          <span id="themeToggleIcon" class="text-sm leading-none select-none transition-transform duration-300">🌙</span>
         </button>
 
         <!-- User Switcher Pill Button -->
-        <button id="openUserModalBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-coral-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all active:scale-95" title="สลับผู้ใช้ / ดูตารางของคนอื่น">
-          <svg class="w-3.5 h-3.5 text-coral-500 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button id="openUserModalBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-xs hover:bg-slate-50 dark:hover:bg-white/10 transition-all active:scale-95" title="สลับผู้ใช้ / ดูตารางของคนอื่น">
+          <svg class="w-3.5 h-3.5 text-rose-500 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
           </svg>
           <span class="text-xs font-bold text-slate-700 dark:text-slate-200">สลับผู้ใช้</span>
@@ -123,23 +121,23 @@
       </div>
     </header>
 
-    <!-- SECTION 1: TODAY & TOMORROW HERO CARDS (DISTINCT WARM CORAL vs FRESH SKY BLUE) -->
-    <section class="space-y-3.5 mb-6">
+    <!-- SECTION 1: TODAY & TOMORROW HERO CARDS -->
+    <section class="space-y-3.5 mb-6 animate-fade-in-up stagger-1">
       
-      <!-- TODAY PRIMARY CARD (WARM CORAL THEME) -->
-      <div id="todayCard" class="ui-card-today p-5 bg-white">
-        <div class="flex items-center justify-between pb-3 border-b border-rose-100">
-          <div class="flex items-center space-x-2">
-            <span class="px-2.5 py-0.5 rounded-full bg-rose-500 text-white font-extrabold text-[11px] flex items-center space-x-1.5 shadow-sm shadow-rose-500/20">
-              <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
-              <span>สถานะวันนี้</span>
+      <!-- TODAY PRIMARY HERO CARD (LINEAR / APPLE HEALTH STYLE) -->
+      <div id="todayCard" class="ui-card-today p-5 bg-white dark:bg-[#131b26]">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5">
+          <div id="todayStatusContainer" class="flex items-center space-x-2">
+            <span id="todayStatusBadge" class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-rose-500/10 text-rose-500 dark:text-rose-400 border border-rose-500/20 text-[11px] font-semibold">
+              <span class="w-1.5 h-1.5 rounded-full bg-rose-500 dark:bg-rose-400 animate-pulse"></span>
+              <span id="todayStatusText">สถานะวันนี้</span>
             </span>
           </div>
           <div class="flex items-center space-x-2">
-            <span id="todayDateHeading" class="text-xs font-semibold text-slate-600 font-mono">
+            <span id="todayDateHeading" class="text-xs font-medium text-slate-500 dark:text-slate-400 font-mono">
               วันอาทิตย์ที่ 1 พ.ย. 2569
             </span>
-            <span class="text-xs font-bold px-2 py-0.5 rounded-lg bg-rose-50 text-rose-600 border border-rose-200" id="todayDayOfWeekBadge">
+            <span class="text-xs font-semibold px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300" id="todayDayOfWeekBadge">
               อาทิตย์
             </span>
           </div>
@@ -147,15 +145,15 @@
 
         <!-- Regular Work Station -->
         <div class="mt-4">
-          <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">เวลาปกติ</div>
+          <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">เวลาปกติ (08:00 - 16:00 น.)</div>
           <div class="flex items-baseline justify-between mt-1">
-            <div id="todayStationTitle" class="text-3xl font-black text-slate-900 tracking-tight">วันหยุด</div>
-            <span id="todayLocationDetail" class="text-xs text-slate-500">พักประจำสัปดาห์</span>
+            <div id="todayStationTitle" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">วันหยุด</div>
+            <span id="todayLocationDetail" class="text-xs text-slate-500 dark:text-slate-400 font-medium">พักประจำสัปดาห์</span>
           </div>
         </div>
 
         <!-- Extra / Night Shift / Afternoon Shift -->
-        <div class="mt-4 pt-3 border-t border-slate-100">
+        <div class="mt-4 pt-3 border-t border-slate-100 dark:border-white/5">
           <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">เวรนอกเวลา</div>
           <div id="todayShiftsContainer" class="space-y-1.5">
             <!-- Injected via JavaScript -->
@@ -168,25 +166,23 @@
         </div>
       </div>
 
-      <!-- TOMORROW COMPANION CARD (FRESH SKY BLUE THEME) -->
-      <div id="tomorrowCard" class="ui-card-tomorrow p-4 bg-white">
-        <div class="flex items-center justify-between pb-2 border-b border-sky-100">
+      <!-- TOMORROW COMPANION CARD -->
+      <div id="tomorrowCard" class="ui-card-tomorrow p-4 bg-white dark:bg-[#131b26]">
+        <div class="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-white/5">
           <div class="flex items-center space-x-1.5">
-            <span class="px-2.5 py-0.5 rounded-full bg-sky-600 text-white font-extrabold text-[11px] shadow-sm shadow-sky-600/20 flex items-center space-x-1">
-              <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
-              </svg>
+            <span class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20 text-[11px] font-semibold">
+              <span class="w-1.5 h-1.5 rounded-full bg-sky-500 dark:bg-sky-400"></span>
               <span>วันพรุ่งนี้</span>
             </span>
           </div>
-          <span id="tomorrowDateLabel" class="text-xs text-slate-600 font-mono">วันจันทร์ที่ 2 พ.ย. 2569</span>
+          <span id="tomorrowDateLabel" class="text-xs text-slate-500 dark:text-slate-400 font-mono">วันจันทร์ที่ 2 พ.ย. 2569</span>
         </div>
 
         <div class="mt-3 flex items-start justify-between">
           <div>
-            <div class="text-[11px] text-slate-400">เวลาปกติ</div>
-            <div id="tomorrowRegularStation" class="text-xl font-bold text-slate-900 mt-0.5">PCU</div>
-            <div id="tomorrowRegularLocation" class="text-xs text-slate-500">ตึกบริการปฐมภูมิ (PCU)</div>
+            <div class="text-[11px] text-slate-400 uppercase tracking-wider font-medium">เวลาปกติ</div>
+            <div id="tomorrowRegularStation" class="text-xl font-bold text-slate-900 dark:text-white mt-0.5">PCU</div>
+            <div id="tomorrowRegularLocation" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">ตึกบริการปฐมภูมิ (PCU)</div>
           </div>
           <div id="tomorrowOtSection" class="text-right">
             <!-- Dynamic -->
@@ -196,8 +192,8 @@
 
     </section>
 
-    <!-- SECTION 2: 7-DAY FORWARD PLANNING (TEXT 'ตารางทำงาน' REMOVED AS REQUESTED) -->
-    <section class="mb-7" id="sectionSevenDays">
+    <!-- SECTION 2: 7-DAY FORWARD PLANNING (CLEAN & COMPACT) -->
+    <section class="mb-7 animate-fade-in-up stagger-2" id="sectionSevenDays">
       <div class="flex items-center justify-between mb-2.5 px-1">
         <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">7 วันถัดไป</span>
         <span class="text-[11px] font-semibold text-slate-400 flex items-center space-x-1">
@@ -208,29 +204,29 @@
         </span>
       </div>
 
-      <!-- 7 Horizontal Cards Strip (Clean Square Blocks) -->
+      <!-- 7 Horizontal Cards Strip -->
       <div id="sevenDaysStrip" class="seven-day-strip no-scrollbar">
         <!-- Injected via JavaScript -->
       </div>
     </section>
 
-    <!-- SECTION 3: MONTH CALENDAR VIEW (IMAGE 2 REFERENCE) -->
-    <section class="mb-8" id="sectionCalendar">
-      <div class="ui-card p-4 bg-white border-slate-100 overflow-hidden shadow-sm">
-        <div class="flex items-center justify-between pb-3 mb-2 border-b border-slate-100">
+    <!-- SECTION 3: MONTH CALENDAR VIEW (MODERN MINIMALIST • NO SOLID BLUE BLOCK) -->
+    <section class="mb-8 animate-fade-in-up stagger-3" id="sectionCalendar">
+      <div class="ui-card p-4 bg-white dark:bg-[#131b26] overflow-hidden">
+        <div class="flex items-center justify-between pb-3 mb-2 border-b border-slate-100 dark:border-white/5">
           <div class="flex items-center space-x-2">
-            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
             </svg>
-            <h3 class="text-base font-extrabold text-slate-900">พฤศจิกายน 2569</h3>
+            <h3 class="text-base font-extrabold text-slate-900 dark:text-white">พฤศจิกายน 2569</h3>
           </div>
           <div class="flex items-center space-x-1">
-            <span class="text-xs text-slate-400">มุมมองรายเดือน</span>
+            <span class="text-xs text-slate-400 font-medium">มุมมองรายเดือน</span>
           </div>
         </div>
 
-        <!-- Blue Weekday Header Bar (Matching Image 2: จ อ พ พฤ ศ ส อา) -->
-        <div class="grid grid-cols-7 cal-weekday-bar text-center py-2 text-xs font-bold mb-2">
+        <!-- Clean Modern Weekday Header Bar (No solid blue block as requested) -->
+        <div class="grid grid-cols-7 text-center py-2 text-xs font-semibold text-slate-400 dark:text-slate-400 border-b border-slate-100 dark:border-white/5 mb-2.5 tracking-wider">
           <div>จ</div>
           <div>อ</div>
           <div>พ</div>
@@ -245,51 +241,51 @@
           <!-- Injected via JavaScript -->
         </div>
 
-        <!-- Legend Bar (มีเวรดึก สีม่วง, มีเวรบ่าย/OT สีเหลือง, วันหยุด สีแดง) -->
-        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-around text-xs">
+        <!-- Elegant Minimalist Legend Bar -->
+        <div class="mt-4 pt-3 border-t border-slate-100 dark:border-white/5 flex items-center justify-around text-xs">
           <div class="flex items-center space-x-1.5">
-            <span class="w-3.5 h-3.5 rounded bg-purple-100 border-2 border-purple-400 inline-block"></span>
-            <span class="text-purple-900 font-bold">เวรดึก 🌙</span>
+            <span class="w-2.5 h-2.5 rounded-full bg-purple-500 shadow-xs"></span>
+            <span class="text-slate-600 dark:text-slate-300 font-medium">เวรดึก 🌙</span>
           </div>
           <div class="flex items-center space-x-1.5">
-            <span class="w-3.5 h-3.5 rounded bg-amber-100 border border-amber-300 inline-block"></span>
-            <span class="text-slate-600 font-medium">เวรบ่าย/OT</span>
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-xs"></span>
+            <span class="text-slate-600 dark:text-slate-300 font-medium">เวรบ่าย/OT</span>
           </div>
           <div class="flex items-center space-x-1.5">
-            <span class="w-3.5 h-3.5 rounded bg-rose-100 border border-rose-300 inline-block"></span>
-            <span class="text-slate-600 font-medium">วันหยุด</span>
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-xs"></span>
+            <span class="text-slate-600 dark:text-slate-300 font-medium">วันหยุด</span>
           </div>
         </div>
       </div>
     </section>
 
     <!-- SECTION 4: สรุปการเข้างานประจำเดือน & เอกสารต้นฉบับ -->
-    <section class="space-y-4 mb-8" id="sectionSummary">
+    <section class="space-y-4 mb-8 animate-fade-in-up stagger-4" id="sectionSummary">
       <div class="text-xs font-bold text-slate-400 uppercase tracking-wider px-1">
         สรุปการเข้างานประจำเดือน & ตรวจสอบเอกสาร
       </div>
 
       <!-- KPI Summary Card -->
-      <div class="ui-card p-4 bg-white border-slate-100">
+      <div class="ui-card p-4 bg-white dark:bg-[#131b26]">
         <div class="flex items-center justify-between mb-3">
           <div>
             <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">สรุปการเข้างานประจำเดือน</h4>
-            <div class="text-sm font-bold text-slate-900">จำแนกตามจุดปฏิบัติงาน</div>
+            <div class="text-sm font-bold text-slate-900 dark:text-white">จำแนกตามจุดปฏิบัติงาน</div>
           </div>
-          <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+          <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-white/10">
             รวม 30 วัน
           </span>
         </div>
 
         <!-- Circular Metric & Summary Bars -->
-        <div class="flex items-center space-x-4 mb-4 p-3 bg-slate-50/70 rounded-2xl border border-slate-100">
+        <div class="flex items-center space-x-4 mb-4 p-3 bg-slate-50/70 dark:bg-white/5 rounded-2xl border border-slate-100 dark:border-white/5">
           <div class="relative w-20 h-20 shrink-0 flex items-center justify-center">
             <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-              <path class="text-slate-200" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-              <path class="text-coral-500" stroke-dasharray="75, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+              <path class="text-slate-200 dark:text-white/10" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+              <path class="text-rose-500 dark:text-rose-400" stroke-dasharray="75, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
             </svg>
             <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-              <span id="kpiTotalWorkDays" class="text-lg font-extrabold text-slate-900 leading-none">20</span>
+              <span id="kpiTotalWorkDays" class="text-lg font-extrabold text-slate-900 dark:text-white leading-none">20</span>
               <span class="text-[9px] font-medium text-slate-400 mt-0.5">วันทำงาน</span>
             </div>
           </div>
@@ -297,25 +293,25 @@
           <!-- Metric Details -->
           <div class="flex-1 space-y-1.5 text-xs">
             <div class="flex items-center justify-between">
-              <span class="text-slate-500 flex items-center space-x-1.5">
+              <span class="text-slate-500 dark:text-slate-400 flex items-center space-x-1.5">
                 <span class="w-2 h-2 rounded-full bg-teal-500"></span>
                 <span>เวลาปกติ</span>
               </span>
-              <span class="font-bold text-slate-800" id="kpiRegularDays">20 วัน</span>
+              <span class="font-bold text-slate-800 dark:text-slate-200" id="kpiRegularDays">20 วัน</span>
             </div>
             <div class="flex items-center justify-between">
-              <span class="text-slate-500 flex items-center space-x-1.5">
+              <span class="text-slate-500 dark:text-slate-400 flex items-center space-x-1.5">
                 <span class="w-2 h-2 rounded-full bg-amber-500"></span>
                 <span>เวรนอกเวลา/OT</span>
               </span>
-              <span class="font-bold text-amber-700" id="kpiOtShifts">14 เวร</span>
+              <span class="font-bold text-amber-600 dark:text-amber-400" id="kpiOtShifts">14 เวร</span>
             </div>
             <div class="flex items-center justify-between">
-              <span class="text-slate-500 flex items-center space-x-1.5">
+              <span class="text-slate-500 dark:text-slate-400 flex items-center space-x-1.5">
                 <span class="w-2 h-2 rounded-full bg-rose-500"></span>
                 <span>วันหยุด (Day Off)</span>
               </span>
-              <span class="font-bold text-rose-600" id="kpiOffDays">4 วัน</span>
+              <span class="font-bold text-rose-600 dark:text-rose-400" id="kpiOffDays">4 วัน</span>
             </div>
           </div>
         </div>

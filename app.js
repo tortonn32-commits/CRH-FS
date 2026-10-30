@@ -596,7 +596,7 @@
     }
   }
 
-  // TODAY CARD (WARM CORAL THEME + NIGHT SHIFT PURPLE HIGHLIGHT)
+  // TODAY CARD (LINEAR / APPLE HEALTH STYLE HERO COMPONENT)
   function renderTodayCard() {
     const day = state.scheduleList[state.selectedDate - 1];
     if (!day) return;
@@ -615,6 +615,21 @@
       el.todayCard.classList.toggle('card-night-shift', !!nightDuty);
     }
 
+    // Dynamic Status Badge (Linear Minimalist Style)
+    const todayStatusBadge = document.getElementById('todayStatusBadge');
+    if (todayStatusBadge) {
+      if (nightDuty) {
+        todayStatusBadge.className = 'inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-purple-500/15 text-purple-600 dark:text-purple-300 border border-purple-500/25 text-[11px] font-semibold';
+        todayStatusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-purple-500 dark:bg-purple-400 animate-pulse"></span><span>เวรดึกคืนนี้ 🌙</span>`;
+      } else if (day.isDayOff) {
+        todayStatusBadge.className = 'inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-rose-500/10 text-rose-500 dark:text-rose-400 border border-rose-500/20 text-[11px] font-semibold';
+        todayStatusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-rose-500 dark:bg-rose-400 animate-pulse"></span><span>วันหยุดประจำสัปดาห์</span>`;
+      } else {
+        todayStatusBadge.className = 'inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-[11px] font-semibold';
+        todayStatusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse"></span><span>เวลาปกติ (มีเวร)</span>`;
+      }
+    }
+
     // Regular Daytime Duty (เวลาปกติ)
     if (day.regularDuty) {
       const sub = day.substitutionInfo;
@@ -627,13 +642,13 @@
         el.todayStationTitle.innerHTML = `
           <div class="flex flex-wrap items-baseline gap-2">
             <span>แทน บ่ายดึก</span>
-            <span class="text-sm font-bold text-sky-700 bg-sky-100 px-2.5 py-0.5 rounded-xl border border-sky-300">
-              ➔ ไปเข้า: ${target}
+            <span class="text-xs font-semibold text-sky-600 dark:text-sky-300 bg-sky-50 dark:bg-sky-950/40 px-2.5 py-0.5 rounded-full border border-sky-200 dark:border-sky-800">
+              ➔ เข้า: ${target}
             </span>
           </div>
         `;
         el.todayLocationDetail.innerHTML = `
-          <div class="text-xs text-sky-800 font-semibold mt-1">
+          <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">
             📍 ${targetLoc} ${replacedName ? `• (ไปแทน${replacedName})` : ''}
           </div>
         `;
@@ -644,13 +659,13 @@
         el.todayStationTitle.innerHTML = `
           <div class="flex flex-wrap items-baseline gap-2">
             <span>${day.regularDuty.title}</span>
-            <span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-xl border border-emerald-300">
+            <span class="text-xs font-semibold text-emerald-600 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
               🔄 ${subName} แทนบ่ายดึก
             </span>
           </div>
         `;
         el.todayLocationDetail.innerHTML = `
-          <div class="text-xs text-emerald-800 font-semibold mt-1">
+          <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">
             ${day.regularDuty.location} • มีคนปฏิบัติแทน : ${subName} (เวรแทนบ่ายดึก)
           </div>
         `;
@@ -679,32 +694,36 @@
       sortedDuties.forEach(ot => {
         const item = document.createElement('div');
         const isNight = ot.name.includes("ดึก") || ot.shiftTime === "กะดึก" || (ot.shift && ot.shift.includes("ดึก"));
-        item.className = `p-2.5 rounded-xl border flex items-center justify-between text-xs ${
-          isNight ? 'bg-gradient-to-r from-purple-50 via-purple-100/60 to-purple-50 border-2 border-purple-400 text-purple-950 font-semibold shadow-xs' : 'bg-amber-50 border-amber-200 text-amber-900'
+        item.className = `p-2.5 rounded-xl border flex items-center justify-between text-xs transition-colors ${
+          isNight 
+            ? 'bg-purple-500/10 dark:bg-purple-500/15 border-purple-500/25 text-purple-900 dark:text-purple-200' 
+            : 'bg-amber-500/10 dark:bg-amber-500/10 border-amber-500/20 text-amber-900 dark:text-amber-200'
         }`;
         item.innerHTML = `
-          <div class="flex items-center space-x-2">
-            <span class="text-sm shrink-0">${isNight ? '🌙' : '☀️'}</span>
+          <div class="flex items-center space-x-2.5">
+            <span class="w-2 h-2 rounded-full ${isNight ? 'bg-purple-500 shadow-xs' : 'bg-amber-500 shadow-xs'} shrink-0"></span>
             <div>
-              <div class="font-extrabold text-xs ${isNight ? 'text-purple-950 text-sm' : ''}">${ot.name}</div>
-              <div class="text-[10px] ${isNight ? 'text-purple-700 font-bold' : 'opacity-75'} font-medium">
+              <div class="font-bold text-xs">${ot.name}</div>
+              <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
                 ${isNight ? 'เวรดึก (00:00 - 08:00 น.) • เข้างานเที่ยงคืน' : (ot.shiftTime || ot.category)}
               </div>
             </div>
           </div>
-          <span class="px-2 py-0.5 rounded-lg text-[10px] font-extrabold ${isNight ? 'bg-purple-600 text-white shadow-xs' : 'bg-white border border-amber-200 text-amber-700'}">
-            ${isNight ? '★ ไฮไลท์ดึก' : 'ตามตาราง'}
+          <span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${
+            isNight 
+              ? 'bg-purple-600 text-white shadow-xs' 
+              : 'bg-white/80 dark:bg-white/10 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-white/10'
+          }">
+            ${isNight ? '★ ดึก' : 'ตามตาราง'}
           </span>
         `;
         el.todayShiftsContainer.appendChild(item);
       });
     } else {
       const emptyItem = document.createElement('div');
-      emptyItem.className = 'p-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-500 text-xs flex items-center space-x-2';
+      emptyItem.className = 'p-2.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5 text-slate-400 text-xs flex items-center space-x-2';
       emptyItem.innerHTML = `
-        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-        </svg>
+        <span class="w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600"></span>
         <span>ไม่มีเวรนอกเวลา</span>
       `;
       el.todayShiftsContainer.appendChild(emptyItem);
@@ -715,7 +734,7 @@
       el.todayCustomNoteContainer.classList.remove('hidden');
       const isSwap = (day.userNote.type === 'swap');
       el.todayCustomNoteContainer.innerHTML = `
-        <div class="p-2.5 rounded-xl ${isSwap ? 'bg-blue-50 border border-blue-200 text-blue-900' : 'bg-rose-50 border border-rose-200 text-rose-900'} text-xs flex items-center justify-between">
+        <div class="p-2.5 rounded-xl ${isSwap ? 'bg-sky-50 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-800 text-sky-900 dark:text-sky-200' : 'bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-900 dark:text-rose-200'} text-xs flex items-center justify-between">
           <div class="flex items-center space-x-1.5">
             <span class="font-bold">${isSwap ? `สลับวันหยุดกับ: ${day.userNote.swapWith}` : day.userNote.title}</span>
             ${day.userNote.note ? `<span class="opacity-75">(${day.userNote.note})</span>` : ''}
@@ -728,7 +747,7 @@
     }
   }
 
-  // TOMORROW CARD (FRESH SKY BLUE THEME + NIGHT SHIFT PROMINENT HIGHLIGHT)
+  // TOMORROW CARD (COMPANION HERO COMPONENT)
   function renderTomorrowCard() {
     const tomorrowDate = (state.selectedDate < 30) ? (state.selectedDate + 1) : 1;
     const day = state.scheduleList[tomorrowDate - 1];
@@ -751,17 +770,17 @@
       if (tomorrowNightDuty) {
         // PRIORITIZE NIGHT SHIFT ON TOMORROW'S CARD!
         el.tomorrowRegularStation.innerHTML = `
-          <div class="flex items-center space-x-1.5 text-purple-950 font-black text-xl">
+          <div class="flex items-center space-x-2 text-purple-600 dark:text-purple-300 font-extrabold text-xl">
             <span>🌙</span>
             <span>${tomorrowNightDuty.name}</span>
-            <span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-purple-600 text-white animate-pulse">★ ไฮไลท์ดึก</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-600 text-white">เข้างานเที่ยงคืน</span>
           </div>
         `;
         el.tomorrowRegularLocation.innerHTML = `
-          <div class="text-xs text-purple-700 font-extrabold mt-0.5">
-            เข้างานคืนนี้ 00:00 - 08:00 น. (เที่ยงคืน)
+          <div class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">
+            กะดึก 00:00 - 08:00 น.
           </div>
-          <div class="text-[11px] text-slate-500 mt-1">
+          <div class="text-[11px] text-slate-400 mt-1">
             ${day.regularDuty ? `เวลาปกติ: ${day.regularDuty.title} • มีคนปฏิบัติแทน : ${subName} (เวรแทนบ่ายดึก)` : 'ไม่มีงานเวลาปกติ'}
           </div>
         `;
@@ -769,10 +788,10 @@
         if (sub && sub.isViewerSubstitute) {
           const target = sub.targetStation || 'จุดเข้าเวร';
           const replacedName = sub.nightShiftNickname ? `คุณ${sub.nightShiftNickname}` : '';
-          el.tomorrowRegularStation.innerHTML = `แทน บ่ายดึก <span class="text-xs font-bold text-sky-700 bg-sky-100 px-2 py-0.5 rounded-lg border border-sky-300">➔ ${target}</span>`;
+          el.tomorrowRegularStation.innerHTML = `แทน บ่ายดึก <span class="text-xs font-semibold text-sky-600 dark:text-sky-300 bg-sky-50 dark:bg-sky-950/40 px-2 py-0.5 rounded-full border border-sky-200 dark:border-sky-800">➔ ${target}</span>`;
           el.tomorrowRegularLocation.textContent = `${sub.targetLocation || 'กลุ่มงานการเงิน'} ${replacedName ? `• (แทน${replacedName})` : ''}`;
         } else if (sub && sub.isViewerNightShift) {
-          el.tomorrowRegularStation.innerHTML = `${day.regularDuty.title} <span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-lg border border-emerald-300">(${subName} แทน)</span>`;
+          el.tomorrowRegularStation.innerHTML = `${day.regularDuty.title} <span class="text-xs font-semibold text-emerald-600 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">(${subName} แทน)</span>`;
           el.tomorrowRegularLocation.textContent = `${day.regularDuty.location} • มีคนปฏิบัติแทน : ${subName} (เวรแทนบ่ายดึก)`;
         } else {
           el.tomorrowRegularStation.textContent = day.regularDuty.title;
@@ -790,12 +809,13 @@
     if (el.tomorrowOtSection) {
       el.tomorrowOtSection.innerHTML = '';
       if (day.otDuties && day.otDuties.length > 0) {
-        // If tomorrow has night shift, show other shifts (like afternoon shift)
         day.otDuties.forEach(ot => {
           const isNight = ot.name.includes("ดึก") || (ot.shift && ot.shift.includes("ดึก"));
           const item = document.createElement('div');
-          item.className = `inline-block text-[10px] font-bold px-2 py-0.5 rounded-lg ml-1 mb-1 border ${
-            isNight ? 'bg-purple-100 text-purple-900 border-purple-300 font-black' : 'bg-amber-50 text-amber-800 border-amber-200'
+          item.className = `inline-block text-[10px] font-semibold px-2 py-0.5 rounded-md ml-1 mb-1 border ${
+            isNight 
+              ? 'bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/20' 
+              : 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/20'
           }`;
           item.textContent = isNight ? `🌙 ${ot.name}` : ot.name;
           el.tomorrowOtSection.appendChild(item);
@@ -806,7 +826,7 @@
     }
   }
 
-  // 7-DAY STRIP (CLEAN SQUARE BLOCKS WITH NIGHT SHIFT PURPLE HIGHLIGHT)
+  // 7-DAY STRIP (CLEAN & COMPACT LINEAR STYLE)
   function renderSevenDaysStrip() {
     if (!el.sevenDaysStrip) return;
     el.sevenDaysStrip.innerHTML = '';
@@ -831,72 +851,71 @@
       let cardClass = 'seven-day-card ';
       if (isToday) cardClass += 'card-today ';
       if (nightDuty) cardClass += 'card-night-shift ';
-      else if (isHighlighted) cardClass += 'card-duty ';
-      else if (isDayOff) cardClass += 'card-off ';
 
-      let headerBadgeHtml = '';
+      let headerDotHtml = '';
       let mainText = '';
       let subText = '';
 
       if (nightDuty) {
-        // HIGHLIGHT FOR DAYS WITH IPD ดึก!
-        headerBadgeHtml = `<span class="px-1.5 py-0.2 rounded bg-purple-600 text-white text-[9px] font-black">🌙 ดึก</span>`;
+        headerDotHtml = `<span class="w-2 h-2 rounded-full bg-purple-500 shadow-xs"></span>`;
         mainText = `
-          <div class="text-xs font-black text-purple-950 leading-tight">★ ${nightDuty.name}</div>
-          <div class="text-[9px] text-purple-700 font-extrabold mt-0.5">เข้างาน 00:00 น.</div>
+          <div class="text-xs font-bold text-purple-600 dark:text-purple-300 leading-tight">★ ${nightDuty.name}</div>
+          <div class="text-[9px] text-slate-400 mt-0.5 font-mono">00:00 น.</div>
         `;
         const regular = day.regularDuty ? day.regularDuty.title : '-';
         const sub = day.substitutionInfo;
         const subName = (sub && sub.substituteNickname) ? `${sub.substituteNickname} แทน` : 'มีคนแทน';
         subText = `
-          <div class="text-[9px] font-semibold text-slate-600 truncate">${regular} (${subName})</div>
-          ${afternoonDuty ? `<div class="text-[9px] font-bold text-amber-700 truncate mt-0.5">+ ${afternoonDuty.name}</div>` : ''}
+          <div class="text-[9px] font-medium text-slate-500 dark:text-slate-400 truncate">${regular} (${subName})</div>
+          ${afternoonDuty ? `<div class="text-[9px] font-semibold text-amber-500 truncate mt-0.5">+ ${afternoonDuty.name}</div>` : ''}
         `;
       } else if (isDayOff) {
-        mainText = `<div class="text-sm font-black text-rose-500 my-auto">วันหยุด</div>`;
+        headerDotHtml = `<span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>`;
+        mainText = `<div class="text-sm font-bold text-rose-500 dark:text-rose-400 my-auto">วันหยุด</div>`;
         subText = `<div class="text-[9px] text-slate-400">พักประจำสัปดาห์</div>`;
       } else {
         const regular = day.regularDuty ? day.regularDuty.title : '-';
         const sub = day.substitutionInfo;
+        headerDotHtml = `<span class="w-1.5 h-1.5 rounded-full ${isHighlighted ? 'bg-amber-400' : 'bg-emerald-400'}"></span>`;
 
         if (sub && sub.isViewerSubstitute) {
           const target = sub.targetStation || 'บ่ายดึก';
-          mainText = `<div class="text-xs font-black text-sky-700 leading-tight">แทน: ${target}</div>`;
+          mainText = `<div class="text-xs font-bold text-sky-600 dark:text-sky-300 leading-tight">แทน: ${target}</div>`;
           const replacedName = sub.nightShiftNickname ? `แทน${sub.nightShiftNickname}` : '';
-          subText = `<div class="text-[9px] font-bold text-sky-700 bg-sky-50 rounded px-1 py-0.5 mt-1 border border-sky-200 truncate">📍 ${replacedName || 'แทนบ่ายดึก'}</div>`;
+          subText = `<div class="text-[9px] font-medium text-slate-400 truncate">📍 ${replacedName || 'แทนบ่ายดึก'}</div>`;
         } else if (sub && sub.isViewerNightShift) {
-          mainText = `<div class="text-xs font-bold text-slate-900 leading-tight">${regular}</div>`;
+          mainText = `<div class="text-xs font-bold text-slate-900 dark:text-white leading-tight">${regular}</div>`;
           const subName = sub.substituteNickname ? `${sub.substituteNickname} แทน` : 'มีคนแทน';
-          subText = `<div class="text-[9px] font-bold text-emerald-700 bg-emerald-50 rounded px-1 py-0.5 mt-1 border border-emerald-200 truncate">🔄 ${subName}</div>`;
+          subText = `<div class="text-[9px] font-medium text-emerald-600 dark:text-emerald-400 truncate">🔄 ${subName}</div>`;
         } else {
-          mainText = `<div class="text-xs font-bold text-slate-900 leading-tight">${regular}</div>`;
+          mainText = `<div class="text-xs font-bold text-slate-900 dark:text-white leading-tight">${regular}</div>`;
           if (day.otDuties && day.otDuties.length > 0) {
             const shiftNames = day.otDuties.map(ot => {
-              if (ot.name.includes("ดึก")) return "IPD ดึก";
-              if (ot.name.includes("บ่าย")) return "IPD บ่าย";
-              if (ot.name.includes("เช้า")) return "IPD เช้า";
+              if (ot.name.includes("ดึก")) return "ดึก";
+              if (ot.name.includes("บ่าย")) return "บ่าย";
+              if (ot.name.includes("เช้า")) return "เช้า";
               return ot.name;
             }).join('+');
-            subText = `<div class="text-[9px] font-bold text-amber-700 bg-amber-50 rounded px-1 py-0.5 mt-1 border border-amber-200 truncate">เวร ${shiftNames}</div>`;
+            subText = `<div class="text-[9px] font-semibold text-amber-500 truncate">เวร ${shiftNames}</div>`;
           } else {
-            subText = `<div class="text-[9px] text-slate-400 mt-1">เวลาปกติ</div>`;
+            subText = `<div class="text-[9px] text-slate-400">เวลาปกติ</div>`;
           }
         }
       }
 
       if (day.userNote) {
         if (day.userNote.type === 'swap') {
-          subText = `<div class="text-[9px] font-bold text-blue-600 bg-blue-50 rounded px-1 py-0.5 mt-1 truncate">สลับ: ${day.userNote.swapWith}</div>`;
+          subText = `<div class="text-[9px] font-medium text-sky-400 truncate">สลับ: ${day.userNote.swapWith}</div>`;
         } else {
-          subText = `<div class="text-[9px] font-bold text-rose-600 bg-rose-50 rounded px-1 py-0.5 mt-1 truncate">${day.userNote.title}</div>`;
+          subText = `<div class="text-[9px] font-medium text-rose-400 truncate">${day.userNote.title}</div>`;
         }
       }
 
       card.className = cardClass;
       card.innerHTML = `
-        <div class="text-[11px] font-bold text-slate-700 pb-1 border-b border-slate-100 flex items-center justify-between">
+        <div class="text-[10px] font-medium text-slate-500 dark:text-slate-400 pb-1 border-b border-slate-100 dark:border-white/5 flex items-center justify-between">
           <span>${day.dayName} ${day.date}</span>
-          ${headerBadgeHtml}
+          ${headerDotHtml}
         </div>
         <div class="my-auto py-1">
           ${mainText}
@@ -1630,41 +1649,41 @@
           const target = sub.targetStation || 'จุดเข้าเวร';
           const replacedName = sub.nightShiftNickname ? `คุณ${sub.nightShiftNickname}` : (sub.nightShiftRealName ? `คุณ${sub.nightShiftRealName}` : '');
           subNoticeHtml = `
-            <div class="mt-2.5 p-3 rounded-2xl bg-sky-50 border border-sky-200 text-sky-950 text-xs font-bold flex items-center space-x-2">
-              <span class="w-2 h-2 rounded-full bg-sky-500 shrink-0"></span>
-              <span>ปฏิบัติงานแทน${replacedName ? ` : <strong class="text-sky-800 font-extrabold">${replacedName}</strong>` : ''} ➔ ไปเข้า <strong class="text-sky-900 font-black">${target}</strong></span>
+            <div class="mt-2.5 p-3 rounded-2xl bg-sky-500/10 dark:bg-sky-500/15 border border-sky-500/20 text-sky-900 dark:text-sky-200 text-xs font-semibold flex items-center space-x-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-sky-500 shrink-0"></span>
+              <span>ปฏิบัติงานแทน${replacedName ? ` : <strong class="text-sky-700 dark:text-sky-300 font-bold">${replacedName}</strong>` : ''} ➔ ไปเข้า <strong class="text-sky-800 dark:text-sky-200 font-extrabold">${target}</strong></span>
             </div>
           `;
         } else if (sub && sub.isViewerNightShift) {
           const subName = sub.substituteNickname ? `คุณ${sub.substituteNickname}` : 'มีเจ้าหน้าที่';
           subNoticeHtml = `
-            <div class="mt-2.5 p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-950 text-xs font-bold flex items-center space-x-2">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
-              <span>มีคนปฏิบัติแทน : <strong class="text-emerald-800 font-extrabold">${subName}</strong> (เวรแทนบ่ายดึก)</span>
+            <div class="mt-2.5 p-3 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/20 text-emerald-900 dark:text-emerald-200 text-xs font-semibold flex items-center space-x-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+              <span>มีคนปฏิบัติแทน : <strong class="text-emerald-700 dark:text-emerald-300 font-bold">${subName}</strong> (เวรแทนบ่ายดึก)</span>
             </div>
           `;
         }
 
         return `
-          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100">
-            <div class="text-[10px] font-semibold text-slate-400 uppercase">เวลาปกติ</div>
-            <div class="text-lg font-bold text-slate-900 mt-1">${day.regularDuty.title}</div>
-            <div class="text-xs text-slate-500 mt-0.5">${day.regularDuty.location}</div>
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5">
+            <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">เวลาปกติ</div>
+            <div class="text-lg font-extrabold text-slate-900 dark:text-white mt-1">${day.regularDuty.title}</div>
+            <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-medium">${day.regularDuty.location}</div>
             ${subNoticeHtml}
           </div>
         `;
       } else if (day.isDayOff) {
         return `
-          <div class="p-3.5 rounded-2xl bg-rose-50 border border-rose-100 text-rose-700">
-            <div class="font-bold text-rose-900">วันหยุดประจำสัปดาห์</div>
-            <div class="text-xs text-rose-600 mt-0.5">ไม่มีงานเวลาปกติ</div>
+          <div class="p-4 rounded-2xl bg-rose-500/10 dark:bg-rose-500/15 border border-rose-500/20 text-rose-700 dark:text-rose-300">
+            <div class="font-bold text-base text-rose-900 dark:text-rose-200">วันหยุดประจำสัปดาห์</div>
+            <div class="text-xs text-rose-600 dark:text-rose-400 mt-0.5 font-medium">ไม่มีงานเวลาปกติ</div>
           </div>
         `;
       } else {
         return `
-          <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-100 text-amber-800">
-            <div class="font-bold text-amber-900">เวรเฉพาะวันหยุด</div>
-            <div class="text-xs text-amber-700 mt-0.5">ไม่มีงานเวลาปกติ</div>
+          <div class="p-4 rounded-2xl bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/20 text-amber-800 dark:text-amber-300">
+            <div class="font-bold text-base text-amber-900 dark:text-amber-200">เวรเฉพาะวันหยุด</div>
+            <div class="text-xs text-amber-700 dark:text-amber-400 mt-0.5 font-medium">ไม่มีงานเวลาปกติ</div>
           </div>
         `;
       }
@@ -1673,31 +1692,31 @@
     // Helper for rendering an OT list
     function renderDutiesBlock(duties, fallbackEmptyText = '') {
       if (!duties || duties.length === 0) {
-        return fallbackEmptyText ? `<div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 text-slate-400 text-xs">${fallbackEmptyText}</div>` : '';
+        return fallbackEmptyText ? `<div class="p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5 text-slate-400 text-xs">${fallbackEmptyText}</div>` : '';
       }
       return duties.map(ot => {
         const isNight = ot.name.includes("ดึก") || ot.shiftTime === "กะดึก" || (ot.shift && ot.shift.includes("ดึก"));
         if (isNight) {
           return `
-            <div class="p-3.5 rounded-2xl bg-gradient-to-r from-purple-50 via-purple-100/50 to-purple-50 border-2 border-purple-400 text-purple-950 flex items-center justify-between shadow-sm">
+            <div class="p-3.5 rounded-2xl bg-purple-500/10 dark:bg-purple-500/15 border border-purple-500/25 text-purple-900 dark:text-purple-200 flex items-center justify-between">
               <div class="flex items-center space-x-2.5">
-                <span class="text-xl">🌙</span>
+                <span class="text-lg">🌙</span>
                 <div>
-                  <div class="text-base font-black text-purple-900">${ot.name}</div>
-                  <div class="text-xs font-bold text-purple-700 mt-0.5">เวรดึก (00:00 - 08:00 น.) • เข้างานเที่ยงคืน</div>
+                  <div class="text-base font-bold text-purple-900 dark:text-purple-100">${ot.name}</div>
+                  <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-medium">เวรดึก (00:00 - 08:00 น.) • เข้างานเที่ยงคืน</div>
                 </div>
               </div>
-              <span class="px-2.5 py-1 rounded-xl bg-purple-600 text-white font-black text-xs shadow-xs">★ ไฮไลท์</span>
+              <span class="px-2.5 py-1 rounded-lg bg-purple-600 text-white font-bold text-xs shadow-xs">★ ไฮไลท์</span>
             </div>
           `;
         } else {
           return `
-            <div class="p-3 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 flex items-center justify-between text-xs">
+            <div class="p-3.5 rounded-2xl bg-amber-500/10 dark:bg-amber-500/10 border border-amber-500/20 text-amber-900 dark:text-amber-200 flex items-center justify-between text-xs">
               <div>
-                <div class="font-bold text-sm text-amber-950">${ot.name}</div>
-                <div class="text-[11px] opacity-75 mt-0.5">${ot.shiftTime || ot.category || (ot.name.includes("บ่าย") ? 'เวรบ่าย 16:00 - 24:00 น.' : 'เวรนอกเวลา')}</div>
+                <div class="font-bold text-sm text-amber-950 dark:text-amber-200">${ot.name}</div>
+                <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 font-medium">${ot.shiftTime || ot.category || (ot.name.includes("บ่าย") ? 'เวรบ่าย 16:00 - 24:00 น.' : 'เวรนอกเวลา')}</div>
               </div>
-              <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200 font-bold text-xs text-amber-800 shadow-xs">ตามตาราง</span>
+              <span class="px-2.5 py-1 rounded-lg bg-white/80 dark:bg-white/10 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-white/10 font-bold text-xs shadow-xs">ตามตาราง</span>
             </div>
           `;
         }
@@ -1723,11 +1742,11 @@
       bodyHtml += `
         <div>
           <div class="flex flex-wrap items-center justify-between gap-1 mb-1.5">
-            <span class="text-xs font-black text-purple-700 flex items-center space-x-1.5">
+            <span class="text-xs font-bold text-purple-600 dark:text-purple-300 flex items-center space-x-1.5">
               <span>🌙</span>
               <span>เวรดึก (00:00 - 08:00 น.)</span>
             </span>
-            <span class="text-[10px] font-black px-2 py-0.5 rounded-full bg-purple-600 text-white animate-pulse">★ ไฮไลท์ดึก (เข้างานเที่ยงคืน)</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-600 text-white">เข้างานเที่ยงคืน</span>
           </div>
           <div class="space-y-2">
             ${renderDutiesBlock(nightDuties)}
