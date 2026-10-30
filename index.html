@@ -612,26 +612,30 @@
         </button>
       </div>
 
-      <!-- Tab Switcher -->
-      <div class="flex rounded-xl bg-slate-100 p-1 mb-4 shrink-0">
-        <button id="tabSwitchUserBtn" class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-slate-900 shadow-sm">
-          ⇄ สลับดูตารางงาน
+      <!-- Tab Switcher (3 Tabs) -->
+      <div class="flex rounded-xl bg-slate-100 dark:bg-white/5 p-1 mb-4 shrink-0 text-xs">
+        <button id="tabSwitchUserBtn" class="flex-1 py-1.5 rounded-lg font-bold transition-all bg-white dark:bg-white/10 text-slate-900 dark:text-white shadow-sm">
+          ⇄ สลับตาราง
         </button>
-        <button id="tabNameMappingBtn" class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900">
-          ⚙ จับคู่ชื่อเล่น-ชื่อจริง
+        <button id="tabNameMappingBtn" class="flex-1 py-1.5 rounded-lg font-bold transition-all text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">
+          👥 จับคู่ชื่อ
+        </button>
+        <button id="tabAdminBtn" class="flex-1 py-1.5 rounded-lg font-bold transition-all text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white flex items-center justify-center space-x-1">
+          <span>📊 สถิติ/แอดมิน</span>
+          <span id="adminLockBadge" class="text-[10px]">🔒</span>
         </button>
       </div>
 
       <!-- TAB 1 CONTENT: SWITCH USER -->
       <div id="tabContentSwitchUser" class="space-y-3 overflow-y-auto flex-1 pr-1">
-        <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
-          <div class="text-[11px] text-slate-400 font-semibold mb-1">ผู้ใช้ปัจจุบันที่กำลังแสดงผล:</div>
+        <div class="p-3 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/5 text-xs">
+          <div class="text-[11px] text-slate-400 dark:text-slate-400 font-semibold mb-1">ผู้ใช้ปัจจุบันที่กำลังแสดงผล:</div>
           <div class="flex items-center justify-between">
             <div>
-              <span id="currentUserDisplayLabel" class="text-sm font-bold text-slate-900">จุรีพร ผาบสุวรรณ์ (เอ็ม)</span>
-              <span id="currentUserPairedBadge" class="ml-1.5 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold">ยืนยันแล้ว</span>
+              <span id="currentUserDisplayLabel" class="text-sm font-bold text-slate-900 dark:text-white">จุรีพร ผาบสุวรรณ์ (เอ็ม)</span>
+              <span id="currentUserPairedBadge" class="ml-1.5 px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold">ยืนยันแล้ว</span>
             </div>
-            <button id="setAsMyProfileBtn" class="px-2.5 py-1 rounded-lg bg-coral-500 text-white font-bold text-[11px] shadow-sm hover:bg-coral-600">
+            <button id="setAsMyProfileBtn" class="px-2.5 py-1 rounded-lg bg-coral-500 hover:bg-coral-600 text-white font-bold text-[11px] shadow-sm">
               ⭐ ตั้งเป็นของฉัน
             </button>
           </div>
@@ -639,10 +643,10 @@
 
         <!-- Filter Sub-Tabs -->
         <div class="flex items-center justify-between pt-1">
-          <div class="text-xs font-bold text-slate-700">เลือกดูของเจ้าหน้าที่ท่านอื่น:</div>
+          <div class="text-xs font-bold text-slate-700 dark:text-slate-300">เลือกดูของเจ้าหน้าที่ท่านอื่น:</div>
           <div class="flex space-x-1 text-[11px]">
-            <button id="filterNicknamesBtn" class="px-2 py-0.5 rounded-md font-bold bg-slate-200 text-slate-800">ชื่อเล่น (15 คน)</button>
-            <button id="filterRealNamesBtn" class="px-2 py-0.5 rounded-md font-semibold text-slate-500 hover:text-slate-800">ชื่อจริง (17 คน)</button>
+            <button id="filterNicknamesBtn" class="px-2 py-0.5 rounded-md font-bold bg-slate-200 dark:bg-white/10 text-slate-800 dark:text-white">ชื่อเล่น (15 คน)</button>
+            <button id="filterRealNamesBtn" class="px-2 py-0.5 rounded-md font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white">ชื่อจริง (17 คน)</button>
           </div>
         </div>
 
@@ -652,25 +656,115 @@
         </div>
       </div>
 
-      <!-- TAB 2 CONTENT: NAME MATCHING SETUP (NO MORE RANDOM GUESSES!) -->
+      <!-- TAB 2 CONTENT: NAME MATCHING SETUP (ADMIN EDITABLE / STAFF READONLY) -->
       <div id="tabContentNameMapping" class="space-y-3 overflow-y-auto flex-1 pr-1 hidden">
-        <div class="p-3 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs">
-          <strong>คำชี้แจง:</strong> เนื่องจากตารางเวลาปกติใช้ <em>ชื่อเล่น</em> (15 คน) ส่วนตารางเวรใน Excel ใช้ <em>ชื่อจริง</em> (17 คน) 
-          คุณสามารถเลือกจับคู่ชื่อของแต่ละคนเพื่อรวมตารางทำงานให้สมบูรณ์ได้ที่นี่
+        
+        <!-- Admin Notice Banner -->
+        <div id="mappingAdminBanner" class="p-3 rounded-2xl border text-xs flex items-center justify-between transition-all">
+          <!-- Injected via JavaScript based on admin login state -->
         </div>
 
         <div id="nameMappingTableContainer" class="space-y-2.5">
           <!-- 15 Nicknames with Select dropdowns injected via JS -->
         </div>
 
-        <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
-          <button id="resetMappingBtn" class="text-xs font-semibold text-slate-500 hover:text-slate-800">
+        <div id="mappingActionButtons" class="pt-3 border-t border-slate-100 dark:border-white/5 flex items-center justify-between">
+          <button id="resetMappingBtn" class="text-xs font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white">
             รีเซ็ตค่าเริ่มต้น
           </button>
           <button id="saveMappingBtn" class="px-4 py-2 rounded-xl bg-coral-500 hover:bg-coral-600 text-white font-bold text-xs shadow-md shadow-coral-500/20 active:scale-95 transition-all">
-            💾 บันทึกการจับคู่ชื่อ
+            💾 บันทึกขึ้นระบบกลาง (Cloud)
           </button>
         </div>
+      </div>
+
+      <!-- TAB 3 CONTENT: ADMIN DASHBOARD & LIVE ANALYTICS -->
+      <div id="tabContentAdmin" class="space-y-3.5 overflow-y-auto flex-1 pr-1 hidden">
+        
+        <!-- Section: If Locked (PIN Prompt) -->
+        <div id="adminLockedView" class="p-5 text-center space-y-3 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/5">
+          <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-2xl font-bold">
+            🔐
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">เข้าสู่ระบบผู้ดูแล (คนทำเว็บ)</h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">ระบุรหัส PIN เพื่อดูยอดสถิติผู้ใช้งาน และสิทธิ์แก้ไขฐานข้อมูล</p>
+          </div>
+          <div class="max-w-[200px] mx-auto space-y-2">
+            <input type="password" id="adminPinInput" maxlength="6" placeholder="รหัส PIN (เริ่มต้น 2569)" class="w-full text-center px-3 py-2 text-sm font-bold tracking-widest rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/5 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-coral-500">
+            <button id="adminLoginBtn" class="w-full py-2 rounded-xl bg-coral-500 hover:bg-coral-600 text-white font-bold text-xs shadow-md shadow-coral-500/20 transition-all">
+              🔓 ปลดล็อคแอดมิน
+            </button>
+          </div>
+        </div>
+
+        <!-- Section: If Unlocked (Dashboard Content) -->
+        <div id="adminUnlockedView" class="space-y-4 hidden">
+          
+          <!-- Top Stats Cards -->
+          <div class="grid grid-cols-2 gap-2">
+            <div class="p-3.5 rounded-2xl bg-sky-500/10 border border-sky-500/20 text-sky-900 dark:text-sky-300">
+              <div class="text-[10px] font-semibold uppercase tracking-wider text-sky-600 dark:text-sky-400">เข้าชมทั้งหมด</div>
+              <div class="text-2xl font-bold mt-1"><span id="adminTotalViews">0</span> <span class="text-xs font-normal">ครั้ง</span></div>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-900 dark:text-emerald-300">
+              <div class="text-[10px] font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">ผู้ใช้งานจริง</div>
+              <div class="text-2xl font-bold mt-1"><span id="adminUniqueUsers">0</span> <span class="text-xs font-normal">คน/เครื่อง</span></div>
+            </div>
+          </div>
+
+          <!-- Cloud Database Status -->
+          <div class="p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-xs flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span class="font-bold text-slate-800 dark:text-slate-200">สถานะระบบ Cloud:</span>
+            </div>
+            <span id="adminCloudStatusBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-slate-300">
+              กำลังตรวจสอบ...
+            </span>
+          </div>
+
+          <!-- Recent Visitors Feed -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-slate-800 dark:text-slate-200">ประวัติการเข้าใช้งานล่าสุด</span>
+              <button id="refreshAnalyticsBtn" class="text-[11px] text-sky-500 hover:underline">รีเฟรช ↺</button>
+            </div>
+            <div id="adminRecentVisitorsList" class="space-y-1.5 max-h-36 overflow-y-auto pr-1 text-xs">
+              <!-- Logs Injected via JS -->
+            </div>
+          </div>
+
+          <!-- Supabase Cloud Connection Config -->
+          <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-xs space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-900 dark:text-white">⚙️ เชื่อมต่อฐานข้อมูล Supabase (ฟรี)</span>
+              <span class="text-[10px] text-emerald-500 font-bold">แนะนำ</span>
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">
+              เพื่อให้ทุกคนเห็นชื่อตรงกันทันที ให้ใส่ URL และ Anon Key จาก Supabase ที่นี่:
+            </p>
+            <div class="space-y-2">
+              <input type="text" id="supabaseUrlInput" placeholder="Project URL (เช่น https://xyz.supabase.co)" class="w-full px-2.5 py-1.5 text-xs rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/5 text-slate-900 dark:text-white">
+              <input type="password" id="supabaseKeyInput" placeholder="Anon Public Key" class="w-full px-2.5 py-1.5 text-xs rounded-xl border border-slate-300 dark:border-white/10 bg-white dark:bg-white/5 text-slate-900 dark:text-white">
+              <button id="saveSupabaseConfigBtn" class="w-full py-1.5 rounded-xl bg-slate-800 hover:bg-slate-900 dark:bg-white/10 dark:hover:bg-white/15 text-white font-bold text-xs transition-colors">
+                ⚡ บันทึกการเชื่อมต่อ Supabase
+              </button>
+            </div>
+          </div>
+
+          <!-- Admin Security & Exit -->
+          <div class="pt-2 flex items-center justify-between border-t border-slate-100 dark:border-white/5 text-xs">
+            <button id="changeAdminPinBtn" class="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white">
+              🔑 เปลี่ยนรหัส PIN
+            </button>
+            <button id="adminLogoutBtn" class="px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-bold transition-colors">
+              🔒 ออกจากระบบแอดมิน
+            </button>
+          </div>
+
+        </div>
+
       </div>
 
     </div>

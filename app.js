@@ -19,8 +19,11 @@
     activeNoteType: 'leave', // 'leave' | 'swap' | 'general'
     
     // User Switcher Modal State
-    activeUserModalTab: 'switch', // 'switch' | 'mapping'
+    activeUserModalTab: 'switch', // 'switch' | 'mapping' | 'admin'
     staffFilterMode: 'nickname', // 'nickname' | 'realname'
+
+    // Admin & Cloud State
+    isAdmin: sessionStorage.getItem('crh_is_admin') === 'true',
 
     // Photo Gallery Pan & Pinch-to-Zoom
     imageZoom: 1,
@@ -37,6 +40,182 @@
     excelHideEmptyRows: true
   };
 
+  // ==========================================
+  // CLOUD DATABASE & LIVE ANALYTICS (SUPABASE)
+  // ==========================================
+  const CloudDB = {
+    getConfig() {
+      try {
+        const saved = localStorage.getItem('crh_supabase_config');
+        if (saved) return JSON.parse(saved);
+      } catch (e) {}
+      return {
+        url: (window.CRH_SUPABASE_URL || '').trim(),
+        key: (window.CRH_SUPABASE_KEY || '').trim()
+      };
+    },
+
+    setConfig(url, key) {
+      localStorage.setItem('crh_supabase_config', JSON.stringify({ url: url.trim(), key: key.trim() }));
+    },
+
+    isConfigured() {
+      const cfg = this.getConfig();
+      return !!(cfg.url && cfg.key && cfg.url.startsWith('http'));
+    },
+
+    getDeviceId() {
+      let id = localStorage.getItem('crh_device_id');
+      if (!id) {
+        id = 'dev_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now().toString(36);
+        localStorage.setItem('crh_device_id', id);
+      }
+      return id;
+    },
+
+    async logVisit(activeUser) {
+      const deviceId = this.getDeviceId();
+      const timestamp = new Date().toISOString();
+
+      // 1. Record locally for instant offline stats
+      try {
+        let localLogs = JSON.parse(localStorage.getItem('crh_local_analytics') || '[]');
+        localLogs.unshift({
+          device_id: deviceId,
+          active_user: activeUser || 'เอ็ม',
+          created_at: timestamp
+        });
+        if (localLogs.length > 200) localLogs = localLogs.slice(0, 200);
+        localStorage.setItem('crh_local_analytics', JSON.stringify(localLogs));
+      } catch (e) {}
+
+      // 2. If Supabase configured, post to cloud
+      if (this.isConfigured()) {
+        try {
+          const cfg = this.getConfig();
+          await fetch(`${cfg.url}/rest/v1/crh_analytics`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': cfg.key,
+              'Authorization': `Bearer ${cfg.key}`,
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({
+              device_id: deviceId,
+              active_user: activeUser || 'ไม่ระบุ'
+            })
+          });
+        } catch (err) {
+          console.warn('Analytics cloud sync error:', err);
+        }
+      }
+    },
+
+    async fetchNameMappings() {
+      if (!this.isConfigured()) return null;
+      try {
+        const cfg = this.getConfig();
+        const res = await fetch(`${cfg.url}/rest/v1/crh_name_mappings?select=nickname,real_name`, {
+          headers: {
+            'apikey': cfg.key,
+            'Authorization': `Bearer ${cfg.key}`
+          }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            const map = { "เอ็ม": "จุรีพร ผาบสุวรรณ์" };
+            data.forEach(item => {
+              if (item.nickname && item.real_name) {
+                map[item.nickname] = item.real_name;
+              }
+            });
+            localStorage.setItem('crh_staff_name_map', JSON.stringify(map));
+            return map;
+          }
+        }
+      } catch (err) {
+        console.warn('Fetch mappings error:', err);
+      }
+      return null;
+    },
+
+    async saveNameMappings(map) {
+      localStorage.setItem('crh_staff_name_map', JSON.stringify(map));
+      if (!this.isConfigured()) {
+        return { success: true, cloud: false };
+      }
+
+      try {
+        const cfg = this.getConfig();
+        const rows = [];
+        for (const [nickname, real_name] of Object.entries(map)) {
+          if (nickname && real_name) {
+            rows.push({
+              nickname,
+              real_name,
+              updated_at: new Date().toISOString()
+            });
+          }
+        }
+
+        const res = await fetch(`${cfg.url}/rest/v1/crh_name_mappings`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': cfg.key,
+            'Authorization': `Bearer ${cfg.key}`,
+            'Prefer': 'resolution=merge-duplicates'
+          },
+          body: JSON.stringify(rows)
+        });
+
+        return { success: res.ok, cloud: true };
+      } catch (err) {
+        console.error('Save mappings error:', err);
+        return { success: false, cloud: false, error: err };
+      }
+    },
+
+    async getAnalyticsSummary() {
+      if (this.isConfigured()) {
+        try {
+          const cfg = this.getConfig();
+          const res = await fetch(`${cfg.url}/rest/v1/crh_analytics?select=device_id,active_user,created_at&order=created_at.desc&limit=150`, {
+            headers: {
+              'apikey': cfg.key,
+              'Authorization': `Bearer ${cfg.key}`
+            }
+          });
+          if (res.ok) {
+            const rows = await res.json();
+            const totalViews = rows.length;
+            const uniqueDevices = new Set(rows.map(r => r.device_id)).size;
+            return {
+              cloud: true,
+              totalViews: totalViews >= 150 ? '150+' : totalViews,
+              uniqueUsers: uniqueDevices,
+              recentLogs: rows.slice(0, 20)
+            };
+          }
+        } catch (e) {
+          console.warn('Get cloud analytics error, falling back to local:', e);
+        }
+      }
+
+      // Fallback to local logs
+      const local = JSON.parse(localStorage.getItem('crh_local_analytics') || '[]');
+      const unique = new Set(local.map(r => r.device_id)).size;
+      return {
+        cloud: false,
+        totalViews: local.length,
+        uniqueUsers: unique,
+        recentLogs: local.slice(0, 20)
+      };
+    }
+  };
+
   // DOM Elements Cache
   const el = {};
 
@@ -51,9 +230,19 @@
     return 1; // Always start at Day 1 (1 พฤศจิกายน)
   }
 
-  function init() {
+  async function init() {
     cacheElements();
     initTheme();
+
+    // 1. Log visit analytics
+    CloudDB.logVisit(state.currentUser);
+
+    // 2. Try fetching latest cloud name mappings if connected
+    const cloudMap = await CloudDB.fetchNameMappings();
+    if (cloudMap) {
+      console.log('CRH-FS: Synced name mappings from Supabase cloud');
+    }
+
     loadScheduleData();
     bindEvents();
     setupAndroidBackNavigation();
@@ -158,6 +347,26 @@
     el.nameMappingTableContainer = document.getElementById('nameMappingTableContainer');
     el.saveMappingBtn = document.getElementById('saveMappingBtn');
     el.resetMappingBtn = document.getElementById('resetMappingBtn');
+
+    // Admin & Analytics Elements
+    el.tabAdminBtn = document.getElementById('tabAdminBtn');
+    el.tabContentAdmin = document.getElementById('tabContentAdmin');
+    el.adminLockBadge = document.getElementById('adminLockBadge');
+    el.mappingAdminBanner = document.getElementById('mappingAdminBanner');
+    el.adminLockedView = document.getElementById('adminLockedView');
+    el.adminUnlockedView = document.getElementById('adminUnlockedView');
+    el.adminPinInput = document.getElementById('adminPinInput');
+    el.adminLoginBtn = document.getElementById('adminLoginBtn');
+    el.adminTotalViews = document.getElementById('adminTotalViews');
+    el.adminUniqueUsers = document.getElementById('adminUniqueUsers');
+    el.adminCloudStatusBadge = document.getElementById('adminCloudStatusBadge');
+    el.adminRecentVisitorsList = document.getElementById('adminRecentVisitorsList');
+    el.refreshAnalyticsBtn = document.getElementById('refreshAnalyticsBtn');
+    el.supabaseUrlInput = document.getElementById('supabaseUrlInput');
+    el.supabaseKeyInput = document.getElementById('supabaseKeyInput');
+    el.saveSupabaseConfigBtn = document.getElementById('saveSupabaseConfigBtn');
+    el.changeAdminPinBtn = document.getElementById('changeAdminPinBtn');
+    el.adminLogoutBtn = document.getElementById('adminLogoutBtn');
 
     // Excel Uploader Modal
     el.uploadExcelModal = document.getElementById('uploadExcelModal');
@@ -391,10 +600,88 @@
       el.closeUserModalBtn.addEventListener('click', () => closeModalWithHistory(el.userModal));
     }
 
-    // User Modal Tabs
-    if (el.tabSwitchUserBtn && el.tabNameMappingBtn) {
+    // User Modal Tabs (3 Tabs)
+    if (el.tabSwitchUserBtn) {
       el.tabSwitchUserBtn.addEventListener('click', () => setUserModalTab('switch'));
+    }
+    if (el.tabNameMappingBtn) {
       el.tabNameMappingBtn.addEventListener('click', () => setUserModalTab('mapping'));
+    }
+    if (el.tabAdminBtn) {
+      el.tabAdminBtn.addEventListener('click', () => setUserModalTab('admin'));
+    }
+
+    // Admin Login / Unlock
+    if (el.adminLoginBtn) {
+      el.adminLoginBtn.addEventListener('click', () => {
+        const pin = el.adminPinInput ? el.adminPinInput.value.trim() : '';
+        const savedPin = localStorage.getItem('crh_admin_pin') || '2569';
+        if (pin === savedPin) {
+          state.isAdmin = true;
+          sessionStorage.setItem('crh_is_admin', 'true');
+          renderAdminDashboard();
+          renderNameMappingSetup();
+        } else {
+          alert('รหัส PIN แอดมินไม่ถูกต้องครับ (รหัสเริ่มต้นคือ: 2569)');
+        }
+      });
+    }
+
+    if (el.adminPinInput) {
+      el.adminPinInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && el.adminLoginBtn) {
+          el.adminLoginBtn.click();
+        }
+      });
+    }
+
+    // Admin Logout
+    if (el.adminLogoutBtn) {
+      el.adminLogoutBtn.addEventListener('click', () => {
+        lockAdmin();
+      });
+    }
+
+    // Refresh Analytics
+    if (el.refreshAnalyticsBtn) {
+      el.refreshAnalyticsBtn.addEventListener('click', () => {
+        renderAdminDashboard();
+      });
+    }
+
+    // Save Supabase Config
+    if (el.saveSupabaseConfigBtn) {
+      el.saveSupabaseConfigBtn.addEventListener('click', async () => {
+        const url = el.supabaseUrlInput ? el.supabaseUrlInput.value.trim() : '';
+        const key = el.supabaseKeyInput ? el.supabaseKeyInput.value.trim() : '';
+        if (!url || !key) {
+          alert('กรุณากรอกทั้ง Project URL และ Anon Key ให้ครบถ้วนครับ');
+          return;
+        }
+        CloudDB.setConfig(url, key);
+        alert('บันทึกการตั้งค่า Supabase แล้ว! กำลังทดสอบเชื่อมต่อ...');
+        await CloudDB.logVisit(state.currentUser);
+        await renderAdminDashboard();
+      });
+    }
+
+    // Change Admin PIN
+    if (el.changeAdminPinBtn) {
+      el.changeAdminPinBtn.addEventListener('click', () => {
+        const currentPin = localStorage.getItem('crh_admin_pin') || '2569';
+        const verifyPin = prompt('กรุณายืนยันรหัส PIN เดิม:');
+        if (verifyPin !== currentPin) {
+          alert('รหัส PIN เดิมไม่ถูกต้องครับ');
+          return;
+        }
+        const newPin = prompt('กำหนดรหัส PIN แอดมินใหม่ (4-6 หลัก):');
+        if (newPin && newPin.trim().length >= 4) {
+          localStorage.setItem('crh_admin_pin', newPin.trim());
+          alert('เปลี่ยนรหัส PIN แอดมินเรียบร้อยแล้ว จดจำรหัสนี้ไว้ใช้นะครับ');
+        } else if (newPin !== null) {
+          alert('รหัส PIN ต้องมีความยาวอย่างน้อย 4 หลักครับ');
+        }
+      });
     }
 
     // Staff Filter Mode (Nicknames vs Real Names)
@@ -1372,17 +1659,39 @@
   // ==========================================
   function setUserModalTab(tab) {
     state.activeUserModalTab = tab;
+    
+    // Reset all tabs
+    [el.tabSwitchUserBtn, el.tabNameMappingBtn, el.tabAdminBtn].forEach(b => {
+      if (b) {
+        b.className = 'flex-1 py-1.5 rounded-lg font-bold transition-all text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white flex items-center justify-center space-x-1';
+      }
+    });
+    [el.tabContentSwitchUser, el.tabContentNameMapping, el.tabContentAdmin].forEach(c => {
+      if (c) c.classList.add('hidden');
+    });
+
+    const activeClass = 'flex-1 py-1.5 rounded-lg font-bold transition-all bg-white dark:bg-white/10 text-slate-900 dark:text-white shadow-sm flex items-center justify-center space-x-1';
+
     if (tab === 'switch') {
-      el.tabSwitchUserBtn.className = 'flex-1 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-slate-900 shadow-sm';
-      el.tabNameMappingBtn.className = 'flex-1 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900';
-      el.tabContentSwitchUser.classList.remove('hidden');
-      el.tabContentNameMapping.classList.add('hidden');
-    } else {
-      el.tabNameMappingBtn.className = 'flex-1 py-1.5 rounded-lg text-xs font-bold transition-all bg-white text-slate-900 shadow-sm';
-      el.tabSwitchUserBtn.className = 'flex-1 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900';
-      el.tabContentSwitchUser.classList.add('hidden');
-      el.tabContentNameMapping.classList.remove('hidden');
+      if (el.tabSwitchUserBtn) el.tabSwitchUserBtn.className = activeClass;
+      if (el.tabContentSwitchUser) el.tabContentSwitchUser.classList.remove('hidden');
+    } else if (tab === 'mapping') {
+      if (el.tabNameMappingBtn) el.tabNameMappingBtn.className = activeClass;
+      if (el.tabContentNameMapping) el.tabContentNameMapping.classList.remove('hidden');
+      renderNameMappingSetup();
+    } else if (tab === 'admin') {
+      if (el.tabAdminBtn) el.tabAdminBtn.className = activeClass;
+      if (el.tabContentAdmin) el.tabContentAdmin.classList.remove('hidden');
+      renderAdminDashboard();
     }
+  }
+
+  function lockAdmin() {
+    state.isAdmin = false;
+    sessionStorage.removeItem('crh_is_admin');
+    if (el.adminLockBadge) el.adminLockBadge.textContent = '🔒';
+    renderAdminDashboard();
+    renderNameMappingSetup();
   }
 
   function renderUserModalContent() {
@@ -1393,16 +1702,23 @@
     }
     if (el.currentUserPairedBadge) {
       if (staff.isPaired) {
-        el.currentUserPairedBadge.className = 'ml-1.5 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold';
+        el.currentUserPairedBadge.className = 'ml-1.5 px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold';
         el.currentUserPairedBadge.textContent = 'จับคู่ชื่อแล้ว';
       } else {
-        el.currentUserPairedBadge.className = 'ml-1.5 px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold';
+        el.currentUserPairedBadge.className = 'ml-1.5 px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 text-[10px] font-bold';
         el.currentUserPairedBadge.textContent = 'ยังไม่ได้จับคู่';
       }
     }
 
+    if (el.adminLockBadge) {
+      el.adminLockBadge.textContent = state.isAdmin ? '🛡️' : '🔒';
+    }
+
     renderStaffSelectorGrid();
     renderNameMappingSetup();
+    if (state.activeUserModalTab === 'admin') {
+      renderAdminDashboard();
+    }
   }
 
   function renderStaffSelectorGrid() {
@@ -1420,20 +1736,20 @@
       const card = document.createElement('button');
       card.className = `p-3 rounded-2xl border text-left transition-all ${
         isSelected
-          ? 'bg-rose-50 border-rose-400 text-rose-900 ring-2 ring-rose-300'
-          : 'bg-white border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50'
+          ? 'bg-rose-50 dark:bg-rose-500/10 border-rose-400 dark:border-rose-500/30 text-rose-900 dark:text-rose-200 ring-2 ring-rose-300 dark:ring-rose-500/20'
+          : 'bg-white dark:bg-white/5 border-slate-200 dark:border-white/5 text-slate-700 dark:text-slate-200 hover:border-slate-300 dark:hover:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10'
       }`;
 
       let subtitle = '';
       if (staffInfo.isPaired) {
-        subtitle = `<span class="text-emerald-600 font-semibold">✓ ${state.staffFilterMode === 'nickname' ? staffInfo.realName : staffInfo.nickname}</span>`;
+        subtitle = `<span class="text-emerald-600 dark:text-emerald-400 font-semibold">✓ ${state.staffFilterMode === 'nickname' ? staffInfo.realName : staffInfo.nickname}</span>`;
       } else {
-        subtitle = `<span class="text-slate-400">(ยังไม่จับคู่)</span>`;
+        subtitle = `<span class="text-slate-400 dark:text-slate-500">(ยังไม่จับคู่)</span>`;
       }
 
       card.innerHTML = `
         <div class="flex items-center justify-between mb-1">
-          <span class="text-xs font-black text-slate-900">${ident}</span>
+          <span class="text-xs font-bold text-slate-900 dark:text-white">${ident}</span>
           ${isSelected ? '<span class="w-2 h-2 rounded-full bg-rose-500"></span>' : ''}
         </div>
         <div class="text-[10px] truncate">${subtitle}</div>
@@ -1454,12 +1770,34 @@
 
     const currentMap = window.getNameMapping();
 
+    // Collaborative Notice Banner for All Staff
+    if (el.mappingAdminBanner) {
+      el.mappingAdminBanner.className = 'p-3 rounded-2xl bg-sky-500/10 border border-sky-500/20 text-sky-900 dark:text-sky-300 text-xs flex items-center space-x-2.5';
+      el.mappingAdminBanner.innerHTML = `
+        <span class="text-base shrink-0">🤝</span>
+        <div>
+          <div class="font-bold">จับคู่ชื่อร่วมกัน (ซิงค์ฐานข้อมูลกลาง)</div>
+          <div class="text-[11px] text-sky-700 dark:text-sky-400">เจ้าหน้าที่ทุกคนสามารถช่วยกันเลือกจับคู่ชื่อตนเองหรือเพื่อนได้ เมื่อกดบันทึก ข้อมูลจะซิงค์ให้ทุกคนเห็นตรงกันทันที</div>
+        </div>
+      `;
+    }
+
+    // Save button & reset button enabled for all staff
+    if (el.saveMappingBtn) {
+      el.saveMappingBtn.disabled = false;
+      el.saveMappingBtn.className = 'px-4 py-2 rounded-xl bg-coral-500 hover:bg-coral-600 text-white font-bold text-xs shadow-md shadow-coral-500/20 active:scale-95 transition-all cursor-pointer';
+      el.saveMappingBtn.textContent = '💾 บันทึกขึ้นระบบกลาง (Cloud)';
+    }
+    if (el.resetMappingBtn) {
+      el.resetMappingBtn.style.display = 'block';
+    }
+
     window.NICKNAME_LIST.forEach(nickname => {
       const assignedRealName = currentMap[nickname] || '';
       const isEm = (nickname === 'เอ็ม');
 
       const row = document.createElement('div');
-      row.className = 'p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col space-y-1.5';
+      row.className = 'p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 flex flex-col space-y-1.5';
 
       let optionsHtml = `<option value="">(ยังไม่ระบุชื่อจริง)</option>`;
       window.REAL_NAME_LIST.forEach(rn => {
@@ -1467,26 +1805,33 @@
         optionsHtml += `<option value="${rn}" ${isSelected ? 'selected' : ''}>${rn}</option>`;
       });
 
+      let controlHtml = '';
+      if (isEm) {
+        controlHtml = `<input type="text" disabled value="จุรีพร ผาบสุวรรณ์" class="w-full bg-slate-200/70 dark:bg-white/10 border border-slate-300 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 font-bold cursor-not-allowed">`;
+      } else {
+        controlHtml = `
+          <select data-nickname="${nickname}" class="mapping-select w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 dark:text-white focus:outline-none focus:ring-1 focus:ring-coral-500">
+            ${optionsHtml}
+          </select>
+        `;
+      }
+
       row.innerHTML = `
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-2">
-            <span class="w-6 h-6 rounded-full bg-white border border-slate-200 text-xs font-black flex items-center justify-center text-slate-800">
+            <span class="w-6 h-6 rounded-full bg-white dark:bg-white/10 border border-slate-200 dark:border-white/10 text-xs font-bold flex items-center justify-center text-slate-800 dark:text-white">
               ${nickname.substring(0, 1)}
             </span>
-            <span class="text-xs font-extrabold text-slate-900">${nickname}</span>
+            <span class="text-xs font-bold text-slate-900 dark:text-white">${nickname}</span>
           </div>
           ${isEm 
-            ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">ยืนยัน 100%</span>' 
+            ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300">ยืนยัน 100%</span>' 
             : assignedRealName 
-              ? '<span class="text-[10px] font-semibold text-sky-600">จับคู่แล้ว</span>' 
+              ? '<span class="text-[10px] font-semibold text-sky-600 dark:text-sky-400">จับคู่แล้ว</span>' 
               : '<span class="text-[10px] text-slate-400">ยังไม่จับคู่</span>'}
         </div>
         <div>
-          ${isEm 
-            ? `<input type="text" disabled value="จุรีพร ผาบสุวรรณ์" class="w-full bg-slate-200/70 border border-slate-300 rounded-xl px-2.5 py-1.5 text-xs text-slate-700 font-bold cursor-not-allowed">`
-            : `<select data-nickname="${nickname}" class="mapping-select w-full bg-white border border-slate-300 rounded-xl px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-coral-500">
-                ${optionsHtml}
-               </select>`}
+          ${controlHtml}
         </div>
       `;
 
@@ -1494,7 +1839,74 @@
     });
   }
 
-  function saveNameMappingFromUI() {
+  async function renderAdminDashboard() {
+    const isAdmin = state.isAdmin;
+
+    if (el.adminLockBadge) {
+      el.adminLockBadge.textContent = isAdmin ? '🛡️' : '🔒';
+    }
+
+    if (!isAdmin) {
+      if (el.adminLockedView) el.adminLockedView.classList.remove('hidden');
+      if (el.adminUnlockedView) el.adminUnlockedView.classList.add('hidden');
+      if (el.adminPinInput) el.adminPinInput.value = '';
+      return;
+    }
+
+    // Unlocked view
+    if (el.adminLockedView) el.adminLockedView.classList.add('hidden');
+    if (el.adminUnlockedView) el.adminUnlockedView.classList.remove('hidden');
+
+    // Load configs into inputs
+    const cfg = CloudDB.getConfig();
+    if (el.supabaseUrlInput && !el.supabaseUrlInput.value) el.supabaseUrlInput.value = cfg.url;
+    if (el.supabaseKeyInput && !el.supabaseKeyInput.value) el.supabaseKeyInput.value = cfg.key;
+
+    // Update cloud status badge
+    if (el.adminCloudStatusBadge) {
+      if (CloudDB.isConfigured()) {
+        el.adminCloudStatusBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20';
+        el.adminCloudStatusBadge.textContent = '☁️ ซิงค์ Cloud (Supabase) เรียบร้อย';
+      } else {
+        el.adminCloudStatusBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20';
+        el.adminCloudStatusBadge.textContent = '💾 โหมดเครื่องส่วนตัว (Local)';
+      }
+    }
+
+    // Fetch and display Analytics
+    const stats = await CloudDB.getAnalyticsSummary();
+    if (el.adminTotalViews) el.adminTotalViews.textContent = stats.totalViews;
+    if (el.adminUniqueUsers) el.adminUniqueUsers.textContent = stats.uniqueUsers;
+
+    // Render Recent Visitors
+    if (el.adminRecentVisitorsList) {
+      el.adminRecentVisitorsList.innerHTML = '';
+      if (!stats.recentLogs || stats.recentLogs.length === 0) {
+        el.adminRecentVisitorsList.innerHTML = `<div class="text-[11px] text-slate-400 italic p-2 text-center">ยังไม่มีประวัติการเข้าชม</div>`;
+      } else {
+        stats.recentLogs.forEach(log => {
+          const row = document.createElement('div');
+          row.className = 'p-2 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 flex items-center justify-between text-[11px]';
+          
+          const timeStr = log.created_at ? new Date(log.created_at).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '-';
+          const dateStr = log.created_at ? new Date(log.created_at).toLocaleDateString('th-TH', { day: 'numeric', month: 'short' }) : '';
+          
+          row.innerHTML = `
+            <div class="flex items-center space-x-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+              <span class="font-bold text-slate-800 dark:text-slate-200">คุณ${log.active_user || 'ไม่ระบุ'}</span>
+            </div>
+            <div class="text-slate-400 font-mono text-[10px]">
+              ${dateStr} ${timeStr}
+            </div>
+          `;
+          el.adminRecentVisitorsList.appendChild(row);
+        });
+      }
+    }
+  }
+
+  async function saveNameMappingFromUI() {
     const selects = el.nameMappingTableContainer.querySelectorAll('.mapping-select');
     const newMap = { "เอ็ม": "จุรีพร ผาบสุวรรณ์" };
 
@@ -1506,16 +1918,22 @@
       }
     });
 
-    localStorage.setItem('crh_staff_name_map', JSON.stringify(newMap));
+    const res = await CloudDB.saveNameMappings(newMap);
     loadScheduleData();
     renderAll();
     renderUserModalContent();
-    alert('บันทึกการจับคู่ชื่อเรียบร้อยแล้ว! ข้อมูลตารางทำงานและเวรถูกรวมเข้าด้วยกันแล้ว');
+
+    if (res.cloud) {
+      alert('🎉 บันทึกการจับคู่ชื่อขึ้นระบบกลางเรียบร้อยแล้ว!\nเพื่อนร่วมงานทุกคนจะเห็นชื่อเล่นที่จับคู่ตรงกันทันทีครับ');
+    } else {
+      alert('💾 บันทึกในเครื่องเรียบร้อยแล้ว!\n(หากต้องการให้เพื่อนร่วมงานเห็นเหมือนกัน ให้เชื่อมต่อ Supabase ในแท็บ "สถิติ/แอดมิน" ครับ)');
+    }
   }
 
   function switchUser(identifier) {
     state.currentUser = identifier;
     localStorage.setItem('crh_active_user', identifier);
+    CloudDB.logVisit(identifier);
     loadScheduleData();
     renderAll();
   }
