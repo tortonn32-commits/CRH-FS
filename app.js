@@ -266,8 +266,17 @@
     renderAll();
     setupSheetUploader();
 
-    // 4. If first-time user, launch onboarding modal
-    if (isFirstTime) {
+    // 4. In-App Browser & Install guidance pop-up (for LINE / Facebook Messenger)
+    const isInstalled = (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true || document.referrer.includes('android-app://'));
+    const isInAppDismissed = (localStorage.getItem('crh_fs_inapp_guide_dismissed') === '1');
+
+    if (!isInstalled && !isInAppDismissed) {
+      showInAppModal(() => {
+        if (isFirstTime) {
+          showOnboardingModal();
+        }
+      });
+    } else if (isFirstTime) {
       showOnboardingModal();
     }
   }
@@ -404,6 +413,15 @@
     el.onboardingRealNameSelect = document.getElementById('onboardingRealNameSelect');
     el.onboardingPairedNotice = document.getElementById('onboardingPairedNotice');
     el.onboardingSubmitBtn = document.getElementById('onboardingSubmitBtn');
+
+    // In-App Browser & Install Guide Modal
+    el.inAppBrowserModal = document.getElementById('inAppBrowserModal');
+    el.inAppModalTitle = document.getElementById('inAppModalTitle');
+    el.inAppModalSubtitle = document.getElementById('inAppModalSubtitle');
+    el.inAppCopyLinkBtn = document.getElementById('inAppCopyLinkBtn');
+    el.inAppCopyLinkText = document.getElementById('inAppCopyLinkText');
+    el.closeInAppModalBtn = document.getElementById('closeInAppModalBtn');
+    el.dontShowInAppAgain = document.getElementById('dontShowInAppAgain');
   }
 
   function loadScheduleData() {
@@ -829,8 +847,27 @@
       });
     }
 
+    // In-App Browser & Install Guide Modal Events
+    if (el.closeInAppModalBtn) {
+      el.closeInAppModalBtn.addEventListener('click', () => {
+        hideInAppModal();
+      });
+    }
+
+    if (el.inAppCopyLinkBtn) {
+      el.inAppCopyLinkBtn.addEventListener('click', () => {
+        copySiteUrlToClipboard();
+      });
+    }
+
+    if (el.inAppBrowserModal) {
+      el.inAppBrowserModal.addEventListener('click', (e) => {
+        if (e.target === el.inAppBrowserModal) hideInAppModal();
+      });
+    }
+
     // Close on backdrop tap
-    [el.noteModal, el.dayDetailModal, el.userModal, el.uploadExcelModal].forEach(modal => {
+    [el.noteModal, el.dayDetailModal, el.userModal, el.uploadExcelModal, el.inAppBrowserModal].forEach(modal => {
       if (modal) {
         modal.addEventListener('click', (e) => {
           if (e.target === modal) closeModalWithHistory(modal);
@@ -1009,6 +1046,9 @@
       } else if (day.isDayOff) {
         todayStatusBadge.className = 'inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-rose-500/10 text-rose-500 dark:text-rose-400 border border-rose-500/20 text-[11px] font-semibold';
         todayStatusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-rose-500 dark:bg-rose-400 animate-pulse"></span><span>วันหยุดประจำสัปดาห์</span>`;
+      } else if (!day.regularDuty && day.otDuties && day.otDuties.length > 0) {
+        todayStatusBadge.className = 'inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-300 border border-amber-500/25 text-[11px] font-semibold';
+        todayStatusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-400 animate-pulse"></span><span>มีเข้าเวร (วันหยุด)</span>`;
       } else {
         todayStatusBadge.className = 'inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-[11px] font-semibold';
         todayStatusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse"></span><span>เวลาปกติ (มีเวร)</span>`;
@@ -1016,7 +1056,9 @@
     }
 
     // Regular Daytime Duty (เวลาปกติ)
+    const todayRegularSectionLabel = document.getElementById('todayRegularSectionLabel');
     if (day.regularDuty) {
+      if (todayRegularSectionLabel) todayRegularSectionLabel.textContent = 'เวลาปกติ (08:00 - 16:00 น.)';
       const sub = day.substitutionInfo;
       if (sub && sub.isViewerSubstitute) {
         // กรณีผู้ใช้มีเวร "แทน บ่ายดึก" (เช่น ปอ วันที่ 5) -> บอกว่าต้องไปแทนใคร ที่ห้องไหน
@@ -1059,11 +1101,23 @@
         el.todayLocationDetail.textContent = day.regularDuty.location;
       }
     } else if (day.isDayOff) {
+      if (todayRegularSectionLabel) todayRegularSectionLabel.textContent = 'เวลาปกติ';
       el.todayStationTitle.textContent = 'วันหยุด';
       el.todayLocationDetail.textContent = 'พักประจำสัปดาห์';
     } else {
-      el.todayStationTitle.textContent = 'เวรวันหยุด';
-      el.todayLocationDetail.textContent = 'ไม่มีงานเวลาปกติ';
+      // Weekend / Holiday with OT duties: prominent duty title without "เวรวันหยุด"
+      if (todayRegularSectionLabel) {
+        todayRegularSectionLabel.innerHTML = '<span class="text-amber-500 dark:text-amber-400 font-bold">★ เวรปฏิบัติงานวันหยุด</span>';
+      }
+      if (day.otDuties && day.otDuties.length > 0) {
+        const dutyTitles = day.otDuties.map(d => d.name).join(' + ');
+        el.todayStationTitle.innerHTML = `<span class="text-amber-500 dark:text-amber-400 font-extrabold tracking-tight">${dutyTitles}</span>`;
+        const firstOt = day.otDuties[0];
+        el.todayLocationDetail.textContent = firstOt.shiftTime ? `${firstOt.shiftTime} • ปฏิบัติงานตามตาราง` : 'เวรนอกเวลาตามตาราง';
+      } else {
+        el.todayStationTitle.textContent = 'วันหยุด';
+        el.todayLocationDetail.textContent = 'พักประจำสัปดาห์';
+      }
     }
 
     // Extra / Night / Afternoon Shifts (Chronologically Sorted: Night first!)
@@ -1170,6 +1224,9 @@
           </div>
         `;
       } else if (day.regularDuty) {
+        if (document.getElementById('tomorrowRegularSectionLabel')) {
+          document.getElementById('tomorrowRegularSectionLabel').textContent = 'เวลาปกติ';
+        }
         if (sub && sub.isViewerSubstitute) {
           const target = sub.targetStation || 'จุดเข้าเวร';
           const replacedName = sub.nightShiftNickname ? `คุณ${sub.nightShiftNickname}` : '';
@@ -1183,11 +1240,24 @@
           el.tomorrowRegularLocation.textContent = day.regularDuty.location;
         }
       } else if (day.isDayOff) {
+        if (document.getElementById('tomorrowRegularSectionLabel')) {
+          document.getElementById('tomorrowRegularSectionLabel').textContent = 'เวลาปกติ';
+        }
         el.tomorrowRegularStation.textContent = 'วันหยุด';
         el.tomorrowRegularLocation.textContent = 'พักประจำสัปดาห์';
       } else {
-        el.tomorrowRegularStation.textContent = 'เวรวันหยุด';
-        el.tomorrowRegularLocation.textContent = 'ไม่มีงานเวลาปกติ';
+        // Weekend or Holiday with duty: prominent duty name
+        if (document.getElementById('tomorrowRegularSectionLabel')) {
+          document.getElementById('tomorrowRegularSectionLabel').innerHTML = '<span class="text-amber-500 dark:text-amber-400 font-bold">★ เวรวันหยุด</span>';
+        }
+        if (day.otDuties && day.otDuties.length > 0) {
+          const dutyTitles = day.otDuties.map(d => d.name).join(' + ');
+          el.tomorrowRegularStation.innerHTML = `<span class="text-amber-600 dark:text-amber-400 font-bold">${dutyTitles}</span>`;
+          el.tomorrowRegularLocation.textContent = 'เวรปฏิบัติงานวันหยุด';
+        } else {
+          el.tomorrowRegularStation.textContent = 'วันหยุด';
+          el.tomorrowRegularLocation.textContent = 'พักประจำสัปดาห์';
+        }
       }
     }
 
@@ -1258,6 +1328,16 @@
         headerDotHtml = `<span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>`;
         mainText = `<div class="text-sm font-bold text-rose-500 dark:text-rose-400 my-auto">วันหยุด</div>`;
         subText = `<div class="text-[9px] text-slate-400">พักประจำสัปดาห์</div>`;
+      } else if (!day.regularDuty && day.otDuties && day.otDuties.length > 0) {
+        // WEEKEND / HOLIDAY WITH DUTY: prominent, large, bold duty text in center
+        headerDotHtml = `<span class="w-2 h-2 rounded-full bg-amber-400 shadow-xs"></span>`;
+        const shiftNames = day.otDuties.map(ot => ot.name).join('<br>');
+        mainText = `
+          <div class="text-xs sm:text-sm font-extrabold text-amber-500 dark:text-amber-400 leading-tight my-auto">
+            ${shiftNames}
+          </div>
+        `;
+        subText = `<div class="text-[9px] font-semibold text-rose-500/80 dark:text-rose-400/90 truncate">วันหยุด (มีเวร)</div>`;
       } else {
         const regular = day.regularDuty ? day.regularDuty.title : '-';
         const sub = day.substitutionInfo;
@@ -1851,6 +1931,102 @@
 
     openModalWithHistory(el.onboardingModal);
   }
+
+  // ==========================================
+  // IN-APP BROWSER (LINE / FB MESSENGER) GUIDANCE
+  // ==========================================
+  let inAppModalCallback = null;
+
+  function isInAppBrowser() {
+    const ua = (navigator.userAgent || navigator.vendor || window.opera || '').toLowerCase();
+    return (
+      ua.includes('line/') ||
+      ua.includes('fban') ||
+      ua.includes('fbav') ||
+      ua.includes('instagram') ||
+      ua.includes('messenger') ||
+      ua.includes('micromessenger') ||
+      ua.includes('fb_iab') ||
+      ua.includes('fbios')
+    );
+  }
+
+  function showInAppModal(onCloseCallback) {
+    if (!el.inAppBrowserModal) {
+      if (onCloseCallback) onCloseCallback();
+      return;
+    }
+    inAppModalCallback = onCloseCallback;
+
+    if (isInAppBrowser()) {
+      if (el.inAppModalTitle) el.inAppModalTitle.textContent = 'ตรวจพบการเปิดจาก LINE / Messenger';
+      if (el.inAppModalSubtitle) {
+        el.inAppModalSubtitle.innerHTML = 'ระบบตรวจพบว่ากำลังเปิดอยู่ใน <span class="font-semibold text-emerald-500">LINE</span> หรือ <span class="font-semibold text-sky-500">Messenger</span> ซึ่งจะไม่สามารถกดติดตั้งแอปลงเครื่องได้';
+      }
+    } else {
+      if (el.inAppModalTitle) el.inAppModalTitle.textContent = 'เปิดด้วยเบราว์เซอร์เพื่อติดตั้งแอป';
+      if (el.inAppModalSubtitle) {
+        el.inAppModalSubtitle.innerHTML = 'เปิดจาก <span class="font-semibold text-emerald-500">LINE</span> หรือ <span class="font-semibold text-sky-500">Messenger</span> กรุณากด ⋯ เพื่อเปิดใน Safari / Chrome ก่อนกดติดตั้ง';
+      }
+    }
+
+    openModalWithHistory(el.inAppBrowserModal);
+  }
+
+  function hideInAppModal() {
+    if (!el.inAppBrowserModal) return;
+    closeModalWithHistory(el.inAppBrowserModal);
+    localStorage.setItem('crh_fs_inapp_guide_dismissed', '1');
+    if (inAppModalCallback) {
+      const cb = inAppModalCallback;
+      inAppModalCallback = null;
+      cb();
+    }
+  }
+
+  function copySiteUrlToClipboard() {
+    const url = window.location.href;
+    const txtEl = el.inAppCopyLinkText;
+    const onSuccess = () => {
+      if (txtEl) {
+        const orig = txtEl.textContent;
+        txtEl.textContent = '✓ คัดลอกลิงก์สำเร็จแล้ว! (นำไปเปิดใน Safari/Chrome ได้เลย)';
+        txtEl.classList.add('text-emerald-600', 'dark:text-emerald-400');
+        setTimeout(() => {
+          txtEl.textContent = orig;
+          txtEl.classList.remove('text-emerald-600', 'dark:text-emerald-400');
+        }, 3000);
+      }
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(onSuccess).catch(() => {
+        fallbackCopy(url, onSuccess);
+      });
+    } else {
+      fallbackCopy(url, onSuccess);
+    }
+  }
+
+  function fallbackCopy(text, cb) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      if (cb) cb();
+    } catch (err) {
+      alert('ลิงก์สำหรับคัดลอก:\n' + text);
+    }
+    document.body.removeChild(ta);
+  }
+
+  window.showInstallGuideModal = function() {
+    showInAppModal();
+  };
 
   function renderStaffSelectorGrid() {
     if (!el.staffListGrid) return;
@@ -2487,7 +2663,11 @@
             deferredPrompt = null;
           });
         } else {
-          if (iosModal) iosModal.classList.remove('hidden');
+          if (typeof window.showInstallGuideModal === 'function') {
+            window.showInstallGuideModal();
+          } else if (iosModal) {
+            iosModal.classList.remove('hidden');
+          }
         }
       });
     }
