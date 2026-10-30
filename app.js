@@ -358,6 +358,16 @@
     el.excelModeDetailedBtn = document.getElementById('excelModeDetailedBtn');
     el.excelQuickMyProfileBtn = document.getElementById('excelQuickMyProfileBtn');
     el.excelResultCountLabel = document.getElementById('excelResultCountLabel');
+
+    // Floating Bottom Dock & Modals (iOS Liquid Glass)
+    el.calendarModal = document.getElementById('calendarModal');
+    el.closeCalendarModalBtn = document.getElementById('closeCalendarModalBtn');
+    el.summaryModal = document.getElementById('summaryModal');
+    el.closeSummaryModalBtn = document.getElementById('closeSummaryModalBtn');
+    el.dockMonthBtn = document.getElementById('dockMonthBtn');
+    el.dockSummaryBtn = document.getElementById('dockSummaryBtn');
+    el.dockImageBtn = document.getElementById('dockImageBtn');
+    el.dockExcelBtn = document.getElementById('dockExcelBtn');
     el.excelDetailedFilterContainer = document.getElementById('excelDetailedFilterContainer');
     el.excelHideEmptyRowsCheckbox = document.getElementById('excelHideEmptyRowsCheckbox');
 
@@ -537,6 +547,35 @@
     }
 
     // Photo Gallery Open & Close
+    // Floating Bottom Dock (iOS Liquid Glass)
+    if (el.dockMonthBtn && el.calendarModal) {
+      el.dockMonthBtn.addEventListener('click', () => openModalWithHistory(el.calendarModal));
+    }
+    if (el.closeCalendarModalBtn && el.calendarModal) {
+      el.closeCalendarModalBtn.addEventListener('click', () => closeModalWithHistory(el.calendarModal));
+    }
+
+    if (el.dockSummaryBtn && el.summaryModal) {
+      el.dockSummaryBtn.addEventListener('click', () => openModalWithHistory(el.summaryModal));
+    }
+    if (el.closeSummaryModalBtn && el.summaryModal) {
+      el.closeSummaryModalBtn.addEventListener('click', () => closeModalWithHistory(el.summaryModal));
+    }
+
+    if (el.dockImageBtn) {
+      el.dockImageBtn.addEventListener('click', () => {
+        resetImageZoom();
+        openModalWithHistory(el.imageViewerModal);
+      });
+    }
+
+    if (el.dockExcelBtn) {
+      el.dockExcelBtn.addEventListener('click', () => {
+        renderExcelTable();
+        openModalWithHistory(el.excelViewerModal);
+      });
+    }
+
     if (el.openImageModalBtn) {
       el.openImageModalBtn.addEventListener('click', () => {
         resetImageZoom();
@@ -658,12 +697,11 @@
       el.tabAdminBtn.addEventListener('click', () => setUserModalTab('admin'));
     }
 
-    // Admin Login / Unlock (Fixed master PIN: 0612 for all devices)
-    const MASTER_ADMIN_PIN = '0612';
-
+    // Admin Login / Unlock
     if (el.adminLoginBtn) {
       el.adminLoginBtn.addEventListener('click', () => {
         const pin = el.adminPinInput ? el.adminPinInput.value.trim() : '';
+        const MASTER_ADMIN_PIN = '0612';
         if (pin === MASTER_ADMIN_PIN) {
           state.isAdmin = true;
           sessionStorage.setItem('crh_is_admin', 'true');
@@ -714,6 +752,25 @@
         alert('บันทึกการตั้งค่า Supabase แล้ว! กำลังทดสอบเชื่อมต่อ...');
         await CloudDB.logVisit(state.currentUser);
         await renderAdminDashboard();
+      });
+    }
+
+    // Change Admin PIN
+    if (el.changeAdminPinBtn) {
+      el.changeAdminPinBtn.addEventListener('click', () => {
+        const currentPin = localStorage.getItem('crh_admin_pin') || '2569';
+        const verifyPin = prompt('กรุณายืนยันรหัส PIN เดิม:');
+        if (verifyPin !== currentPin) {
+          alert('รหัส PIN เดิมไม่ถูกต้องครับ');
+          return;
+        }
+        const newPin = prompt('กำหนดรหัส PIN แอดมินใหม่ (4-6 หลัก):');
+        if (newPin && newPin.trim().length >= 4) {
+          localStorage.setItem('crh_admin_pin', newPin.trim());
+          alert('เปลี่ยนรหัส PIN แอดมินเรียบร้อยแล้ว จดจำรหัสนี้ไว้ใช้นะครับ');
+        } else if (newPin !== null) {
+          alert('รหัส PIN ต้องมีความยาวอย่างน้อย 4 หลักครับ');
+        }
       });
     }
 
@@ -1267,12 +1324,13 @@
     }
   }
 
-  // 7-DAY STRIP (CLEAN & COMPACT LINEAR STYLE)
+  // 7-DAY STRIP (iOS LIQUID GLASS • CHUNKY COLOR BLOCKS)
   function renderSevenDaysStrip() {
     if (!el.sevenDaysStrip) return;
     el.sevenDaysStrip.innerHTML = '';
 
-    const startIndex = state.selectedDate - 1; // 0-based
+    const todayDate = state.selectedDate || 1;
+    const startIndex = todayDate - 1; // 0-based
     const next7Days = [];
 
     for (let i = 0; i < 7; i++) {
@@ -1283,97 +1341,84 @@
     next7Days.forEach((day, index) => {
       const card = document.createElement('div');
       const isToday = (index === 0);
-      const isHighlighted = day.hasDuty;
       const isDayOff = day.isDayOff;
 
       const nightDuty = (day.otDuties || []).find(ot => ot.name.includes("ดึก") || (ot.shift && ot.shift.includes("ดึก")));
       const afternoonDuty = (day.otDuties || []).find(ot => ot.name.includes("บ่าย") || (ot.shift && ot.shift.includes("บ่าย")));
+      const morningDuty = (day.otDuties || []).find(ot => ot.name.includes("เช้า") || (ot.shift && ot.shift.includes("เช้า")));
 
       let cardClass = 'seven-day-card ';
       if (isToday) cardClass += 'card-today ';
-      if (nightDuty) cardClass += 'card-night-shift ';
 
-      let headerDotHtml = '';
-      let mainText = '';
-      let subText = '';
+      let blockHtml = '';
 
       if (nightDuty) {
-        headerDotHtml = `<span class="w-2 h-2 rounded-full bg-purple-500 shadow-xs"></span>`;
-        mainText = `
-          <div class="text-xs font-bold text-purple-600 dark:text-purple-300 leading-tight">★ ${nightDuty.name}</div>
-          <div class="text-[9px] text-slate-400 mt-0.5 font-mono">00:00 น.</div>
-        `;
-        const regular = day.regularDuty ? day.regularDuty.title : '-';
-        const sub = day.substitutionInfo;
-        const subName = (sub && sub.substituteNickname) ? `${sub.substituteNickname} แทน` : 'มีคนแทน';
-        subText = `
-          <div class="text-[9px] font-medium text-slate-500 dark:text-slate-400 truncate">${regular} (${subName})</div>
-          ${afternoonDuty ? `<div class="text-[9px] font-semibold text-amber-500 truncate mt-0.5">+ ${afternoonDuty.name}</div>` : ''}
-        `;
-      } else if (isDayOff) {
-        headerDotHtml = `<span class="w-1.5 h-1.5 rounded-full bg-rose-400"></span>`;
-        mainText = `<div class="text-sm font-bold text-rose-500 dark:text-rose-400 my-auto">วันหยุด</div>`;
-        subText = `<div class="text-[9px] text-slate-400">พักประจำสัปดาห์</div>`;
-      } else if (!day.regularDuty && day.otDuties && day.otDuties.length > 0) {
-        // WEEKEND / HOLIDAY WITH DUTY: prominent, large, bold duty text in center
-        headerDotHtml = `<span class="w-2 h-2 rounded-full bg-amber-400 shadow-xs"></span>`;
-        const shiftNames = day.otDuties.map(ot => ot.name).join('<br>');
-        mainText = `
-          <div class="text-xs sm:text-sm font-extrabold text-amber-500 dark:text-amber-400 leading-tight my-auto">
-            ${shiftNames}
+        const regular = day.regularDuty ? day.regularDuty.title : '';
+        blockHtml = `
+          <div class="chunky-block chunky-block-purple">
+            <div class="font-extrabold text-xs leading-tight">${nightDuty.name}</div>
+            <div class="text-[9px] font-semibold bg-white/20 px-2 py-0.5 rounded-full mt-0.5 flex items-center gap-1">
+              <span>🌙</span><span>เวรดึก</span>
+            </div>
+            ${regular ? `<div class="text-[9px] opacity-80 truncate max-w-full">${regular}</div>` : ''}
           </div>
         `;
-        subText = `<div class="text-[9px] font-semibold text-rose-500/80 dark:text-rose-400/90 truncate">วันหยุด (มีเวร)</div>`;
+      } else if (isDayOff) {
+        blockHtml = `
+          <div class="chunky-block chunky-block-off">
+            <div class="font-extrabold text-xs">วันหยุด</div>
+            <div class="text-[9px] opacity-75">พักประจำสัปดาห์</div>
+          </div>
+        `;
+      } else if (!day.regularDuty && day.otDuties && day.otDuties.length > 0) {
+        const shiftNames = day.otDuties.map(ot => ot.name).join(' ');
+        blockHtml = `
+          <div class="chunky-block chunky-block-amber">
+            <div class="font-extrabold text-xs leading-tight">${shiftNames}</div>
+            <div class="text-[9px] font-semibold bg-white/20 px-2 py-0.5 rounded-full mt-0.5">
+              เวรวันหยุด
+            </div>
+          </div>
+        `;
       } else {
-        const regular = day.regularDuty ? day.regularDuty.title : '-';
-        const sub = day.substitutionInfo;
-        headerDotHtml = `<span class="w-1.5 h-1.5 rounded-full ${isHighlighted ? 'bg-amber-400' : 'bg-emerald-400'}"></span>`;
-
-        if (sub && sub.isViewerSubstitute) {
-          const target = sub.targetStation || 'บ่ายดึก';
-          mainText = `<div class="text-xs font-bold text-sky-600 dark:text-sky-300 leading-tight">แทน: ${target}</div>`;
-          const replacedName = sub.nightShiftNickname ? `แทน${sub.nightShiftNickname}` : '';
-          subText = `<div class="text-[9px] font-medium text-slate-400 truncate">📍 ${replacedName || 'แทนบ่ายดึก'}</div>`;
-        } else if (sub && sub.isViewerNightShift) {
-          mainText = `<div class="text-xs font-bold text-slate-900 dark:text-white leading-tight">${regular}</div>`;
-          const subName = sub.substituteNickname ? `${sub.substituteNickname} แทน` : 'มีคนแทน';
-          subText = `<div class="text-[9px] font-medium text-emerald-600 dark:text-emerald-400 truncate">🔄 ${subName}</div>`;
+        const regular = day.regularDuty ? day.regularDuty.title : 'เวลาปกติ';
+        if (afternoonDuty) {
+          blockHtml = `
+            <div class="chunky-block chunky-block-amber">
+              <div class="font-extrabold text-xs leading-tight">${regular}</div>
+              <div class="text-[9px] font-semibold bg-white/20 px-2 py-0.5 rounded-full mt-0.5">
+                ${afternoonDuty.name}
+              </div>
+            </div>
+          `;
+        } else if (morningDuty) {
+          blockHtml = `
+            <div class="chunky-block chunky-block-sky">
+              <div class="font-extrabold text-xs leading-tight">${regular}</div>
+              <div class="text-[9px] font-semibold bg-white/20 px-2 py-0.5 rounded-full mt-0.5">
+                เวรเช้า
+              </div>
+            </div>
+          `;
         } else {
-          mainText = `<div class="text-xs font-bold text-slate-900 dark:text-white leading-tight">${regular}</div>`;
-          if (day.otDuties && day.otDuties.length > 0) {
-            const shiftNames = day.otDuties.map(ot => {
-              if (ot.name.includes("ดึก")) return "ดึก";
-              if (ot.name.includes("บ่าย")) return "บ่าย";
-              if (ot.name.includes("เช้า")) return "เช้า";
-              return ot.name;
-            }).join('+');
-            subText = `<div class="text-[9px] font-semibold text-amber-500 truncate">เวร ${shiftNames}</div>`;
-          } else {
-            subText = `<div class="text-[9px] text-slate-400">เวลาปกติ</div>`;
-          }
-        }
-      }
-
-      if (day.userNote) {
-        if (day.userNote.type === 'swap') {
-          subText = `<div class="text-[9px] font-medium text-sky-400 truncate">สลับ: ${day.userNote.swapWith}</div>`;
-        } else {
-          subText = `<div class="text-[9px] font-medium text-rose-400 truncate">${day.userNote.title}</div>`;
+          blockHtml = `
+            <div class="chunky-block chunky-block-emerald">
+              <div class="font-extrabold text-xs leading-tight">${regular}</div>
+              <div class="text-[9px] font-semibold bg-white/20 px-2 py-0.5 rounded-full mt-0.5">
+                เวลาปกติ
+              </div>
+            </div>
+          `;
         }
       }
 
       card.className = cardClass;
       card.innerHTML = `
-        <div class="text-[10px] font-medium text-slate-500 dark:text-slate-400 pb-1 border-b border-slate-100 dark:border-white/5 flex items-center justify-between">
+        <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 pb-1 flex items-center justify-between">
           <span>${day.dayName} ${day.date}</span>
-          ${headerDotHtml}
+          ${isToday ? '<span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>' : ''}
         </div>
-        <div class="my-auto py-1">
-          ${mainText}
-        </div>
-        <div>
-          ${subText}
-        </div>
+        ${blockHtml}
       `;
 
       card.addEventListener('click', () => {
