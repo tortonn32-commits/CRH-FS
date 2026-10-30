@@ -128,20 +128,18 @@
       
       <!-- TODAY PRIMARY HERO CARD (LIQUID GLASS STYLE) -->
       <div id="todayCard" class="ui-card-today p-5">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-white/5">
-          <div id="todayStatusContainer" class="flex items-center space-x-2">
-            <span id="todayStatusBadge" class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-rose-500/10 text-rose-500 dark:text-rose-400 border border-rose-500/20 text-[11px] font-semibold">
-              <span class="w-1.5 h-1.5 rounded-full bg-rose-500 dark:bg-rose-400 animate-pulse"></span>
+        <div class="flex items-center justify-between gap-2 pb-3.5 border-b border-slate-100 dark:border-white/5">
+          <div id="todayStatusContainer" class="shrink-0">
+            <span id="todayStatusBadge" class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-rose-500/10 text-rose-500 dark:text-rose-400 border border-rose-500/20 text-xs font-bold shadow-xs">
+              <span class="w-2 h-2 rounded-full bg-rose-500 dark:bg-rose-400 animate-pulse"></span>
               <span id="todayStatusText">สถานะวันนี้</span>
             </span>
           </div>
-          <div class="flex items-center space-x-2">
-            <span id="todayDateHeading" class="text-xs font-medium text-slate-500 dark:text-slate-400 font-mono">
+          <div class="flex items-center space-x-1.5 text-right min-w-0">
+            <span id="todayDateHeading" class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white tracking-tight drop-shadow-sm truncate">
               วันอาทิตย์ที่ 1 พ.ย. 2569
             </span>
-            <span class="text-xs font-semibold px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300" id="todayDayOfWeekBadge">
-              อาทิตย์
-            </span>
+            <span id="todayDayOfWeekBadge" class="hidden">อาทิตย์</span>
           </div>
         </div>
 
@@ -170,14 +168,16 @@
 
       <!-- TOMORROW COMPANION CARD (LIQUID GLASS STYLE) -->
       <div id="tomorrowCard" class="ui-card-tomorrow p-4">
-        <div class="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-white/5">
-          <div class="flex items-center space-x-1.5">
-            <span class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20 text-[11px] font-semibold">
+        <div class="flex items-center justify-between gap-2 pb-3 border-b border-slate-100 dark:border-white/5">
+          <div class="flex items-center space-x-1.5 shrink-0">
+            <span class="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20 text-xs font-bold">
               <span class="w-1.5 h-1.5 rounded-full bg-sky-500 dark:bg-sky-400"></span>
               <span>วันพรุ่งนี้</span>
             </span>
           </div>
-          <span id="tomorrowDateLabel" class="text-xs text-slate-500 dark:text-slate-400 font-mono">วันจันทร์ที่ 2 พ.ย. 2569</span>
+          <span id="tomorrowDateLabel" class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 tracking-tight text-right truncate">
+            วันจันทร์ที่ 2 พ.ย. 2569
+          </span>
         </div>
 
         <div class="mt-3 flex items-start justify-between">
@@ -196,8 +196,11 @@
 
     <!-- SECTION 2: 7-DAY FORWARD PLANNING (CLEAN & COMPACT) -->
     <section class="mb-7 animate-fade-in-up stagger-2" id="sectionSevenDays">
-      <div class="flex items-center justify-between mb-2.5 px-1">
-        <span class="text-xs font-bold text-slate-400 dark:text-indigo-400 uppercase tracking-wider">7 วันถัดไป</span>
+      <div class="flex items-center justify-between mb-3 px-1">
+        <span class="text-xs sm:text-sm font-extrabold text-slate-800 dark:text-indigo-300 uppercase tracking-wider flex items-center gap-1.5">
+          <span>📅</span>
+          <span>7 วันถัดไป</span>
+        </span>
         <span class="text-[11px] font-semibold text-slate-400 flex items-center space-x-1">
           <span>เลื่อนซ้าย-ขวา</span>
           <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

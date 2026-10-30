@@ -1356,26 +1356,26 @@
         const regular = day.regularDuty ? day.regularDuty.title : '';
         blockHtml = `
           <div class="chunky-block chunky-block-purple">
-            <div class="font-extrabold text-xs leading-tight">${nightDuty.name}</div>
-            <div class="text-[9px] font-semibold bg-white/20 px-2 py-0.5 rounded-full mt-0.5 flex items-center gap-1">
+            <div class="font-black text-sm leading-tight text-center">${nightDuty.name}</div>
+            <div class="text-[10px] sm:text-[11px] font-bold bg-white/25 px-2.5 py-0.5 rounded-full mt-1 flex items-center justify-center gap-1">
               <span>🌙</span><span>เวรดึก</span>
             </div>
-            ${regular ? `<div class="text-[9px] opacity-80 truncate max-w-full">${regular}</div>` : ''}
+            ${regular ? `<div class="text-[10px] opacity-85 truncate max-w-full mt-0.5 text-center">${regular}</div>` : ''}
           </div>
         `;
       } else if (isDayOff) {
         blockHtml = `
           <div class="chunky-block chunky-block-off">
-            <div class="font-extrabold text-xs">วันหยุด</div>
-            <div class="text-[9px] opacity-75">พักประจำสัปดาห์</div>
+            <div class="font-black text-sm text-center">วันหยุด</div>
+            <div class="text-[10px] sm:text-[11px] font-semibold opacity-90 mt-0.5 text-center">พักประจำสัปดาห์</div>
           </div>
         `;
       } else if (!day.regularDuty && day.otDuties && day.otDuties.length > 0) {
         const shiftNames = day.otDuties.map(ot => ot.name).join(' ');
         blockHtml = `
           <div class="chunky-block chunky-block-amber">
-            <div class="font-extrabold text-xs leading-tight">${shiftNames}</div>
-            <div class="text-[9px] font-semibold bg-white/20 px-2 py-0.5 rounded-full mt-0.5">
+            <div class="font-black text-sm leading-tight text-center">${shiftNames}</div>
+            <div class="text-[10px] sm:text-[11px] font-bold bg-white/25 px-2.5 py-0.5 rounded-full mt-1 text-center">
               เวรวันหยุด
             </div>
           </div>
@@ -1385,8 +1385,8 @@
         if (afternoonDuty) {
           blockHtml = `
             <div class="chunky-block chunky-block-amber">
-              <div class="font-extrabold text-xs leading-tight">${regular}</div>
-              <div class="text-[9px] font-semibold bg-white/20 px-2 py-0.5 rounded-full mt-0.5">
+              <div class="font-black text-sm leading-tight text-center">${regular}</div>
+              <div class="text-[10px] sm:text-[11px] font-bold bg-white/25 px-2.5 py-0.5 rounded-full mt-1 text-center truncate max-w-full">
                 ${afternoonDuty.name}
               </div>
             </div>
@@ -1394,8 +1394,8 @@
         } else if (morningDuty) {
           blockHtml = `
             <div class="chunky-block chunky-block-sky">
-              <div class="font-extrabold text-xs leading-tight">${regular}</div>
-              <div class="text-[9px] font-semibold bg-white/20 px-2 py-0.5 rounded-full mt-0.5">
+              <div class="font-black text-sm leading-tight text-center">${regular}</div>
+              <div class="text-[10px] sm:text-[11px] font-bold bg-white/25 px-2.5 py-0.5 rounded-full mt-1 text-center">
                 เวรเช้า
               </div>
             </div>
@@ -1403,8 +1403,8 @@
         } else {
           blockHtml = `
             <div class="chunky-block chunky-block-emerald">
-              <div class="font-extrabold text-xs leading-tight">${regular}</div>
-              <div class="text-[9px] font-semibold bg-white/20 px-2 py-0.5 rounded-full mt-0.5">
+              <div class="font-black text-sm leading-tight text-center">${regular}</div>
+              <div class="text-[10px] sm:text-[11px] font-bold bg-white/25 px-2.5 py-0.5 rounded-full mt-1 text-center">
                 เวลาปกติ
               </div>
             </div>
@@ -1414,9 +1414,15 @@
 
       card.className = cardClass;
       card.innerHTML = `
-        <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 pb-1 flex items-center justify-between">
-          <span>${day.dayName} ${day.date}</span>
-          ${isToday ? '<span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>' : ''}
+        <div class="text-center w-full pb-1.5 flex items-center justify-center">
+          <div class="inline-flex items-center justify-center gap-1.5 px-2.5 py-0.5 rounded-full ${
+            isToday 
+              ? 'bg-indigo-500/20 text-indigo-600 dark:text-indigo-300 ring-1 ring-indigo-500/40 font-extrabold' 
+              : 'text-slate-800 dark:text-white font-bold'
+          }">
+            <span class="text-xs sm:text-[13px] tracking-tight">${day.dayName} ${day.date}</span>
+            ${isToday ? '<span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>' : ''}
+          </div>
         </div>
         ${blockHtml}
       `;

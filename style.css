@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    CRH-FS • Prism Dark Mode Design System
    Font: Sukhumvit Set (Native iOS) + Anuphan (Cadson Demak) + SF Pro
    ========================================================================== */
@@ -217,62 +217,68 @@ html.dark .ui-card-tomorrow {
 }
 
 /* ==========================================================================
-   7-DAY SCROLL STRIP (CLEAN & COMPACT)
+   7-DAY SCROLL STRIP (CLEAN & COMPACT • ENLARGED & CENTERED)
    ========================================================================== */
 .seven-day-strip {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   overflow-x: auto;
-  padding: 4px 2px 14px 2px;
+  padding: 6px 4px 18px 4px;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
 }
 
 .seven-day-card {
-  flex: 0 0 110px;
-  min-width: 110px;
-  aspect-ratio: 1 / 1.08;
+  flex: 0 0 126px;
+  min-width: 126px;
   background: var(--bg-card);
   border: 1px solid var(--border-card);
-  border-radius: 18px;
-  padding: 10px 8px;
+  border-radius: 20px;
+  padding: 12px 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
   text-align: center;
   scroll-snap-align: start;
-  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.02);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
   transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease, border-color 0.18s ease;
   cursor: pointer;
   position: relative;
+  user-select: none;
 }
 
 .seven-day-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+}
+
+.seven-day-card:active {
+  transform: scale(0.96);
 }
 
 html.dark .seven-day-card {
-  background: rgba(22, 22, 34, 0.80);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.04), 0 4px 14px rgba(0, 0, 0, 0.35);
-  color: #f1f5f9;
+  background: rgba(22, 22, 34, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06), 0 6px 18px rgba(0, 0, 0, 0.40);
+  color: #ffffff;
 }
 
 html.dark .seven-day-card:hover {
-  border-color: rgba(99, 102, 241, 0.3);
+  border-color: rgba(99, 102, 241, 0.4);
   transform: translateY(-2px);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 8px 20px rgba(0, 0, 0, 0.45), 0 0 12px rgba(99, 102, 241, 0.08);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.10), 0 10px 24px rgba(0, 0, 0, 0.50), 0 0 16px rgba(99, 102, 241, 0.12);
 }
 
 /* 7-Day Card Status Styles */
 .seven-day-card.card-today {
-  border-color: rgba(244, 63, 94, 0.35) !important;
+  border-color: rgba(99, 102, 241, 0.60) !important;
+  box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.3), 0 6px 20px rgba(99, 102, 241, 0.16) !important;
 }
 
 html.dark .seven-day-card.card-today {
-  border-color: rgba(99, 102, 241, 0.50) !important;
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 0 18px rgba(99, 102, 241, 0.20) !important;
+  border-color: rgba(129, 140, 248, 0.80) !important;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.12), 0 0 22px rgba(99, 102, 241, 0.35) !important;
 }
 
 .seven-day-card.card-night-shift {
@@ -280,8 +286,8 @@ html.dark .seven-day-card.card-today {
 }
 
 html.dark .seven-day-card.card-night-shift {
-  border-color: rgba(192, 132, 252, 0.4) !important;
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 0 14px rgba(192, 132, 252, 0.15) !important;
+  border-color: rgba(192, 132, 252, 0.45) !important;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 0 16px rgba(192, 132, 252, 0.20) !important;
 }
 
 /* ==========================================================================
@@ -721,15 +727,16 @@ html.dark .seven-day-card {
 
 /* Chunky Inner Blocks */
 .chunky-block {
-  border-radius: 14px;
-  padding: 8px 6px;
+  width: 100%;
+  border-radius: 16px;
+  padding: 10px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  min-height: 54px;
-  transition: transform 0.15s ease;
+  gap: 3px;
+  min-height: 64px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .chunky-block-amber {
@@ -757,14 +764,15 @@ html.dark .seven-day-card {
 }
 
 .chunky-block-off {
-  background: rgba(148, 163, 184, 0.12);
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  color: #f43f5e !important;
+  background: rgba(244, 63, 94, 0.10);
+  border: 1px solid rgba(244, 63, 94, 0.22);
+  color: #e11d48 !important;
 }
 html.dark .chunky-block-off {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  color: #fb7185 !important;
+  background: rgba(244, 63, 94, 0.16);
+  border: 1px solid rgba(244, 63, 94, 0.32);
+  color: #fda4af !important;
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.12);
 }
 
 /* iOS Bottom Sheet Transitions */
