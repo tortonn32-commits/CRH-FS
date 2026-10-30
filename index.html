@@ -15,6 +15,10 @@
   <meta name="apple-mobile-web-app-title" content="CRH-FS">
 
   <!-- Tailwind CSS with Dark Mode Class Support -->
+  <!-- Google Fonts: Sarabun (Thai support) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -22,8 +26,8 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['-apple-system', 'BlinkMacSystemFont', '"Sukhumvit Set"', '"SF Pro Text"', '"SF Pro"', '"Anuphan"', 'Inter', 'sans-serif'],
-            mono: ['-apple-system-monospaced', '"SF Mono"', 'Menlo', '"JetBrains Mono"', 'monospace']
+            sans: ['Sarabun', '"Noto Sans Thai"', '"Sukhumvit Set"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['"SF Mono"', 'Menlo', 'Consolas', 'monospace']
           },
           colors: {
             coral: {
