@@ -228,12 +228,12 @@
   // Calculate Initial Starting Date
   function getInitialDate() {
     const now = new Date();
-    // Month is 0-indexed (10 = November)
-    // If real date is November 2026 / 2569, use current day; otherwise default to Day 1!
-    if (now.getMonth() === 10 && (now.getFullYear() === 2026 || now.getFullYear() === 2569)) {
-      return Math.min(Math.max(1, now.getDate()), 30);
+    const targetMonth = (window.APP_CONFIG && window.APP_CONFIG.monthIndex !== undefined) ? window.APP_CONFIG.monthIndex : 11;
+    const maxDays = (window.APP_CONFIG && window.APP_CONFIG.totalDays) ? window.APP_CONFIG.totalDays : 31;
+    if (now.getMonth() === targetMonth && (now.getFullYear() === 2026 || now.getFullYear() === 2569)) {
+      return Math.min(Math.max(1, now.getDate()), maxDays);
     }
-    return 1; // Always start at Day 1 (1 พฤศจิกายน)
+    return 1; // Always start at Day 1 (1 ธันวาคม)
   }
 
   async function init() {
@@ -1067,7 +1067,9 @@
     if (!day) return;
 
     if (el.todayDateHeading) {
-      el.todayDateHeading.textContent = `วัน${day.dayName}ที่ ${day.date} พ.ย. 2569`;
+      const monthShort = (window.APP_CONFIG && window.APP_CONFIG.monthName && window.APP_CONFIG.monthName.includes("ธันวาคม")) ? "ธ.ค." : "พ.ย.";
+      const yearBE = (window.APP_CONFIG && window.APP_CONFIG.yearBE) ? window.APP_CONFIG.yearBE : 2569;
+      el.todayDateHeading.textContent = `วัน${day.dayName}ที่ ${day.date} ${monthShort} ${yearBE}`;
     }
     if (el.todayDayOfWeekBadge) {
       el.todayDayOfWeekBadge.textContent = day.dayName;
@@ -1231,12 +1233,15 @@
 
   // TOMORROW CARD (COMPANION HERO COMPONENT)
   function renderTomorrowCard() {
-    const tomorrowDate = (state.selectedDate < 30) ? (state.selectedDate + 1) : 1;
+    const maxDays = (window.APP_CONFIG && window.APP_CONFIG.totalDays) ? window.APP_CONFIG.totalDays : 31;
+    const tomorrowDate = (state.selectedDate < maxDays) ? (state.selectedDate + 1) : 1;
     const day = state.scheduleList[tomorrowDate - 1];
     if (!day) return;
 
     if (el.tomorrowDateLabel) {
-      el.tomorrowDateLabel.textContent = `วัน${day.dayName}ที่ ${day.date} พ.ย. 2569`;
+      const monthShort = (window.APP_CONFIG && window.APP_CONFIG.monthName && window.APP_CONFIG.monthName.includes("ธันวาคม")) ? "ธ.ค." : "พ.ย.";
+      const yearBE = (window.APP_CONFIG && window.APP_CONFIG.yearBE) ? window.APP_CONFIG.yearBE : 2569;
+      el.tomorrowDateLabel.textContent = `วัน${day.dayName}ที่ ${day.date} ${monthShort} ${yearBE}`;
     }
 
     const tomorrowNightDuty = (day.otDuties || []).find(ot => ot.name.includes("ดึก") || (ot.shift && ot.shift.includes("ดึก")));
@@ -1333,8 +1338,9 @@
     const startIndex = todayDate - 1; // 0-based
     const next7Days = [];
 
+    const maxDays = (window.APP_CONFIG && window.APP_CONFIG.totalDays) ? window.APP_CONFIG.totalDays : 31;
     for (let i = 0; i < 7; i++) {
-      const idx = (startIndex + i) % 30;
+      const idx = (startIndex + i) % maxDays;
       next7Days.push(state.scheduleList[idx]);
     }
 
@@ -1445,17 +1451,24 @@
     if (!el.monthCalendarGrid) return;
     el.monthCalendarGrid.innerHTML = '';
 
-    // November 2569 starts on Sunday (1 พ.ย. 2569)
-    // Starting with Monday: 6 leading days from October (26, 27, 28, 29, 30, 31)
-    const prevMonthDays = [26, 27, 28, 29, 30, 31];
+    // Month starts: Monday-start grid (จ=0, อ=1, พ=2, พฤ=3, ศ=4, ส=5, อา=6)
+    const startDayOfWeek = (window.APP_CONFIG && window.APP_CONFIG.startDayOfWeek !== undefined) ? window.APP_CONFIG.startDayOfWeek : 2;
+    // Map Sunday (0) to 6, Monday (1) to 0, Tuesday (2) to 1, etc.
+    const leadCount = (startDayOfWeek + 6) % 7;
+    // Leading days from previous month (Nov had 30 days)
+    const prevMonthTotalDays = 30;
+    const prevMonthDays = [];
+    for (let p = prevMonthTotalDays - leadCount + 1; p <= prevMonthTotalDays; p++) {
+      prevMonthDays.push(p);
+    }
     prevMonthDays.forEach(d => {
       const cell = document.createElement('div');
-      cell.className = 'cal-month-cell text-slate-300 font-normal';
+      cell.className = 'cal-month-cell text-slate-300 dark:text-slate-600 font-normal';
       cell.textContent = d;
       el.monthCalendarGrid.appendChild(cell);
     });
 
-    // 30 Days of November
+    // Days of current month
     state.scheduleList.forEach(day => {
       const cell = document.createElement('div');
       const isSelected = (day.date === state.selectedDate);
@@ -1506,14 +1519,16 @@
       el.monthCalendarGrid.appendChild(cell);
     });
 
-    // Trailing days from December
-    const nextMonthDays = [1, 2, 3, 4, 5, 6];
-    nextMonthDays.forEach(d => {
+    // Trailing days to complete the calendar grid row (multiple of 7)
+    const currentCells = leadCount + state.scheduleList.length;
+    const remainder = currentCells % 7;
+    const trailCount = remainder === 0 ? 0 : (7 - remainder);
+    for (let t = 1; t <= trailCount; t++) {
       const cell = document.createElement('div');
-      cell.className = 'cal-month-cell text-slate-300 font-normal';
-      cell.textContent = d;
+      cell.className = 'cal-month-cell text-slate-300 dark:text-slate-600 font-normal';
+      cell.textContent = t;
       el.monthCalendarGrid.appendChild(cell);
-    });
+    }
   }
 
   // BOTTOM KPI STATS (PCU, ER, ตึกรังสี ฯลฯ)
@@ -1643,8 +1658,11 @@
           <th class="p-1 border border-slate-700 text-center whitespace-nowrap min-w-[44px]">รวม</th>
       `;
 
-      for (let d = 1; d <= 30; d++) {
-        const dayOfWeek = (d - 1) % 7; // Nov 1 = Sunday = index 0
+      const totalDays = (window.APP_CONFIG && window.APP_CONFIG.totalDays) ? window.APP_CONFIG.totalDays : 31;
+      const startDayOfWeek = (window.APP_CONFIG && window.APP_CONFIG.startDayOfWeek !== undefined) ? window.APP_CONFIG.startDayOfWeek : 2;
+
+      for (let d = 1; d <= totalDays; d++) {
+        const dayOfWeek = (startDayOfWeek + (d - 1)) % 7;
         const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
         headerHtml += `
           <th class="p-1 text-center border border-slate-700 min-w-[36px] ${isWeekend ? 'bg-rose-950/80 text-rose-200' : 'bg-slate-800 text-slate-200'}">
@@ -1679,7 +1697,7 @@
 
         // Calculate total duties
         let totalDuties = 0;
-        for (let d = 1; d <= 30; d++) {
+        for (let d = 1; d <= totalDays; d++) {
           totalDuties += (otObj[String(d)] || []).length;
         }
 
@@ -1701,8 +1719,8 @@
           </td>
         `;
 
-        for (let d = 1; d <= 30; d++) {
-          const dayOfWeek = (d - 1) % 7;
+        for (let d = 1; d <= totalDays; d++) {
+          const dayOfWeek = (startDayOfWeek + (d - 1)) % 7;
           const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
           const duties = otObj[String(d)] || [];
 
@@ -1767,7 +1785,11 @@
         <th class="p-1 border border-slate-700 text-center whitespace-nowrap min-w-[40px]">รวม</th>
     `;
 
-    for (let c = 5; c <= 34; c++) {
+    // Determine date columns range (Cols 5 to 35 for 31 days)
+    let dateColStart = 5;
+    let dateColEnd = (headerCols.length > 35 && headerCols[35] && !isNaN(parseInt(headerCols[35].trim()))) ? 35 : 34;
+
+    for (let c = dateColStart; c <= dateColEnd; c++) {
       const dateNum = headerCols[c] ? headerCols[c].trim() : '';
       const dayName = dayNameCols[c] ? dayNameCols[c].trim() : '';
       const isWeekend = (dayName === 'เสาร์' || dayName === 'อาทิต');
@@ -1803,7 +1825,7 @@
 
       // Count duties in this row
       let rowDutyCount = 0;
-      for (let c = 5; c <= 34; c++) {
+      for (let c = dateColStart; c <= dateColEnd; c++) {
         if ((parts[c] || '').trim() === '1') {
           rowDutyCount++;
         }
@@ -1834,7 +1856,7 @@
         </td>
       `;
 
-      for (let c = 5; c <= 34; c++) {
+      for (let c = dateColStart; c <= dateColEnd; c++) {
         const val = (parts[c] || '').trim();
         const dayName = dayNameCols[c] ? dayNameCols[c].trim() : '';
         const isWeekend = (dayName === 'เสาร์' || dayName === 'อาทิต');
@@ -2291,7 +2313,8 @@
     if (!day) return;
 
     if (el.noteModalDateLabel) {
-      el.noteModalDateLabel.textContent = `วัน${day.dayName}ที่ ${day.date} พฤศจิกายน 2569`;
+      const monthLabel = window.APP_CONFIG?.monthName || 'ธันวาคม 2569';
+      el.noteModalDateLabel.textContent = `วัน${day.dayName}ที่ ${day.date} ${monthLabel}`;
     }
     populateSwapStaffSelect();
 
@@ -2561,10 +2584,12 @@
       `;
     }
 
-    el.dayDetailContent.innerHTML = `
+      const monthShort = (window.APP_CONFIG && window.APP_CONFIG.monthName && window.APP_CONFIG.monthName.includes("ธันวาคม")) ? "ธ.ค." : "พ.ย.";
+      const yearBE = (window.APP_CONFIG && window.APP_CONFIG.yearBE) ? window.APP_CONFIG.yearBE : 2569;
+      el.dayDetailContent.innerHTML = `
       <div class="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-100">
         <div>
-          <h4 class="text-base font-bold text-slate-900 leading-tight">วัน${day.dayName}ที่ ${day.date} พ.ย. 2569</h4>
+          <h4 class="text-base font-bold text-slate-900 leading-tight">วัน${day.dayName}ที่ ${day.date} ${monthShort} ${yearBE}</h4>
           <p class="text-xs text-slate-400 mt-0.5">ผู้ปฏิบัติงาน: คุณ${state.currentUser}</p>
         </div>
         <button onclick="window.triggerEditNote(${day.date})" class="shrink-0 px-2.5 py-1.5 rounded-xl bg-coral-50 border border-coral-200 text-coral-600 text-[11px] font-semibold hover:bg-coral-100 transition-colors">
