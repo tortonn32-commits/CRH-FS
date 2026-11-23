@@ -228,17 +228,27 @@
   // Calculate Initial Starting Date
   function getInitialDate() {
     const now = new Date();
-    const targetMonth = (window.APP_CONFIG && window.APP_CONFIG.monthIndex !== undefined) ? window.APP_CONFIG.monthIndex : 11;
-    const maxDays = (window.APP_CONFIG && window.APP_CONFIG.totalDays) ? window.APP_CONFIG.totalDays : 31;
-    if (now.getMonth() === targetMonth && (now.getFullYear() === 2026 || now.getFullYear() === 2569)) {
-      return Math.min(Math.max(1, now.getDate()), maxDays);
+    const cfg = window.APP_CONFIG;
+    if (!cfg) return 1;
+    if (now.getMonth() === cfg.monthIndex && (now.getFullYear() === cfg.yearCE || now.getFullYear() === cfg.yearBE)) {
+      return Math.min(Math.max(1, now.getDate()), cfg.totalDays);
     }
-    return 1; // Always start at Day 1 (1 ธันวาคม)
+    return 1;
   }
 
   async function init() {
     cacheElements();
     initTheme();
+
+    // 0. Initialize active month (Supports 2569-11 and 2569-12)
+    const savedMonth = localStorage.getItem('crh_active_month');
+    const now = new Date();
+    const defaultMonth = (now.getMonth() === 11) ? '2569-12' : '2569-11';
+    state.currentMonthKey = (savedMonth && window.MONTHS_CONFIG && window.MONTHS_CONFIG[savedMonth]) ? savedMonth : defaultMonth;
+    if (typeof window.switchMonth === 'function') {
+      window.switchMonth(state.currentMonthKey);
+    }
+    state.selectedDate = getInitialDate();
 
     // 1. Try fetching latest cloud name mappings if connected
     const cloudMap = await CloudDB.fetchNameMappings();
@@ -264,6 +274,7 @@
     setupAndroidBackNavigation();
     setupPinchToZoom();
     renderAll();
+    updateMonthSwitcherUI();
     setupSheetUploader();
 
     // 4. In-App Browser & Install guidance pop-up (for LINE / Facebook Messenger)
@@ -282,6 +293,14 @@
   }
 
   function cacheElements() {
+    // Month Switcher Elements
+    el.selectMonthNovBtn = document.getElementById('selectMonthNovBtn');
+    el.selectMonthDecBtn = document.getElementById('selectMonthDecBtn');
+    el.monthModalSubtitle = document.getElementById('monthModalSubtitle');
+    el.summaryModalSubtitle = document.getElementById('summaryModalSubtitle');
+    el.imageModalSubtitle = document.getElementById('imageModalSubtitle');
+    el.excelModalSubtitle = document.getElementById('excelModalSubtitle');
+
     // Header & Theme
     el.headerFullName = document.getElementById('headerFullName');
     el.headerNickname = document.getElementById('headerNickname');
@@ -434,6 +453,51 @@
     el.dontShowInAppAgain = document.getElementById('dontShowInAppAgain');
   }
 
+  // ==========================================
+  // MULTI-MONTH SWITCHER
+  // ==========================================
+  function changeActiveMonth(monthKey) {
+    if (state.currentMonthKey === monthKey && window.APP_CONFIG && window.APP_CONFIG.monthKey === monthKey) return;
+    state.currentMonthKey = monthKey;
+    if (typeof window.switchMonth === 'function') {
+      window.switchMonth(monthKey);
+    }
+    state.selectedDate = getInitialDate();
+    updateMonthSwitcherUI();
+    loadScheduleData();
+    renderAll();
+    if (el.excelViewerModal && !el.excelViewerModal.classList.contains('hidden')) {
+      renderExcelTable();
+    }
+  }
+
+  function updateMonthSwitcherUI() {
+    const activeClass = 'bg-white dark:bg-white/20 text-rose-600 dark:text-white shadow-xs font-extrabold ring-1 ring-black/5 dark:ring-white/10';
+    const inactiveClass = 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-medium';
+
+    if (el.selectMonthNovBtn && el.selectMonthDecBtn) {
+      if (state.currentMonthKey === '2569-11') {
+        el.selectMonthNovBtn.className = `month-tab-btn px-3 py-1.5 rounded-xl text-xs transition-all active:scale-95 ${activeClass}`;
+        el.selectMonthDecBtn.className = `month-tab-btn px-3 py-1.5 rounded-xl text-xs transition-all active:scale-95 ${inactiveClass}`;
+      } else {
+        el.selectMonthNovBtn.className = `month-tab-btn px-3 py-1.5 rounded-xl text-xs transition-all active:scale-95 ${inactiveClass}`;
+        el.selectMonthDecBtn.className = `month-tab-btn px-3 py-1.5 rounded-xl text-xs transition-all active:scale-95 ${activeClass}`;
+      }
+    }
+
+    const cfg = window.APP_CONFIG;
+    if (cfg) {
+      if (el.monthModalSubtitle) el.monthModalSubtitle.textContent = cfg.monthName;
+      if (el.summaryModalSubtitle) el.summaryModalSubtitle.textContent = `${cfg.monthName} (รวม ${cfg.totalDays} วัน)`;
+      if (el.imageModalSubtitle) el.imageModalSubtitle.textContent = cfg.monthName;
+      if (el.excelModalSubtitle) el.excelModalSubtitle.textContent = `เวรนอกเวลา ${cfg.monthName}`;
+      if (el.scheduleImage && cfg.imageFile) {
+        el.scheduleImage.src = cfg.imageFile;
+        el.scheduleImage.alt = `ตารางปฏิบัติงาน เดือน${cfg.monthName}`;
+      }
+    }
+  }
+
   function loadScheduleData() {
     state.customNotes = JSON.parse(localStorage.getItem('crh_custom_day_notes') || '{}');
     state.scheduleList = window.buildMonthSchedule(state.currentUser);
@@ -519,6 +583,14 @@
   // EVENT BINDINGS
   // ==========================================
   function bindEvents() {
+    // Month Switcher Buttons
+    if (el.selectMonthNovBtn) {
+      el.selectMonthNovBtn.addEventListener('click', () => changeActiveMonth('2569-11'));
+    }
+    if (el.selectMonthDecBtn) {
+      el.selectMonthDecBtn.addEventListener('click', () => changeActiveMonth('2569-12'));
+    }
+
     // Dark / Light Mode Switcher
     if (el.themeToggleBtn) {
       el.themeToggleBtn.addEventListener('click', toggleTheme);
